@@ -5,6 +5,7 @@ class CreateAccounts < ActiveRecord::Migration
       t.string :name
       t.integer :cents
       t.string :currency
+      t.datetime :saved_balance_on
 
       t.timestamps
     end

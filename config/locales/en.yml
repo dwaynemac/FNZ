@@ -8,3 +8,6 @@ en:
     no_local_user: "You dont have a user on this application."
     not_you_logout: "If this DeRose Connection is not yours <a href={{logout_url}}>logout</a>."
 
+  navbar:
+    accounts: "Accounts"
+    transactions: "Transactions"

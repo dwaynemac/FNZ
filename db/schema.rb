@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(:version => 20100909153151) do
     t.string   "name"
     t.integer  "cents"
     t.string   "currency"
+    t.datetime "saved_balance_on"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

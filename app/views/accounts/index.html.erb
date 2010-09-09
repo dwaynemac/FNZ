@@ -12,6 +12,7 @@
     <td><%=h account.name %></td>
     <td><%=h account.cents %></td>
     <td><%=h account.currency %></td>
+    <td><%= link_to t('accouts.add_transaction'), new_account_transaction_path(account) %></td>
     <td><%= link_to 'Show', account %></td>
     <td><%= link_to 'Edit', edit_account_path(account) %></td>
     <td><%= link_to 'Destroy', account, :confirm => 'Are you sure?', :method => :delete %></td>

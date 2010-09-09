@@ -6,11 +6,16 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <title><%= @page_title ||= "fnz" %></title>
   <%= javascript_include_tag 'jquery' %>
+  <%= formtastic_stylesheet_link_tag %>
 </head>
 
 <body>
   <%= drc_top_bar(logout_url) %>
   <div id="container">
+    <div id="navbar">
+      <%= link_to(t('navbar.accounts'), accounts_url) %> |
+      <%= link_to(t('navbar.transactions'), transactions_url) %>
+    </div>
     <%= yield %>
   </div>
 </body>

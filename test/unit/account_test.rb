@@ -7,7 +7,7 @@ class AccountTest < ActiveSupport::TestCase
   should_have_many :incomes
   should_have_many :expenses
 
-  context "Account with many transactions" do
+  context "account#calculate_balance" do
     setup do
       @positive = Account.make
       Transaction.make(:type => "Income", :cents => 100, :account => @positive)
@@ -21,11 +21,20 @@ class AccountTest < ActiveSupport::TestCase
       Transaction.make(:type => "Income", :cents => 100, :account => @zero)
       5.times{Transaction.make(:type => "Expense", :cents => 20, :account => @zero)}
     end
-    should "return balance with account#balance" do
-      assert_equal(50,@positive.balance)
-      assert_equal(-50,@negative.balance)
-      assert_equal(0,@zero.balance)
+    should "should return balance" do
+      assert_equal(Money.new(50,@positive.currency),@positive.calculate_balance)
+      assert_equal(Money.new(-50,@negative.currency),@negative.calculate_balance)
+      assert_equal(Money.new(0,@zero.currency),@zero.calculate_balance)
     end
+    should "save it on account#balance" do
+      assert_equal Money.new(50,@positive.currency), @positive.calculate_balance
+      Transaction.make(:type => "Income", :cents => 10, :account => @positive)
+      assert_equal Money.new(50,@positive.currency), @positive.balance
+      assert_equal Money.new(60,@positive.currency), @positive.calculate_balance
+      @positive.reload
+      assert_equal Money.new(60,@positive.currency), @positive.balance
+    end
+
   end
 
 end
