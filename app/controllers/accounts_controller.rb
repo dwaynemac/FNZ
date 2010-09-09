@@ -28,7 +28,7 @@ class AccountsController < ApplicationController
   # GET /accounts/new
   # GET /accounts/new.xml
   def new
-    @account = @scope.build
+    @account = @scope.build(:cents => 0)
 
     respond_to do |format|
       format.html # new.html.erb

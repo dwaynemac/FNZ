@@ -11,3 +11,5 @@ en:
   navbar:
     accounts: "Accounts"
     transactions: "Transactions"
+  accounts:
+    add_transaction: "New transaction"

@@ -6,6 +6,7 @@ class TransactionTest < ActiveSupport::TestCase
   should_belong_to(:user)
 
   should_validate_presence_of(:made_on)
+  should_validate_presence_of(:account)
 
   context "on creation" do
     setup do

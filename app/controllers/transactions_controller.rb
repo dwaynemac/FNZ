@@ -27,7 +27,7 @@ class TransactionsController < ApplicationController
   # GET /transactions/new
   # GET /transactions/new.xml
   def new
-    @transaction = @scope.build
+    @transaction = @scope.build(:made_on => Time.zone.now)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -43,7 +43,12 @@ class TransactionsController < ApplicationController
   # POST /transactions
   # POST /transactions.xml
   def create
-    @transaction = @scope.build(params[:transaction])
+    case params[:transaction].delete(:type)
+      when "Income"
+        @transaction = @scope.incomes.build(params[:transaction])
+      else # default to Expense
+        @transaction = @scope.expenses.build(params[:transaction])
+    end
 
     respond_to do |format|
       if @transaction.save
@@ -88,10 +93,8 @@ class TransactionsController < ApplicationController
   def set_scope
     if params[:account_id]
       @scope = current_user.school.accounts.find(params[:account_id]).transactions
-    elsif params[:user_id]
-      @scope = current_user.transactions
     else
-      @scope = current_user.school.transactions
+      @scope = current_user.transactions
     end
   end
 end

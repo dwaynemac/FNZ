@@ -4,7 +4,8 @@ class Account < ActiveRecord::Base
   has_many :incomes
   has_many :expenses
 
-  composed_of :saved_balance, :class_name => "Money", :mapping => [%w(cents cents), %w(currency currency)]
+  composed_of :saved_balance, :class_name => "Money", :mapping => [%w(cents cents), %w(currency currency)],
+              :constructor => Proc.new { |cents, currency| Money.new(cents || 0, currency || Money.default_currency) }
 
   # returns balance
   def balance

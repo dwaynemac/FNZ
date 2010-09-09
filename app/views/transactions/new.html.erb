@@ -1,5 +1,14 @@
 <h1>New transaction</h1>
 
-<%= render :partial => 'form' %>
+<%- if params[:account_id] -%>
+  <%- semantic_form_for [:account, @transaction] do |f| -%>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+  <%- end -%>
+<%- else -%>
+  <%- semantic_form_for @transaction do |f| -%>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+  <%- end -%>
+<%- end -%>
+
 
 <%= link_to 'Back', transactions_path %>
