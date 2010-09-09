@@ -1,0 +1,7 @@
+<p>you'll be redirected to PADMA for authorization...</p>
+
+<%= t('drc_client.logged_in_as', :drc_user => current_drc_user) %><br />
+<%= t('drc_client.no_local_user') %><br />
+<%= t('drc_client.not_you_logout', :logout_url => logout_url) %>
+
+<script>setTimeout('window.location="<%= oauth_consumer_path("padma") %>"',3000)</script>

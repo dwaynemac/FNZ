@@ -1,0 +1,17 @@
+development:
+  adapter: mysql
+  database: fnz_development
+  user: root
+  pass:
+  pool: 5
+  timeout: 5000
+  encoding: utf8
+
+test:
+  adapter: mysql
+  database: fnz_test
+  user: root
+  pass:
+  pool: 5
+  timeout: 5000
+  encoding: utf8

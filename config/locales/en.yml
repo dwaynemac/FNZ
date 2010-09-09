@@ -1,0 +1,10 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  hello: "Hello world"
+  drc_client:
+    logged_in_as: "DRC session: <strong>{{drc_user}}</strong>"
+    no_local_user: "You dont have a user on this application."
+    not_you_logout: "If this DeRose Connection is not yours <a href={{logout_url}}>logout</a>."
+
