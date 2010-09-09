@@ -29,4 +29,5 @@ module AuthSystem
   def logged_in?
     return !current_user_session.nil?
   end
+
 end

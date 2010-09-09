@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
+require 'mocha'
 
 class ActiveSupport::TestCase
   # Transactional fixtures accelerate your tests by wrapping each test method
@@ -32,16 +33,19 @@ class ActiveSupport::TestCase
   #
   # Note: You'll currently still have to declare fixtures explicitly in integration tests
   # -- they do not yet inherit this setting
-  fixtures :all
 
   # Add more helper methods to be used by all tests here...
-end
 
-require File.expand_path(File.dirname(__FILE__) + "/blueprints")
-class Test::Unit::TestCase
-  setup do 
+  setup do
     Sham.reset
+    @user = User.make(:drc_user => "homer")
+    if @user.padma.nil?
+      @user.padma = PadmaToken.make(:user => @user)
+      @user.save
+    end
     DRCClient.mock_login("homer")
   end
 end
+
+require File.expand_path(File.dirname(__FILE__) + "/blueprints")
 

@@ -1,8 +1,7 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
-  end
+  should_have_many :transactions
+  should_have_many :incomes
+  should_have_many :expenses
 end

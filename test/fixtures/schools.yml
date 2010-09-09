@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  padma_id: 1
+  name: MyString
+
+two:
+  padma_id: 1
+  name: MyString

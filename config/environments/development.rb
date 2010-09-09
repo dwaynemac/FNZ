@@ -19,6 +19,6 @@ config.action_mailer.raise_delivery_errors = false
 DRC_URL = 'https://localhost'
 
 
-PADMA_KEY = ''
-PADMA_SECRET = ''
+PADMA_KEY = 'h5agkB7tOhEmmsPFjakA'
+PADMA_SECRET = 'QgiGbpoVgDk9zhYKGhVJwH5nfzLUPbC4neZTnMXh'
 PADMA_API_URI = 'http://localhost:3000'

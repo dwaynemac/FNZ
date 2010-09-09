@@ -2,3 +2,9 @@
 <p>
   Your have connection with PADMA. You have <%= @students.body %> students.
 </p>
+<p>
+  Your school data:
+  id: <%= current_user.school.id %><br />
+  padma_id: <%= current_user.school.padma_id %><br />
+  name: <%= current_user.school.name %>
+</p>

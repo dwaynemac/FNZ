@@ -27,11 +27,13 @@ config.action_mailer.delivery_method = :test
 # like if you have constraints or database-specific column types
 # config.active_record.schema_format = :sql
 
+DRC_URL = ""
 PADMA_KEY = ''
 PADMA_SECRET = ''
 PADMA_API_URI = 'http://localhost:3000'
 
 
-gem "faker"
-gem "machinist", :source => http://gemcutter.org
-
+config.gem "faker"
+config.gem "machinist", :source => "http://gemcutter.org"
+config.gem 'thoughtbot-shoulda', :source  => "http://gems.github.com", :lib => 'shoulda', :version => '>= 2.0.6'
+config.gem "mocha"

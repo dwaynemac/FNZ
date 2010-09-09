@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  cents: 1
+  currency: 
+  description: MyString
+  user_id: 1
+  account_id: 1
+  type: MyString
+
+two:
+  cents: 1
+  currency: 
+  description: MyString
+  user_id: 1
+  account_id: 1
+  type: MyString
