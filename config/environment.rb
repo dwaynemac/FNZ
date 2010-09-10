@@ -7,6 +7,7 @@ RAILS_GEM_VERSION = '2.3.8' unless defined? RAILS_GEM_VERSION
 require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
+  config.gem 'aasm'
   config.gem 'oauth-plugin'
   config.gem 'oauth'
   config.gem 'authlogic_drc'
@@ -18,6 +19,8 @@ Rails::Initializer.run do |config|
   config.gem 'formtastic'
   config.gem 'will_paginate'
   config.gem 'money'
+  config.gem 'paperclip'
+  config.gem "fastercsv"
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.

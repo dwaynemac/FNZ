@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100909153151) do
+ActiveRecord::Schema.define(:version => 20100910034615) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "school_id"
@@ -32,11 +32,24 @@ ActiveRecord::Schema.define(:version => 20100909153151) do
 
   add_index "consumer_tokens", ["token"], :name => "index_consumer_tokens_on_token", :unique => true
 
+  create_table "imports", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "school_id"
+    t.string   "csv_file_file_name"
+    t.string   "csv_file_content_type"
+    t.integer  "csv_file_file_size"
+    t.datetime "csv_file_updated_at"
+    t.string   "aasm_state"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "schools", :force => true do |t|
     t.integer  "padma_id"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "default_account_id"
   end
 
   create_table "sessions", :force => true do |t|
@@ -67,6 +80,7 @@ ActiveRecord::Schema.define(:version => 20100909153151) do
   end
 
   create_table "transactions", :force => true do |t|
+    t.integer  "import_id"
     t.integer  "cents"
     t.string   "currency"
     t.string   "description"

@@ -13,6 +13,25 @@
   <%=h @account.currency %>
 </p>
 
+<p>
+  <table>
+    <tr>
+      <th>desc</th>
+      <th>account_id</th>
+      <th>user</th>
+      <th>amount</th>
+    </tr>
+    <%- @account.transactions.each do |t| -%>
+      <tr>
+        <td><%= t.description %></td>
+        <td><%= t.account_id %></td>
+        <td><%= t.user_id %></td>
+        <td><%= t.amount %></td>
+      </tr>
+    <%- end -%>
+  </table>
+</p>
+
 
 <%= link_to 'Edit', edit_account_path(@account) %> |
 <%= link_to 'Back', accounts_path %>

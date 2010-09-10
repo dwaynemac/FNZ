@@ -8,6 +8,7 @@
     <th>User</th>
     <th>Account</th>
     <th>Type</th>
+    <th>Concept</th>
   </tr>
 
 <% @transactions.each do |transaction| %>
@@ -18,6 +19,7 @@
     <td><%=h transaction.user.drc_user %></td>
     <td><%=h transaction.account.name %></td>
     <td><%=h transaction.type %></td>
+    <td><%= h transaction.concept_list %></td>
     <td><%= link_to 'Show', transaction_path(transaction) %></td>
     <td><%= link_to 'Edit', edit_transaction_path(transaction) %></td>
     <td><%= link_to 'Destroy', transaction_path(transaction), :confirm => 'Are you sure?', :method => :delete %></td>

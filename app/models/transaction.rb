@@ -2,15 +2,20 @@ class Transaction < ActiveRecord::Base
 
   before_save :get_currency_from_account
   after_save :recalculate_account_balance
+  after_destroy :recalculate_account_balance
 
   named_scope :incomes, :conditions => { :type => "Income" }
   named_scope :expenses, :conditions => { :type => "Expense" }
 
-  validates_presence_of :account
   validates_presence_of :made_on
 
   belongs_to :user
+  validates_presence_of :user
+
   belongs_to :account
+  validates_presence_of :account
+
+  belongs_to :import
 
   acts_as_taggable_on :concepts
 

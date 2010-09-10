@@ -7,6 +7,37 @@ class AccountTest < ActiveSupport::TestCase
   should_have_many :incomes
   should_have_many :expenses
 
+  context "if school doesnt have default account" do
+    setup do
+      @school = School.make
+    end
+    context "on create" do
+      setup do
+        @account = Account.make_unsaved(:school => @school)
+        @account.save
+        @school.reload
+      end
+      should "be seted as default" do
+        assert_equal @account, @school.default_account 
+      end
+    end
+  end
+  context "if school has default account" do
+    setup do
+      @default_account = Account.make
+      @school = School.make(:default_account => @default_account)
+    end
+    context "on create" do
+      setup do
+        @account = Account.make_unsaved(:school => @school)
+        @account.save
+      end
+      should "be seted as default" do
+        assert_equal @default_account, @school.default_account
+      end
+    end
+  end
+
   context "account#calculate_balance" do
     setup do
       @positive = Account.make
@@ -27,12 +58,11 @@ class AccountTest < ActiveSupport::TestCase
       assert_equal(Money.new(0,@zero.currency),@zero.calculate_balance)
     end
     should "save it on account#balance" do
+      @positive.update_attribute(:cents,0)
+      assert_equal Money.new(0,@positive.currency), @positive.balance
       assert_equal Money.new(50,@positive.currency), @positive.calculate_balance
-      Transaction.make(:type => "Income", :cents => 10, :account => @positive)
-      assert_equal Money.new(50,@positive.currency), @positive.balance
-      assert_equal Money.new(60,@positive.currency), @positive.calculate_balance
       @positive.reload
-      assert_equal Money.new(60,@positive.currency), @positive.balance
+      assert_equal Money.new(50,@positive.currency), @positive.balance
     end
 
   end

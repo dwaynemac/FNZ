@@ -1,0 +1,33 @@
+<p>
+  <b>Csv File:</b>
+  <%= h @import.csv_file_file_name %>
+</p>
+<p>
+  <b>Csv file updated at:</b>
+  <%=h @import.csv_file_updated_at %>
+</p>
+<p>
+  <b>imported trnsactions</b><br />
+  <table>
+    <tr>
+      <th>date</th>
+      <th>desc</th>
+      <th>account_id</th>
+      <th>user</th>
+      <th>amount</th>
+    </tr>
+    <%- @import.transactions.each do |t| -%>
+      <tr>
+        <td><%= t.made_on %></td>
+        <td><%= t.description %></td>
+        <td><%= t.account_id %></td>
+        <td><%= t.user_id %></td>
+        <td><%= t.amount %></td>
+      </tr>
+    <%- end -%>
+  </table>
+</p>
+
+
+<%= link_to 'Edit', edit_import_path(@import) %> |
+<%= link_to 'Back', imports_path %>

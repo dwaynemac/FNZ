@@ -48,4 +48,5 @@ class ActiveSupport::TestCase
 end
 
 require File.expand_path(File.dirname(__FILE__) + "/blueprints")
+require File.expand_path(File.dirname(__FILE__) + "/shoulda_macros")
 

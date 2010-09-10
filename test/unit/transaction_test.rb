@@ -7,6 +7,7 @@ class TransactionTest < ActiveSupport::TestCase
 
   should_validate_presence_of(:made_on)
   should_validate_presence_of(:account)
+  should_validate_presence_of(:user)
 
   context "on creation" do
     setup do
@@ -19,6 +20,28 @@ class TransactionTest < ActiveSupport::TestCase
       assert_equal(@account.currency,@transaction.currency)
     end
   end
+  context "on save" do
+    setup do
+      @account = Account.make
+      t = Transaction.make_unsaved(:account => @account, :cents => 100, :type => "Income")
+      t.save!
+    end
+    should "save accounts balance" do
+      assert_equal 100, @account.cents
+    end
+  end
+  context "on destroy" do
+      setup do
+        @account = Account.make
+        t = Transaction.make_unsaved(:account => @account, :cents => 100, :type => "Income")
+        t.save!
+        t.destroy
+      end
+      should "save accounts balance" do
+        assert_equal 0, @account.cents
+      end
+    end
+
 
   context "When assigning tags" do
     setup do

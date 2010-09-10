@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
   has_many :incomes
   has_many :expenses
 
+  has_many :imports
+
   def allowed?
     return self.connected_to_padma?
   end

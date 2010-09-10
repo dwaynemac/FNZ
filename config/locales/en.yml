@@ -11,5 +11,8 @@ en:
   navbar:
     accounts: "Accounts"
     transactions: "Transactions"
+    import: "Import from file"
   accounts:
     add_transaction: "New transaction"
+  api:
+    problem_with_connetion: "Ups, some problem with your PADMA connection."

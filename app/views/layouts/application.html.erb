@@ -7,14 +7,20 @@
   <title><%= @page_title ||= "fnz" %></title>
   <%= javascript_include_tag 'jquery' %>
   <%= formtastic_stylesheet_link_tag %>
+  <%= stylesheet_link_tag('scaffold') %>
 </head>
 
 <body>
   <%= drc_top_bar(logout_url) %>
   <div id="container">
     <div id="navbar">
+      <%= link_to(t('navbar.home'), root_url) %> |
       <%= link_to(t('navbar.accounts'), accounts_url) %> |
-      <%= link_to(t('navbar.transactions'), transactions_url) %>
+      <%= link_to(t('navbar.transactions'), transactions_url) %> |
+      <%= link_to(t('navbar.import'), imports_url) %>
+    </div>
+    <div id="notices">
+      <%= notice %>
     </div>
     <%= yield %>
   </div>

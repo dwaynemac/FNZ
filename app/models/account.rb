@@ -1,4 +1,7 @@
 class Account < ActiveRecord::Base
+
+  after_save :set_as_default_if_needed
+
   belongs_to :school
   has_many :transactions
   has_many :incomes
@@ -27,5 +30,12 @@ class Account < ActiveRecord::Base
       bal = self.incomes.calculate(:sum,:cents,before_balance_date) - self.expenses.calculate(:sum,:cents,before_balance_date)
     end
     return Money.new(bal,self.currency)
+  end
+
+  private
+  def set_as_default_if_needed
+    if self.school.default_account.nil?
+      self.school.update_attribute(:default_account_id,self.id)
+    end
   end
 end

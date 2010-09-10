@@ -1,0 +1,4 @@
+<%- f.inputs do -%>
+  <%= f.input :user_id, :collection => current_user.school.users.all.map { |u| [u.drc_user,u.id] } %>
+  <%= f.input :csv_file %>
+<%- end -%>
