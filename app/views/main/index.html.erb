@@ -2,9 +2,14 @@
 <p>
   Your have connection with PADMA. You have <%= @students.body %> students.
 </p>
-<p>
+<div>
   Your school data:
   id: <%= current_user.school.id %><br />
   padma_id: <%= current_user.school.padma_id %><br />
   name: <%= current_user.school.name %>
-</p>
+</div>
+<div>
+  <% tag_cloud(@contepts, %w(css1 css2 css3 css4)) do |tag, css_class| %>
+    <span class="<%= css_class %>"><%= tag %></span>
+  <% end %>
+</div>
