@@ -9,7 +9,7 @@
 
 <% @imports.each do |import| %>
   <tr>
-    <td><%= h import.aasm_state %></td>
+    <td><%= h import.aasm_current_state %></td>
     <td><%=h import.csv_file_file_name %></td>
     <td><%=h import.csv_file_updated_at %></td>
     <td><%= link_to 'Import', load_data_import_path(import) %></td>

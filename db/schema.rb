@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100910034615) do
+ActiveRecord::Schema.define(:version => 20100911160616) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "school_id"
@@ -31,6 +31,15 @@ ActiveRecord::Schema.define(:version => 20100910034615) do
   end
 
   add_index "consumer_tokens", ["token"], :name => "index_consumer_tokens_on_token", :unique => true
+
+  create_table "imported_rows", :force => true do |t|
+    t.integer  "import_id"
+    t.integer  "transaction_id"
+    t.boolean  "success"
+    t.integer  "row"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "imports", :force => true do |t|
     t.integer  "user_id"
@@ -80,7 +89,6 @@ ActiveRecord::Schema.define(:version => 20100910034615) do
   end
 
   create_table "transactions", :force => true do |t|
-    t.integer  "import_id"
     t.integer  "cents"
     t.string   "currency"
     t.string   "description"

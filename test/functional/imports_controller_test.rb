@@ -6,6 +6,18 @@ class ImportsControllerTest < ActionController::TestCase
     @import = Import.make
   end
 
+  context "get#load_data" do
+    setup do
+      get :load_data, :id => Import.make
+    end
+    should_respond_with(:redirect)
+    should_redirect_to("imports index"){imports_url}
+    should "change state" do
+      assert_equal 'imported', @import.aasm_state
+    end
+    should_change("import tranasactions"){@import.transactions.count}
+  end
+
   test "should get index" do
     get :index
     assert_response :success

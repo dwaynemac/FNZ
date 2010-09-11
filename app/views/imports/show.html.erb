@@ -16,7 +16,7 @@
       <th>user</th>
       <th>amount</th>
     </tr>
-    <%- @import.transactions.each do |t| -%>
+    <%- @transactions.each do |t| -%>
       <tr>
         <td><%= t.made_on %></td>
         <td><%= t.description %></td>
@@ -27,6 +27,12 @@
     <%- end -%>
   </table>
 </p>
+<div>
+  <b>Failed</b><br />
+  <%- @errors.each do |error| -%>
+    row: <%= error.row %><br />
+  <%- end -%>
+</div>
 
 
 <%= link_to 'Edit', edit_import_path(@import) %> |

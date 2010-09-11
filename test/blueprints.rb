@@ -54,3 +54,14 @@ Import.blueprint do
   school    { School.first || School.make }
   user      { User.find_or_create_by_drc_user("homer") }
 end
+
+ImportedRow.blueprint do
+  import  { Import.make }
+  transaction { Transaction.make }
+  success     { true }
+end
+ImportedRow.blueprint(:success){}
+ImportedRow.blueprint(:failed) do
+  row { SecureRandom.random_number(99999999999) }
+  success     { false }
+end

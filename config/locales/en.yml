@@ -4,14 +4,15 @@
 en:
   hello: "Hello world"
   drc_client:
-    logged_in_as: "DRC session: <strong>{{drc_user}}</strong>"
+    logged_in_as: "DRC session: <strong>%{drc_user}</strong>"
     no_local_user: "You dont have a user on this application."
-    not_you_logout: "If this DeRose Connection is not yours <a href={{logout_url}}>logout</a>."
+    not_you_logout: "If this DeRose Connection is not yours <a href=%{logout_url}>logout</a>."
 
   navbar:
     accounts: "Accounts"
     transactions: "Transactions"
     import: "Import from file"
+    home: "Home"
   accounts:
     add_transaction: "New transaction"
   api:

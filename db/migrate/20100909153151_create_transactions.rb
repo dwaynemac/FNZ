@@ -1,7 +1,6 @@
 class CreateTransactions < ActiveRecord::Migration
   def self.up
     create_table :transactions do |t|
-      t.references :import
       t.integer   :cents
       t.string    :currency
       t.string    :description

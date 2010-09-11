@@ -17,6 +17,8 @@ class ImportsController < ApplicationController
   # GET /imports/1.xml
   def show
     @import = @scope.find(params[:id])
+    @transactions = @import.transactions.all
+    @errors = @import.imported_rows.failed.all
 
     respond_to do |format|
       format.html # show.html.erb
