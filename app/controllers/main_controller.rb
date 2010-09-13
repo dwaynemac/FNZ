@@ -12,4 +12,10 @@ class MainController < ApplicationController
       format.html
     end
   end
+
+  def welcome
+    respond_to do |format|
+      format.html
+    end
+  end
 end

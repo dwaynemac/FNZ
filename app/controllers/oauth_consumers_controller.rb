@@ -26,7 +26,7 @@ class OauthConsumersController < ApplicationController
       end
       current_user.update_attribute(:school_id, school.id)
     end
-    redirect_to root_url
+    redirect_to welcome_url
   end
   
 end

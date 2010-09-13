@@ -101,7 +101,7 @@ ActiveRecord::Schema.define(:version => 20100911163946) do
     t.datetime "updated_at"
   end
 
-  create_table "transfers", :id => false, :force => true do |t|
+  create_table "transfers", :force => true do |t|
     t.integer "credit_id"
     t.integer "debit_id"
   end

@@ -11,6 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   map.unauthorized '/unauthorized', :controller => :user_sessions, :action => :unauthorized
   map.logout '/logout', :controller => :user_sessions, :action => :destroy
 
+  map.welcome '/welcome', :controller => :main, :action => :welcome
   map.root :controller => 'main', :action => 'index'
 
   map.connect ':controller/:action/:id'

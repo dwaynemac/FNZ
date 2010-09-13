@@ -1,10 +1,11 @@
 class Account < ActiveRecord::Base
 
-  after_save :set_as_default_if_needed
+  after_save :set_as_default
+  after_destroy :remove_from_school_default
 
   belongs_to :school
 
-  has_many :transactions # all transactions
+  has_many :transactions, :dependent => :destroy # all transactions
 
   has_many :credits, :class_name => "Transaction", :conditions => { :type => ["Income","CreditTransfer"]} # all credits
   has_many :incomes
@@ -44,14 +45,34 @@ class Account < ActiveRecord::Base
     debit = self.debit_transfers.build(:cents => cents, :user => user, :made_on => made_on, :description => description)
     credit_cents = Money.new(cents,self.currency).exchange_to(to.currency).cents
     credit = to.credit_transfers.build(:cents => credit_cents, :user => user, :made_on => made_on, :description => description)
-    credit.debits << debit
-    return credit.save
+    if credit.save
+      if debit.save
+        t = Transfer.new(:credit => credit, :debit => debit)
+        if t.save
+          return true
+        else
+          # rollback
+          debit.destroy
+          credit.destroy
+        end
+      else
+        # rollback
+        credit.destroy
+      end
+    end
+    return false
   end
 
   private
-  def set_as_default_if_needed
+  def set_as_default
     if self.school.default_account.nil?
       self.school.update_attribute(:default_account_id,self.id)
+    end
+  end
+
+  def remove_from_school_default
+    if self.school.default_account==self
+      self.school.update_attribute(:default_account_id,nil)
     end
   end
 end

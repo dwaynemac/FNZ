@@ -32,8 +32,17 @@ class AccountTest < ActiveSupport::TestCase
         @account = Account.make_unsaved(:school => @school)
         @account.save
       end
-      should "be seted as default" do
+      should "not change schools default account" do
         assert_equal @default_account, @school.default_account
+      end
+    end
+    context "on destroy (of default account)" do
+      setup do
+        @default_account.destroy
+        @school.reload
+      end
+      should "nullify school#default_account" do
+        assert_nil(@school.default_account)
       end
     end
   end

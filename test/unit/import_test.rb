@@ -32,12 +32,9 @@ class ImportTest < ActiveSupport::TestCase
       @school = School.make
       @account = Account.make(:school => @school)
       @import = Import.make(:school => @school, :csv_file => ActionController::TestUploadedFile.new(File.dirname(__FILE__) + '/../fixtures/no_accounts.csv', 'text/csv'))
-      #@import.csv_file.stubs(:path).returns(File.dirname(__FILE__) + '/../fixtures/no_accounts.csv')
     end
     context "if school has default account" do
       setup do
-        @school.default_account = @account
-        @school.save && @school.reload
         @import.load_data!
       end
       should "set state to :imported once it finished" do
@@ -47,6 +44,8 @@ class ImportTest < ActiveSupport::TestCase
     end
     context "if school doesnt have default account" do
       setup do
+        @school.update_attribute(:default_account_id, nil) # creating account sets it as default
+        @school.reload
         @import.load_data!
       end
       should "set state to :failed" do

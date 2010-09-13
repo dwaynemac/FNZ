@@ -22,7 +22,7 @@ class AccountsControllerTest < ActionController::TestCase
       post :create, :account => Account.plan
     end
 
-    assert_redirected_to account_path(assigns(:account))
+    assert_redirected_to accounts_path
   end
 
   test "should show account" do

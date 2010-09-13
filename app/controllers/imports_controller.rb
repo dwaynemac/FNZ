@@ -89,6 +89,7 @@ class ImportsController < ApplicationController
   def load_data
     @import = @scope.find(params[:id])
     @import.load_data!
+    @import.reload
     respond_to do |format|
       format.html { redirect_to(imports_url, :notice => "imported!") }
     end

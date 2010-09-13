@@ -37,8 +37,9 @@ class Import < ActiveRecord::Base
               @errors = true
               break
             else
+              u = User.find_by_drc_user(row[1]) || self.user
               data = {:made_on => row[0], :description => row[2], :amount => row[3].to_money.cents.abs,
-                      :user_id => self.user_id, :concept_list => row[4]}
+                      :user_id => u.id, :concept_list => row[4]}
               if row[3] =~ /-\d*/
                 t = self.school.default_account.expenses.build(data)
               else
@@ -55,6 +56,9 @@ class Import < ActiveRecord::Base
         end
       rescue AASM::InvalidTransition
         @errors = true
+        if RAILS_ENV != 'production'
+          raise
+        end
       rescue
         # rollback
         self.transactions.delete_all
