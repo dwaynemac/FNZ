@@ -2,6 +2,7 @@ class CreateUsers < ActiveRecord::Migration
   def self.up
     create_table :users do |t|
       t.string :drc_user
+
       t.string :persistence_token
       t.integer :login_count
       t.integer :failed_login_count

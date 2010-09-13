@@ -38,7 +38,7 @@ class ActiveSupport::TestCase
 
   setup do
     Sham.reset
-    @user = User.make(:drc_user => "homer")
+    @user = User.find_by_drc_user("homer") || User.make(:drc_user => "homer")
     if @user.padma.nil?
       @user.padma = PadmaToken.make(:user => @user)
       @user.save

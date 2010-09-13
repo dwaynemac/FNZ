@@ -4,6 +4,10 @@ class CreateSchools < ActiveRecord::Migration
       t.integer :padma_id
       t.string :name
 
+      # configurations
+      t.integer :default_account_id
+      t.string  :default_currency, :default => "BRL"
+
       t.timestamps
     end
     add_column(:users, :school_id, :integer)

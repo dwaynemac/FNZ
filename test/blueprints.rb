@@ -25,7 +25,7 @@ end
 Sham.school { School.make }
 
 User.blueprint do
-  drc_user
+  drc_user { Sham.name }
   school  { School.first || School.make }
 end
 
