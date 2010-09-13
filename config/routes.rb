@@ -3,7 +3,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :imports, :member => { :load_data => :get }
 
   map.resources :accounts, :has_many => :transactions
-  map.resources :transactions
+  map.resources :transactions, :new => { :transfer => [:get,:post] }
 
   map.resources :users, :has_many => [:transactions, :schools]
 

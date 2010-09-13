@@ -39,10 +39,11 @@ class Account < ActiveRecord::Base
     return Money.new(bal,self.currency)
   end
 
-  def transfer(user,to,cents,made_on=nil)
+  def transfer(user,to,cents,made_on=nil,description=nil)
     made_on = Time.zone.now if made_on.nil?
-    debit = self.debit_transfers.build(:cents => cents, :user => user, :made_on => made_on)
-    credit = to.credit_transfers.build(:cents => cents, :user => user, :made_on => made_on)
+    debit = self.debit_transfers.build(:cents => cents, :user => user, :made_on => made_on, :description => description)
+    credit_cents = Money.new(cents,self.currency).exchange_to(to.currency).cents
+    credit = to.credit_transfers.build(:cents => credit_cents, :user => user, :made_on => made_on, :description => description)
     credit.debits << debit
     return credit.save
   end

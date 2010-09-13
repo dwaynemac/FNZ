@@ -56,9 +56,10 @@ ActiveRecord::Schema.define(:version => 20100911163946) do
   create_table "schools", :force => true do |t|
     t.integer  "padma_id"
     t.string   "name"
+    t.integer  "default_account_id"
+    t.string   "default_currency",   :default => "BRL"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "default_account_id"
   end
 
   create_table "sessions", :force => true do |t|

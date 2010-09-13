@@ -89,6 +89,31 @@ class TransactionsController < ApplicationController
     end
   end
 
+  def transfer
+    if request.get?
+      #form
+      @accounts = current_user.school.accounts.all
+      respond_to do |format|
+        format.html
+      end
+    elsif request.post?
+      from_account = current_user.school.accounts.find(params[:transfer][:from_account_id])
+      to_account = current_user.school.accounts.find(params[:transfer][:to_account_id])
+      cents = params[:transfer][:amount].to_money.cents
+      if from_account.transfer(current_user,to_account,cents,nil,params[:transfer][:description])
+        respond_to do |format|
+          format.html { redirect_to transactions_url(:notice => "transfered") }
+        end
+      else
+        @accounts = current_user.school.accounts.all
+        flash[:notice] = "error"
+        respond_to do |format|
+          format.html
+        end
+      end
+    end
+  end
+
   private
   def set_scope
     if params[:account_id]
