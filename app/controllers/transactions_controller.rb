@@ -90,26 +90,33 @@ class TransactionsController < ApplicationController
   end
 
   def transfer
-    if request.get?
+    @transfer_form = TransferForm.new(params[:transfer_form])
+    if params[:transfer_form]
+      unless @transfer_form.valid?
+        @accounts = current_user.school.accounts.all
+        respond_to do |format|
+          format.html { render :action => 'transfer' }
+        end
+      else
+        from_account = current_user.school.accounts.find(@transfer_form.from_account_id)
+        to_account = current_user.school.accounts.find(@transfer_form.to_account_id)
+        cents = @transfer_form.amount.to_money.cents
+        if from_account.transfer(current_user,to_account,cents,nil,@transfer_form.description)
+          respond_to do |format|
+            format.html { redirect_to transactions_url(:notice => "transfered") }
+          end
+        else
+          @accounts = current_user.school.accounts.all
+          respond_to do |format|
+            format.html { render :action => 'transfer' }
+          end
+        end
+      end
+    else
       #form
       @accounts = current_user.school.accounts.all
       respond_to do |format|
-        format.html
-      end
-    elsif request.post?
-      from_account = current_user.school.accounts.find(params[:transfer][:from_account_id])
-      to_account = current_user.school.accounts.find(params[:transfer][:to_account_id])
-      cents = params[:transfer][:amount].to_money.cents
-      if from_account.transfer(current_user,to_account,cents,nil,params[:transfer][:description])
-        respond_to do |format|
-          format.html { redirect_to transactions_url(:notice => "transfered") }
-        end
-      else
-        @accounts = current_user.school.accounts.all
-        flash[:notice] = "error"
-        respond_to do |format|
-          format.html
-        end
+        format.html { render :action => 'transfer' }
       end
     end
   end
