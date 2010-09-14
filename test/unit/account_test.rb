@@ -7,6 +7,8 @@ class AccountTest < ActiveSupport::TestCase
   should_have_many :incomes
   should_have_many :expenses
 
+  should_validate_uniqueness_of :name, :scoped_to => :school_id
+
   context "if school doesnt have default account" do
     setup do
       @school = School.make

@@ -17,8 +17,7 @@ class ImportsController < ApplicationController
   # GET /imports/1.xml
   def show
     @import = @scope.find(params[:id])
-    @transactions = @import.transactions.all
-    @errors = @import.imported_rows.failed.all
+    @imported_rows = @import.imported_rows.ordered('row asc').paginate(:page => params[:page], :include => {:transaction => [:account, :user]})
 
     respond_to do |format|
       format.html # show.html.erb
@@ -88,10 +87,14 @@ class ImportsController < ApplicationController
 
   def load_data
     @import = @scope.find(params[:id])
-    @import.load_data!
-    @import.reload
+    errors = @import.load_data!
+    if errors.empty?
+      notice = "imported!"
+    else
+      notice = errors.join(", ")
+    end
     respond_to do |format|
-      format.html { redirect_to(imports_url, :notice => "imported!") }
+      format.html { redirect_to(imports_url, :notice => notice) }
     end
   end
 

@@ -4,8 +4,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :accounts, :has_many => :transactions
   map.resources :transactions, :new => { :transfer => :any }
-
   map.resources :users, :has_many => [:transactions, :schools]
+
+  map.resources :concepts
 
   map.resources :oauth_consumers,:member=>{:callback=>:get}
   map.unauthorized '/unauthorized', :controller => :user_sessions, :action => :unauthorized

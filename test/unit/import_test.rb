@@ -41,6 +41,7 @@ class ImportTest < ActiveSupport::TestCase
         assert_equal "imported", @import.aasm_state
       end
       should_change("qt of tranasctions"){@school.transactions.all.count}
+      should_change("qt of imported rows"){@import.imported_rows.all.count}
     end
     context "if school doesnt have default account" do
       setup do

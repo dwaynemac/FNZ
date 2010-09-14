@@ -1,5 +1,7 @@
 class Account < ActiveRecord::Base
 
+  validates_uniqueness_of :name, :scope => :school_id
+
   after_save :set_as_default
   after_destroy :remove_from_school_default
 

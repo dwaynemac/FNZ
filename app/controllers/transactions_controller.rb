@@ -5,7 +5,7 @@ class TransactionsController < ApplicationController
   # GET /transactions
   # GET /transactions.xml
   def index
-    @transactions = @scope.all
+    @transactions = @scope.paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -103,7 +103,10 @@ class TransactionsController < ApplicationController
         cents = @transfer_form.amount.to_money.cents
         if from_account.transfer(current_user,to_account,cents,nil,@transfer_form.description)
           respond_to do |format|
-            format.html { redirect_to transactions_url(:notice => "transfered") }
+            format.html do
+              flash[:notice] = "transfered!"
+              redirect_to transactions_url
+            end
           end
         else
           @accounts = current_user.school.accounts.all

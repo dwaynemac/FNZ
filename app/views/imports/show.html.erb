@@ -1,38 +1,53 @@
 <p>
   <b>Csv File:</b>
-  <%= h @import.csv_file_file_name %>
+  <%= h(@import.csv_file_file_name) %>
 </p>
-<p>
-  <b>Csv file updated at:</b>
-  <%=h @import.csv_file_updated_at %>
-</p>
-<p>
-  <b>imported trnsactions</b><br />
-  <table>
-    <tr>
-      <th>date</th>
-      <th>desc</th>
-      <th>account_id</th>
-      <th>user</th>
-      <th>amount</th>
-    </tr>
-    <%- @transactions.each do |t| -%>
+<%- if @imported_rows.empty? -%>
+  <div>
+    <%= link_to t('import.load_data'), load_data_import_path(@import) %>
+  </div>
+<%- else -%>
+  <div id="imported_rows">
+    <h3><%= t('import.imported_rows') %></h3>
+    <%= will_paginate @imported_rows %>
+    <table>
       <tr>
-        <td><%= t.made_on %></td>
-        <td><%= t.description %></td>
-        <td><%= t.account_id %></td>
-        <td><%= t.user_id %></td>
-        <td><%= t.amount %></td>
+        <th>row</th>
+        <th>account</th>
+        <th>date</th>
+        <th>user</th>
+        <th>desc</th>
+        <th>amount</th>
       </tr>
+      <%- @imported_rows.each do |ir| -%>
+        <%- if ir.success -%>
+          <%- t = ir.transaction -%>
+          <tr class="<%= cycle 'row0', 'row1' %>">
+            <td><%= ir.row %></td>
+            <td><%= h t.account.name %></td>
+            <td><%= l(t.made_on, :format => :short) %></td>
+            <td><%= h t.user.drc_user %></td>
+            <td><%= h t.description %></td>
+            <td><%= t.amount %></td>
+            <%- if !ir.message.blank? -%>
+              <td><%= h ir.message %></td>
+            <%- end -%>
+            <td><%= link_to t('edit'), edit_transaction_url(t) %></td>
+            <td><%= link_to t('destroy'), transaction_url(t), :method => :delete, :confirm => t('confirm_destroy') %></td>
+          </tr>
+        <%- else -%>
+        <tr class="failed">
+          <td><%= ir.row %></td>
+          <td colspan="5">
+            <%= h ir.message %>
+          </td>
+        </tr>
+        <%- end -%>
     <%- end -%>
-  </table>
-</p>
-<div>
-  <b>Failed</b><br />
-  <%- @errors.each do |error| -%>
-    row: <%= error.row %><br />
-  <%- end -%>
-</div>
+    </table>
+  </div>
+  <%= will_paginate @imported_rows %>
+<%- end -%>
 
 
 <%= link_to 'Edit', edit_import_path(@import) %> |

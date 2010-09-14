@@ -21,8 +21,9 @@ class OauthConsumersController < ApplicationController
       school = School.find_or_initialize_by_padma_id(school_hash["id"])
       if school.name.blank?
         school.name = school_hash["name"]
-        school.save
-        school.reload
+        if school.save
+          flash[:success] = "school created"
+        end
       end
       current_user.update_attribute(:school_id, school.id)
     end

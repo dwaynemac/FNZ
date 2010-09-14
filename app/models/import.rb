@@ -15,7 +15,7 @@ class Import < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :school
-  has_many :imported_rows
+  has_many :imported_rows, :dependent => :destroy
   has_many :transactions, :through => :imported_rows
 
   has_attached_file :csv_file
@@ -23,39 +23,55 @@ class Import < ActiveRecord::Base
   validates_attachment_presence :csv_file
 
   def load_data!
-    @errors = false
+    import_errors = []
     if !self.csv_file.nil?
       begin
         self.start_import
         # TODO background
-        i = 0
-        FasterCSV.foreach(self.csv_file.path) do |row|
-          if row.length == 5
-            # no account row
-            if self.school.default_account.nil?
-              # if file doesn't specify account then default account is required
-              @errors = true
-              break
+        i = 2
+        FasterCSV.foreach(self.csv_file.path, :encoding => 'u', :headers => :first_row, :skip_blanks => true) do |row|
+          if !self.school.default_account && !row[VH[:account]]
+            # if file doesn't specify account then default account is required
+            import_errors << "no account"
+            # rollback
+            self.transactions.delete_all
+            self.imported_rows.delete_all
+            break
+          else
+            warnings = []
+            u = User.find_by_drc_user(row[VH[:user]])
+            if u.nil?
+              u = self.user
+              warnings << I18n.t('import.warnings.row_user_not_found')
+            end
+
+            cents = (row[VH[:income]]||"").to_money.cents - (row[VH[:expense]]||"").to_money.cents + (row[VH[:amount]]||"").to_money.cents
+
+            data = {:made_on => row[VH[:date]], :description => row[VH[:description]], :cents => cents,
+                    :user_id => u.id, :concept_list => row[VH[:concept_list]]}
+
+            account_field = row[VH[:account]]
+            if account_field
+              account = self.school.accounts.find_by_name(account) || self.school.accounts.find(account)
+            end
+            account = account.nil?? self.school.default_account : account
+
+            if cents < 0
+              t = account.expenses.build(data)
             else
-              u = User.find_by_drc_user(row[1]) || self.user
-              data = {:made_on => row[0], :description => row[2], :amount => row[3].to_money.cents.abs,
-                      :user_id => u.id, :concept_list => row[4]}
-              if row[3] =~ /-\d*/
-                t = self.school.default_account.expenses.build(data)
-              else
-                t = self.school.default_account.incomes.build(data)
-              end
-              if t.save
-                self.imported_rows.create(:transaction => t, :success => true)
-              else
-                self.imported_rows.create(:row => i, :success => false)
-              end
+              t = account.incomes.build(data)
+            end
+            if t.save
+              (warnings << I18n.t('import.check_transaction_date')) if t.made_on.year != Time.zone.now
+              self.imported_rows.create(:row => i, :transaction => t, :success => true, :message => warnings.join(" #{I18n.t('and', :default => ' and ')} "))
+            else
+              self.imported_rows.create(:row => i, :success => false, :message => t.errors.full_messages.join(" #{I18n.t('and', :default => ' and ')} "))
             end
           end
           i += 1
         end
       rescue AASM::InvalidTransition
-        @errors = true
+        import_errors << "aasm error"
         if RAILS_ENV != 'production'
           raise
         end
@@ -63,16 +79,27 @@ class Import < ActiveRecord::Base
         # rollback
         self.transactions.delete_all
         self.imported_rows.delete_all
-        @errors = true
+        import_errors << "exception raised"
         if RAILS_ENV != 'production'
           raise
         end
       end
     else
-      @errors = true
+      import_errors << "file not found"
     end
-    @errors? self.end_import_with_error : self.end_import_successfully
-    return !@errors
+    (!import_errors.empty?)? self.end_import_with_error : self.end_import_successfully
+    return import_errors
   end
 
+  VALID_HEADERS = {
+            :date => I18n.t('import.headers.date', :default => 'date'),
+            :user => I18n.t('import.headers.user', :default => 'user'),
+            :description => I18n.t('import.headers.description', :default => 'description'),
+            :income => I18n.t('import.headers.income', :default => 'income'),
+            :expense => I18n.t('import.headers.expense', :default => 'expense'),
+            :amount => I18n.t('import.headers.amount', :default => 'amount'),
+            :concept_list => I18n.t('import.headers.concept_list', :default => 'concept list'),
+            :account => I18n.t('import.headers.account', :default => 'account'),
+            }
+  VH = VALID_HEADERS
 end

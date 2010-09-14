@@ -2,11 +2,11 @@ require 'machinist/active_record'
 require 'sham'
 
 Sham.define do
-  name { Faker::Name.first_name }
-  description { Faker::Lorem.paragraph }
-  date { Date.civil((1990...2009).to_a.rand, (1..12).to_a.rand, (1..28).to_a.rand) }
-  padma_id { SecureRandom.random_number(99999999999) }
+  description { |index| Faker::Lorem.paragraph+index.to_s }
+  date        { Date.civil((1990...2009).to_a.rand, (1..12).to_a.rand, (1..28).to_a.rand) }
+  padma_id    { SecureRandom.random_number(999999999999) }
 end
+Sham.name { |index| Faker::Name.first_name+SecureRandom.random_number(999999999999).to_s }
 Sham.csv_file do
   ActionController::TestUploadedFile.new(File.dirname(__FILE__) + '/fixtures/no_accounts.csv', 'text/csv')
 end
@@ -30,7 +30,7 @@ User.blueprint do
 end
 
 Account.blueprint do
-  name
+  name      { Sham.name }
   cents     { 0 }
   currency  { "ARS" }
   school    { School.first || School.make }
@@ -56,12 +56,13 @@ Import.blueprint do
 end
 
 ImportedRow.blueprint do
+  row { SecureRandom.random_number(99999999999) }
   import  { Import.make }
   transaction { Transaction.make }
   success     { true }
 end
 ImportedRow.blueprint(:success){}
 ImportedRow.blueprint(:failed) do
-  row { SecureRandom.random_number(99999999999) }
+  message     { Faker::Lorem.paragraph }
   success     { false }
 end

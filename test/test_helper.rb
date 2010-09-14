@@ -1,5 +1,7 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
+require File.expand_path(File.dirname(__FILE__) + "/blueprints")
+require File.expand_path(File.dirname(__FILE__) + "/shoulda_macros")
 require 'test_help'
 require 'mocha'
 
@@ -46,7 +48,3 @@ class ActiveSupport::TestCase
     DRCClient.mock_login("homer")
   end
 end
-
-require File.expand_path(File.dirname(__FILE__) + "/blueprints")
-require File.expand_path(File.dirname(__FILE__) + "/shoulda_macros")
-

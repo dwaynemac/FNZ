@@ -7,13 +7,28 @@ en:
     logged_in_as: "DRC session: <strong>%{drc_user}</strong>"
     no_local_user: "You dont have a user on this application."
     not_you_logout: "If this DeRose Connection is not yours <a href=%{logout_url}>logout</a>."
-
   navbar:
     accounts: "Accounts"
     transactions: "Transactions"
     import: "Import from file"
     home: "Home"
+    concepts: "Concepts"
   accounts:
     add_transaction: "New transaction"
   api:
     problem_with_connetion: "Ups, some problem with your PADMA connection."
+  time:
+    formats:
+      short: "%d.%b.%Y"
+  back: "back"
+  transaction:
+    labels:
+      made_on: "Date"
+      amount: "amount"
+      description: "description"
+      user: "user"
+      account: "account"
+      type: "Type"
+      concept_list: "concept list"
+  import:
+    check_transaction_date: "Please check if the transaction date was correctly imported"

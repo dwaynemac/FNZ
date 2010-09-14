@@ -1,1 +1,17 @@
-welcome page here...
+<h1>Welcome</h1>
+<p>
+  You have enabled your FNZ account.
+</p>
+<%- if @no_connection -%>
+  <%= t('api.problem_with_connetion') %>
+<%- else -%>
+  <p>
+    Your have connection with PADMA. You have <%= @students.body %> students.
+  </p>
+<%- end -%>
+<div>
+  Your schools data:
+  id: <%= current_user.school.id %><br />
+  padma_id: <%= current_user.school.padma_id %><br />
+  name: <%= current_user.school.name %>
+</div>

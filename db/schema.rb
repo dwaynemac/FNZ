@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20100911163946) do
     t.integer  "transaction_id"
     t.boolean  "success"
     t.integer  "row"
+    t.string   "message"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

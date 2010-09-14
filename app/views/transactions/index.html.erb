@@ -1,31 +1,6 @@
 <h1>Listing transactions</h1>
 
-<table>
-  <tr>
-    <th>Made on</th>
-    <th>Amount</th>
-    <th>Description</th>
-    <th>User</th>
-    <th>Account</th>
-    <th>Type</th>
-    <th>Concept</th>
-  </tr>
-
-<% @transactions.each do |transaction| %>
-  <tr>
-    <td><%= l(transaction.made_on, :format => :short) %></td>
-    <td><%=h transaction.amount %></td>
-    <td><%=h transaction.description %></td>
-    <td><%=h transaction.user.drc_user %></td>
-    <td><%=h transaction.account.name %></td>
-    <td><%=h transaction.type %></td>
-    <td><%= h transaction.concept_list %></td>
-    <td><%= link_to 'Show', transaction_path(transaction) %></td>
-    <td><%= link_to 'Edit', edit_transaction_path(transaction) %></td>
-    <td><%= link_to 'Destroy', transaction_path(transaction), :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+<%= render :partial => 'transactions/table' %>
 
 <br />
 

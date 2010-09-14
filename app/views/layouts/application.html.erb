@@ -7,7 +7,7 @@
   <title><%= @page_title ||= "fnz" %></title>
   <%= javascript_include_tag 'jquery' %>
   <%= formtastic_stylesheet_link_tag %>
-  <%= stylesheet_link_tag('scaffold') %>
+  <%= stylesheet_link_tag('scaffold','tables') %>
 </head>
 
 <body>
@@ -15,6 +15,7 @@
   <div id="container">
     <div id="navbar">
       <%= link_to(t('navbar.home'), root_url) %> |
+      <%= link_to(t('navbar.concepts'), concepts_url) %> |
       <%= link_to(t('navbar.accounts'), accounts_url) %> |
       <%= link_to(t('navbar.transactions'), transactions_url) %> |
       <%= link_to(t('navbar.import'), imports_url) %>

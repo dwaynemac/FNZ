@@ -18,6 +18,8 @@ class AccountsController < ApplicationController
   # GET /accounts/1.xml
   def show
     @account = @scope.find(params[:id])
+    @search = @account.transactions.searchlogic(params[:search])
+    @transactions = @search.paginate(:page => params[:page], :include => :user)
 
     respond_to do |format|
       format.html # show.html.erb

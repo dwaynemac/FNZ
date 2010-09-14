@@ -1,0 +1,7 @@
+<h1><%= @concept %></h1>
+
+<div id="transactions">
+  <%= render :partial => 'transactions/table' %>
+</div>
+
+<%= link_to t('back'), concepts_path %>

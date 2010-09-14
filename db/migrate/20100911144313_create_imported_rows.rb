@@ -5,6 +5,7 @@ class CreateImportedRows < ActiveRecord::Migration
       t.integer :transaction_id
       t.boolean :success
       t.integer :row
+      t.string  :message
 
       t.timestamps
     end
