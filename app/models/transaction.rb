@@ -23,20 +23,13 @@ class Transaction < ActiveRecord::Base
   belongs_to :account
   validates_presence_of :account
 
-  # Searchlogic scopes
-#  named_scope :ascend_by_made_on, :order => 'made_on asc'
-#  named_scope :descend_by_made_on, :order => 'made_on desc'
-#  named_scope :ascend_by_cents, :order => 'cents asc'
-#  named_scope :descend_by_cents, :order => 'cents desc'
-
-
   # if imported from file transaction is linked to a row in such a file
   has_one :imported_row, :dependent => :destroy
 
   acts_as_taggable_on :concepts
 
   validates_presence_of :cents
-  validates_numericality_of(:cents, :only_integer => true, :less_than => 90000000, :greater_than => -90000000)
+  validates_numericality_of(:cents, :only_integer => true, :less_than => 90000000, :greater_than_or_equal_to => 0)
   composed_of :amount, :class_name => "Money", :mapping => [%w(cents cents), %w(currency currency)],
               :constructor => Proc.new { |cents, currency| Money.new(cents || 0, currency || Money.default_currency) }
 

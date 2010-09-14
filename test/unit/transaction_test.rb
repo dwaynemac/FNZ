@@ -10,8 +10,8 @@ class TransactionTest < ActiveSupport::TestCase
   should_validate_presence_of(:user)
   should_validate_presence_of(:cents)
 
-  should_allow_values_for(:cents, -10, 10, 14482554,-6145874,0)
-  should_not_allow_values_for(:cents, 124256365,-9658745236,2125.23,"asd")
+  should_allow_values_for(:cents, 10, 14482554,0)
+  should_not_allow_values_for(:cents, -5, 124256365,-9658745236,2125.23,"asd")
 
   
 
