@@ -28,6 +28,7 @@ class Import < ActiveRecord::Base
       begin
         self.start_import
         # TODO background
+        this_year = Time.zone.now.year
         i = 2
         FasterCSV.foreach(self.csv_file.path, :encoding => 'u', :headers => :first_row, :skip_blanks => true) do |row|
           if !self.school.default_account && !row[VH[:account]]
@@ -47,7 +48,7 @@ class Import < ActiveRecord::Base
 
             cents = (row[VH[:income]]||"").to_money.cents - (row[VH[:expense]]||"").to_money.cents + (row[VH[:amount]]||"").to_money.cents
 
-            data = {:made_on => row[VH[:date]], :description => row[VH[:description]], :cents => cents,
+            data = {:made_on => row[VH[:date]], :description => row[VH[:description]],
                     :user_id => u.id, :concept_list => row[VH[:concept_list]]}
 
             account_field = row[VH[:account]]
@@ -57,12 +58,12 @@ class Import < ActiveRecord::Base
             account = account.nil?? self.school.default_account : account
 
             if cents < 0
-              t = account.expenses.build(data)
+              t = account.expenses.build(data.merge!({:cents => cents.abs}))
             else
-              t = account.incomes.build(data)
+              t = account.incomes.build(data.merge!({:cents => cents.abs}))
             end
             if t.save
-              (warnings << I18n.t('import.check_transaction_date')) if t.made_on.year != Time.zone.now
+              (warnings << I18n.t('import.check_transaction_date')) if t.made_on.year != this_year
               self.imported_rows.create(:row => i, :transaction => t, :success => true, :message => warnings.join(" #{I18n.t('and', :default => ' and ')} "))
             else
               self.imported_rows.create(:row => i, :success => false, :message => t.errors.full_messages.join(" #{I18n.t('and', :default => ' and ')} "))

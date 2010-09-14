@@ -28,7 +28,7 @@
             <td><%= l(t.made_on, :format => :short) %></td>
             <td><%= h t.user.drc_user %></td>
             <td><%= h t.description %></td>
-            <td><%= t.amount %></td>
+            <td><%= "-" if t.type=="Expense" %><%= t.amount %></td>
             <%- if !ir.message.blank? -%>
               <td><%= h ir.message %></td>
             <%- end -%>
