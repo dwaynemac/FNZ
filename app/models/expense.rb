@@ -1,3 +1,2 @@
 class Expense < Transaction
-  
 end

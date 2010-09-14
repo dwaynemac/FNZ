@@ -37,17 +37,16 @@ class TransactionTest < ActiveSupport::TestCase
     end
   end
   context "on destroy" do
-      setup do
-        @account = Account.make
-        t = Transaction.make_unsaved(:account => @account, :cents => 100, :type => "Income")
-        t.save!
-        t.destroy
-      end
-      should "save accounts balance" do
-        assert_equal 0, @account.cents
-      end
+    setup do
+      @account = Account.make
+      t = Transaction.make_unsaved(:account => @account, :cents => 100, :type => "Income")
+      t.save!
+      t.destroy
     end
-
+    should "save accounts balance" do
+      assert_equal 0, @account.cents
+    end
+  end
 
   context "When assigning tags" do
     setup do

@@ -37,6 +37,21 @@ class Transaction < ActiveRecord::Base
   def amount=(arg)
     self.cents = arg.to_money.cents
   end
+  
+  def prt_amount
+    string = (self.debit?)? "-" : ""
+    string += self.amount.currency.symbol
+    string += self.amount.to_s
+    return string
+  end
+
+  def credit?
+    return self.type == "Income" || self.type == "CreditTransfer"
+  end
+
+  def debit?
+    return self.type == "Expense" || self.type == "DebitTransfer"
+  end
 
   private
   def get_currency_from_account
