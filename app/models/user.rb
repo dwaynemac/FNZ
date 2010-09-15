@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
     c.login_field = :drc_user
   end
 
-  belongs_to :school
+  belongs_to :institution
   has_one :padma, :class_name => "PadmaToken", :dependent => :destroy
 
   has_many :transactions

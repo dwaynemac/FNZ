@@ -2,49 +2,50 @@ require 'test_helper'
 
 class AccountTest < ActiveSupport::TestCase
 
-  should_belong_to :school
+  should_validate_presence_of(:institution)
+  should_belong_to :institution
   should_have_many :transactions
   should_have_many :incomes
   should_have_many :expenses
 
-  should_validate_uniqueness_of :name, :scoped_to => :school_id
+  should_validate_uniqueness_of :name, :scoped_to => :institution_id
 
-  context "if school doesnt have default account" do
+  context "if institution doesnt have default account" do
     setup do
-      @school = School.make
+      @institution = Institution.make
     end
     context "on create" do
       setup do
-        @account = Account.make_unsaved(:school => @school)
+        @account = Account.make_unsaved(:institution => @institution)
         @account.save
-        @school.reload
+        @institution.reload
       end
       should "be seted as default" do
-        assert_equal @account, @school.default_account 
+        assert_equal @account, @institution.default_account
       end
     end
   end
-  context "if school has default account" do
+  context "if institution has default account" do
     setup do
       @default_account = Account.make
-      @school = School.make(:default_account => @default_account)
+      @institution = Institution.make(:default_account => @default_account)
     end
     context "on create" do
       setup do
-        @account = Account.make_unsaved(:school => @school)
+        @account = Account.make_unsaved(:institution => @institution)
         @account.save
       end
-      should "not change schools default account" do
-        assert_equal @default_account, @school.default_account
+      should "not change institutions default account" do
+        assert_equal @default_account, @institution.default_account
       end
     end
     context "on destroy (of default account)" do
       setup do
         @default_account.destroy
-        @school.reload
+        @institution.reload
       end
-      should "nullify school#default_account" do
-        assert_nil(@school.default_account)
+      should "nullify institution#default_account" do
+        assert_nil(@institution.default_account)
       end
     end
   end

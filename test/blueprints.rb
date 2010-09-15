@@ -4,36 +4,36 @@ require 'sham'
 Sham.define do
   description { |index| Faker::Lorem.paragraph+index.to_s }
   date        { Date.civil((1990...2009).to_a.rand, (1..12).to_a.rand, (1..28).to_a.rand) }
-  padma_id    { SecureRandom.random_number(999999999999) }
 end
-Sham.name { |index| Faker::Name.first_name+SecureRandom.random_number(999999999999).to_s }
+Sham.padma_id { |index| SecureRandom.random_number(999999)+index*1000000 }
+Sham.name { |index| Faker::Name.first_name+SecureRandom.random_number(99999).to_s }
 Sham.csv_file do
   ActionController::TestUploadedFile.new(File.dirname(__FILE__) + '/fixtures/no_accounts.csv', 'text/csv')
 end
 
 PadmaToken.blueprint do
   user  { User.find_or_create_by_drc_user("homer") }
-  token { "asdfasfdasdfasdf" }
-  secret { "asdfasdfasdf" }
+  token { Faker::Name.first_name+(SecureRandom.random_number(99999)).to_s }
+  secret { Faker::Name.first_name+(SecureRandom.random_number(99999)).to_s }
   type { "PadmaToken" }
 end
 
-School.blueprint do
+Institution.blueprint do
   name
   padma_id { Sham.padma_id }
 end
-Sham.school { School.make }
+Sham.institution { Institution.make }
 
 User.blueprint do
   drc_user { Sham.name }
-  school  { School.first || School.make }
+  institution  { Institution.first || Institution.make }
 end
 
 Account.blueprint do
   name      { Sham.name }
   cents     { 0 }
   currency  { "ARS" }
-  school    { School.first || School.make }
+  institution    { Institution.first || Institution.make }
 end
 Sham.account { Account.make }
 
@@ -51,7 +51,7 @@ Transaction.blueprint(:expense) { type { "Expense" }}
 
 Import.blueprint do
   csv_file  { ActionController::TestUploadedFile.new(File.dirname(__FILE__) + '/fixtures/no_accounts.csv', 'text/csv') }
-  school    { School.first || School.make }
+  institution    { Institution.first || Institution.make }
   user      { User.find_or_create_by_drc_user("homer") }
 end
 
@@ -65,4 +65,8 @@ ImportedRow.blueprint(:success){}
 ImportedRow.blueprint(:failed) do
   message     { Faker::Lorem.paragraph }
   success     { false }
+end
+
+Tag.blueprint do
+  name { Sham.name }
 end

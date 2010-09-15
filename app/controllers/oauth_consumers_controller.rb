@@ -15,17 +15,17 @@ class OauthConsumersController < ApplicationController
   # params[:id] holds the service name so you could use this to redirect to various parts
   # of your application depending on what service you're connecting to.
   def go_back
-    # set user's school if connected
+    # set user's institution if connected
     if current_user.connected_to_padma?
-      school_hash = current_user.padma.simple_client.get("/api/schools/my")
-      school = School.find_or_initialize_by_padma_id(school_hash["id"])
-      if school.name.blank?
-        school.name = school_hash["name"]
-        if school.save
-          flash[:success] = "school created"
+      institution_hash = current_user.padma.simple_client.get("/api/schools/my")
+      institution = Institution.find_or_initialize_by_padma_id(institution_hash["id"])
+      if institution.name.blank?
+        institution.name = institution_hash["name"]
+        if institution.save
+          flash[:success] = "institution created"
         end
       end
-      current_user.update_attribute(:school_id, school.id)
+      current_user.update_attribute(:institution_id, institution.id)
     end
     redirect_to welcome_url
   end

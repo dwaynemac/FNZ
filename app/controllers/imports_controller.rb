@@ -100,6 +100,6 @@ class ImportsController < ApplicationController
 
   private
   def set_scope
-    @scope = current_user.school.imports
+    @scope = current_user.institution.imports
   end
 end

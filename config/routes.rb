@@ -4,7 +4,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :accounts, :has_many => :transactions
   map.resources :transactions, :new => { :transfer => :any }
-  map.resources :users, :has_many => [:transactions, :schools]
+  map.resources :users, :has_many => [:transactions, :institutions]
 
   map.resources :concepts
 

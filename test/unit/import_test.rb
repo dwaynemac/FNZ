@@ -5,7 +5,7 @@ class ImportTest < ActiveSupport::TestCase
   should_have_many(:transactions)
   should_have_many(:imported_rows)
                 
-  should_belong_to(:school)
+  should_belong_to(:institution)
   should_belong_to(:user)
 
   should_have_attached_file :csv_file
@@ -29,30 +29,33 @@ class ImportTest < ActiveSupport::TestCase
 
   context "import#load_data!" do
     setup do
-      @school = School.make
-      @account = Account.make(:school => @school)
-      @import = Import.make(:school => @school, :csv_file => ActionController::TestUploadedFile.new(File.dirname(__FILE__) + '/../fixtures/no_accounts.csv', 'text/csv'))
+      @institution = Institution.make
+      @account = Account.make(:institution => @institution)
+      @import = Import.make(:institution => @institution, :csv_file => ActionController::TestUploadedFile.new(File.dirname(__FILE__) + '/../fixtures/no_accounts.csv', 'text/csv'))
     end
-    context "if school has default account" do
+    context "if institution has default account" do
       setup do
         @import.load_data!
       end
       should "set state to :imported once it finished" do
         assert_equal "imported", @import.aasm_state
       end
-      should_change("qt of tranasctions"){@school.transactions.all.count}
+      should_change("qt of tranasctions"){@institution.transactions.all.count}
       should_change("qt of imported rows"){@import.imported_rows.all.count}
+      should "tag transactions with institution as owner" do
+        assert(false, "IMPLEMENT")
+      end
     end
-    context "if school doesnt have default account" do
+    context "if institution doesnt have default account" do
       setup do
-        @school.update_attribute(:default_account_id, nil) # creating account sets it as default
-        @school.reload
+        @institution.update_attribute(:default_account_id, nil) # creating account sets it as default
+        @institution.reload
         @import.load_data!
       end
       should "set state to :failed" do
         assert_equal "failed", @import.aasm_state
       end
-      should_not_change("qt of transactions"){@school.transactions.all.count}
+      should_not_change("qt of transactions"){@institution.transactions.all.count}
     end
   end
 

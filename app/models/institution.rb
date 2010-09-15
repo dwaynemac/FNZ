@@ -1,6 +1,8 @@
-class School < ActiveRecord::Base
+class Institution < ActiveRecord::Base
 
-  validates_uniqueness_of(:padma_id)
+  acts_as_tagger
+
+  #validates_uniqueness_of(:padma_id)
 
   has_many :users
   has_many :accounts
@@ -8,7 +10,6 @@ class School < ActiveRecord::Base
   has_many :transactions, :through => :accounts
   has_many :incomes, :through => :accounts
   has_many :expenses, :through => :accounts
-
 
   has_many :imports
 

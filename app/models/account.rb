@@ -1,11 +1,12 @@
 class Account < ActiveRecord::Base
 
-  validates_uniqueness_of :name, :scope => :school_id
+  validates_uniqueness_of :name, :scope => :institution_id
 
   after_save :set_as_default
-  after_destroy :remove_from_school_default
+  after_destroy :remove_from_institution_default
 
-  belongs_to :school
+  validates_presence_of :institution
+  belongs_to :institution
 
   has_many :transactions, :dependent => :destroy # all transactions
 
@@ -67,14 +68,14 @@ class Account < ActiveRecord::Base
 
   private
   def set_as_default
-    if self.school.default_account.nil?
-      self.school.update_attribute(:default_account_id,self.id)
+    if self.institution.default_account.nil?
+      self.institution.update_attribute(:default_account_id,self.id)
     end
   end
 
-  def remove_from_school_default
-    if self.school.default_account==self
-      self.school.update_attribute(:default_account_id,nil)
+  def remove_from_institution_default
+    if self.institution.default_account==self
+      self.institution.update_attribute(:default_account_id,nil)
     end
   end
 end

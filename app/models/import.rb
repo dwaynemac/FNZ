@@ -14,7 +14,7 @@ class Import < ActiveRecord::Base
   aasm_event(:end_import_with_error) { transitions :to => :failed, :from => :importing }
 
   belongs_to :user
-  belongs_to :school
+  belongs_to :institution
   has_many :imported_rows, :dependent => :destroy
   has_many :transactions, :through => :imported_rows
 
@@ -22,7 +22,9 @@ class Import < ActiveRecord::Base
   validates_attachment_content_type :csv_file, :content_type => ['text/csv','text/comma-separated-values','application/csv','application/excel','application/vnd.ms-excel','application/vnd.msexcel','text/anytext','text/plain','text/x-txt']
   validates_attachment_presence :csv_file
 
+  
   def load_data!
+    # TODO performance: use pure SQL?
     import_errors = []
     if !self.csv_file.nil?
       begin
@@ -31,7 +33,7 @@ class Import < ActiveRecord::Base
         this_year = Time.zone.now.year
         i = 2
         FasterCSV.foreach(self.csv_file.path, :encoding => 'u', :headers => :first_row, :skip_blanks => true) do |row|
-          if !self.school.default_account && !row[VH[:account]]
+          if !self.institution.default_account && !row[VH[:account]]
             # if file doesn't specify account then default account is required
             import_errors << "no account"
             # rollback
@@ -53,9 +55,9 @@ class Import < ActiveRecord::Base
 
             account_field = row[VH[:account]]
             if account_field
-              account = self.school.accounts.find_by_name(account) || self.school.accounts.find(account)
+              account = self.institution.accounts.find_by_name(account) || self.institution.accounts.find(account)
             end
-            account = account.nil?? self.school.default_account : account
+            account = account.nil?? self.institution.default_account : account
 
             if cents < 0
               t = account.expenses.build(data.merge!({:cents => cents.abs}))

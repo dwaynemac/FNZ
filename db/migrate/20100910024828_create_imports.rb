@@ -2,7 +2,7 @@ class CreateImports < ActiveRecord::Migration
   def self.up
     create_table :imports do |t|
       t.references  :user
-      t.references  :school
+      t.references  :institution
       t.string      :csv_file_file_name
       t.string      :csv_file_content_type
       t.integer     :csv_file_file_size

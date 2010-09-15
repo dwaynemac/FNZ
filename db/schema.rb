@@ -9,10 +9,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100911163946) do
+ActiveRecord::Schema.define(:version => 20100915141828) do
 
   create_table "accounts", :force => true do |t|
-    t.integer  "school_id"
+    t.integer  "institution_id"
     t.string   "name"
     t.integer  "cents"
     t.string   "currency"
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(:version => 20100911163946) do
 
   create_table "imports", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "school_id"
+    t.integer  "institution_id"
     t.string   "csv_file_file_name"
     t.string   "csv_file_content_type"
     t.integer  "csv_file_file_size"
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(:version => 20100911163946) do
     t.datetime "updated_at"
   end
 
-  create_table "schools", :force => true do |t|
+  create_table "institutions", :force => true do |t|
     t.integer  "padma_id"
     t.string   "name"
     t.integer  "default_account_id"
@@ -87,7 +87,11 @@ ActiveRecord::Schema.define(:version => 20100911163946) do
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
   create_table "tags", :force => true do |t|
-    t.string "name"
+    t.string   "name"
+    t.integer  "parent_id"
+    t.string   "currency"
+    t.integer  "cents"
+    t.datetime "saved_balance_on"
   end
 
   create_table "transactions", :force => true do |t|
@@ -118,7 +122,7 @@ ActiveRecord::Schema.define(:version => 20100911163946) do
     t.string   "last_login_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "school_id"
+    t.integer  "institution_id"
   end
 
 end

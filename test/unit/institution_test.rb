@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SchoolTest < ActiveSupport::TestCase
+class InstitutionTest < ActiveSupport::TestCase
 
   should_validate_uniqueness_of(:padma_id)
   should_have_many(:users)

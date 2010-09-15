@@ -1,6 +1,6 @@
-class CreateSchools < ActiveRecord::Migration
+class CreateInstitutions < ActiveRecord::Migration
   def self.up
-    create_table :schools do |t|
+    create_table :institutions do |t|
       t.integer :padma_id
       t.string :name
 
@@ -10,11 +10,11 @@ class CreateSchools < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_column(:users, :school_id, :integer)
+    add_column(:users, :institution_id, :integer)
   end
 
   def self.down
-    remove_column(:users, :school_id)
-    drop_table :schools
+    remove_column(:users, :institution_id)
+    drop_table :institutions
   end
 end
