@@ -48,15 +48,22 @@ class TransactionTest < ActiveSupport::TestCase
     end
   end
 
-  context "When assigning tags" do
+  context "" do
     setup do
-      args = Transaction.plan
-      args.merge!({:concept_list => "mantenimiento, ventanas"})
-      @transaction = Transaction.create(args)
+      @institution = Institution.make
+      @account = Account.make(:institution => @institution)
     end
-    should "they should be available" do
-      assert_equal ["mantenimiento", "ventanas"], @transaction.concepts.map{|t| t.name }
+    context "When assigning tags" do
+      setup do
+        args = Transaction.plan(:account => @account)
+        @transaction = Transaction.create(args)
+        @institution.tag(@transaction,:with => "mantenimiento, ventanas",:on => :concepts)
+      end
+      should "they should be available" do
+        assert_equal ["mantenimiento", "ventanas"], @transaction.concepts_from(@institution)
+      end
     end
   end
+
 
 end

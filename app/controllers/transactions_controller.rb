@@ -49,6 +49,9 @@ class TransactionsController < ApplicationController
       else # default to Expense
         @transaction = @scope.expenses.build(params[:transaction])
     end
+    if concepts = params[:transaction].delete(:concept_list)
+      current_institution.tag(@transaction,:on => :concepts, :with => concepts)
+    end
 
     respond_to do |format|
       if @transaction.save
@@ -93,13 +96,13 @@ class TransactionsController < ApplicationController
     @transfer_form = TransferForm.new(params[:transfer_form])
     if params[:transfer_form]
       unless @transfer_form.valid?
-        @accounts = current_user.school.accounts.all
+        @accounts = current_institution.accounts.all
         respond_to do |format|
           format.html { render :action => 'transfer' }
         end
       else
-        from_account = current_user.school.accounts.find(@transfer_form.from_account_id)
-        to_account = current_user.school.accounts.find(@transfer_form.to_account_id)
+        from_account = current_institution.accounts.find(@transfer_form.from_account_id)
+        to_account = current_institution.accounts.find(@transfer_form.to_account_id)
         cents = @transfer_form.amount.to_money.cents
         if from_account.transfer(current_user,to_account,cents,nil,@transfer_form.description)
           respond_to do |format|
@@ -109,7 +112,7 @@ class TransactionsController < ApplicationController
             end
           end
         else
-          @accounts = current_user.school.accounts.all
+          @accounts = current_institution.accounts.all
           respond_to do |format|
             format.html { render :action => 'transfer' }
           end
@@ -117,7 +120,7 @@ class TransactionsController < ApplicationController
       end
     else
       #form
-      @accounts = current_user.school.accounts.all
+      @accounts = current_institution.accounts.all
       respond_to do |format|
         format.html { render :action => 'transfer' }
       end
@@ -127,7 +130,7 @@ class TransactionsController < ApplicationController
   private
   def set_scope
     if params[:account_id]
-      @scope = current_user.school.accounts.find(params[:account_id]).transactions
+      @scope = current_institution.accounts.find(params[:account_id]).transactions
     else
       @scope = current_user.transactions
     end

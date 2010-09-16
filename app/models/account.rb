@@ -23,7 +23,7 @@ class Account < ActiveRecord::Base
 
   # returns balance
   def balance
-    if self.saved_balance.nil?
+    if self.saved_balance_on.nil?
       return self.calculate_balance
     else
       return self.saved_balance

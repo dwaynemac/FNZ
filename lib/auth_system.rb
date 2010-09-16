@@ -1,7 +1,7 @@
 module AuthSystem
   
   def self.included(base)
-    base.send(:helper_method, :current_user, :logged_in?)
+    base.send(:helper_method, :current_user, :logged_in?, :current_institution)
   end
   
   private
@@ -18,6 +18,10 @@ module AuthSystem
 
   def current_user
     @current_user = current_user_session && current_user_session.record
+  end
+
+  def current_institution
+    @current_institution ||= current_user.institution
   end
   
   def login_required

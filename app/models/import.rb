@@ -51,7 +51,7 @@ class Import < ActiveRecord::Base
             cents = (row[VH[:income]]||"").to_money.cents - (row[VH[:expense]]||"").to_money.cents + (row[VH[:amount]]||"").to_money.cents
 
             data = {:made_on => row[VH[:date]], :description => row[VH[:description]],
-                    :user_id => u.id, :concept_list => row[VH[:concept_list]]}
+                    :user_id => u.id}
 
             account_field = row[VH[:account]]
             if account_field
@@ -64,6 +64,7 @@ class Import < ActiveRecord::Base
             else
               t = account.incomes.build(data.merge!({:cents => cents.abs}))
             end
+            account.institution.tag(t,:on => :concepts, :with => row[VH[:concept_list]])
             if t.save
               (warnings << I18n.t('import.check_transaction_date')) if t.made_on.year != this_year
               self.imported_rows.create(:row => i, :transaction => t, :success => true, :message => warnings.join(" #{I18n.t('and', :default => ' and ')} "))

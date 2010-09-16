@@ -89,6 +89,6 @@ class AccountsController < ApplicationController
 
   private
   def set_scope
-    @scope = current_user.institution.accounts
+    @scope = current_institution.accounts
   end
 end

@@ -1,8 +1,20 @@
 require 'test_helper'
 
 class ConceptsControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+
+  context "get :index" do
+    setup do
+      get :index
+    end
+    should_respond_with(:success)
   end
+
+  context "get :show" do
+    setup do
+      get :show, :id => Tag.make.name
+    end
+    should_respond_with(:success)
+  end
+
+
 end

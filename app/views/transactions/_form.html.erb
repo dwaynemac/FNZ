@@ -1,6 +1,6 @@
 <%= f.error_messages %>
 <%- f.inputs do -%>
-  <%= f.input( :account_id, :collection => current_user.institution.accounts) unless params[:account_id] %>
+  <%= f.input( :account_id, :collection => current_institution.accounts) unless params[:account_id] %>
   <%= f.input :type, :collection => %W( Income Expense ) %>
   <%= f.input :amount %>
   <%= f.input :description %>
