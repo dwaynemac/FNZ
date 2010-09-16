@@ -43,7 +43,7 @@ class ImportTest < ActiveSupport::TestCase
       should_change("qt of tranasctions"){@institution.transactions.all.count}
       should_change("qt of imported rows"){@import.imported_rows.all.count}
       should "tag transactions with institution as owner" do
-        assert(false, "IMPLEMENT")
+        assert_equal @institution.transactions.last.concepts_from(@institution), ["mantenimiento"]
       end
     end
     context "if institution doesnt have default account" do
