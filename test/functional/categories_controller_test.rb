@@ -13,6 +13,11 @@ class CategoriesControllerTest < ActionController::TestCase
       should_assign_to(:categories)
       should_assign_to(:category)
     end
+    context "get :show" do
+      setup { get :show, :id => @category.id }
+      should_respond_with(:success)
+      should_assign_to(:transactions)
+    end
   end
 
   def setup
@@ -37,11 +42,6 @@ class CategoriesControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to categories_url
-  end
-
-  test "should show category" do
-    get :show, :id => @category.id
-    assert_response :success
   end
 
   test "should update category" do

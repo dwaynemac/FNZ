@@ -133,6 +133,11 @@ class CategoryTest < ActiveSupport::TestCase
       assert(!@root.save)
     end
 
+    context "@root.all_transactions" do
+      should "consider root and root-descendants transactions" do
+        assert_equal( 12,@root.all_transactions.count ) 
+      end
+    end
   end
 
 end

@@ -31,6 +31,7 @@ en:
       account: "account"
       type: "Type"
       concept_list: "concept list"
+      category: "Category"
   import:
     check_transaction_date: "Please check if the transaction date was correctly imported"
     warnings:

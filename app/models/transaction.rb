@@ -5,6 +5,8 @@ class Transaction < ActiveRecord::Base
 
   named_scope :made_on_month, lambda{|month_date|{:conditions => { :made_on => (month_date.beginning_of_month...month_date.end_of_month)}}}
   named_scope :made_on_year, lambda{|year_date|{:conditions => ["YEAR(made_on)=:year",{:year => year_date.year}]}}
+  named_scope :made_after, lambda{|time| time.nil?? {} : {:conditions => ["made_on > ?",time]}}
+  named_scope :made_before, lambda{|time| time.nil?? {} : {:conditions => ["made_on < ?",time]}}
 
   validates_presence_of :made_on
 

@@ -7,6 +7,7 @@
     <%- unless skip_field[:user] -%><th><%= t('transaction.labels.user').capitalize %></th><%- end -%>
     <%- unless skip_field[:description] -%><th><%= t('transaction.labels.description').capitalize %></th><%- end -%>
     <!-- <%- unless skip_field[:type] -%><th><%= t('transaction.labels.type').capitalize %></th><%- end -%> -->
+    <%- unless skip_field[:category] -%><th><%= t('transaction.labels.category').capitalize %></th><%- end -%>
     <%- unless skip_field[:concept_list] -%><th><%= t('transaction.labels.concept_list').capitalize %></th><%- end -%>
     <%- unless skip_field[:amount] -%><th><%= t('transaction.labels.amount').capitalize %></th><%- end -%>
   </tr>
@@ -18,6 +19,7 @@
     <%- unless skip_field[:user] -%><td><%=h transaction.user.drc_user %></td><%- end -%>
     <%- unless skip_field[:description] -%><td><%=h transaction.description %></td><%- end -%>
     <!-- <%- unless skip_field[:type] -%><td><%=h transaction.type %></td><%- end -%> -->
+    <%- unless skip_field[:category] -%><td><%= h transaction.category.try(:name) %></td><%- end -%>
     <%- unless skip_field[:concept_list] -%><td><%= h transaction.concept_list %></td><%- end -%>
     <%- unless skip_field[:amount] -%><td><%= "-" if transaction.type=="Expense" %><%= transaction.amount.currency.symbol %><%=h transaction.amount %></td><%- end -%>
     <td><%= link_to 'Edit', edit_transaction_path(transaction) %></td>
