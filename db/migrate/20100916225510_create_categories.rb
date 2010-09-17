@@ -4,9 +4,6 @@ class CreateCategories < ActiveRecord::Migration
       t.integer :parent_id
       t.string :name
       t.integer :institution_id
-      t.integer :cents
-      t.string :currency
-      t.datetime :saved_balance_on
 
       t.timestamps
     end

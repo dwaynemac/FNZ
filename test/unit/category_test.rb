@@ -48,10 +48,6 @@ class CategoryTest < ActiveSupport::TestCase
         should "return 0" do
           assert_equal 0, @bal.cents
         end
-        should "cache balance" do
-          @category.reload
-          assert_equal Money.new(0,@institution.default_currency), @category.saved_balance
-        end
       end
     end
     context "with transactions of same currency" do
@@ -61,16 +57,13 @@ class CategoryTest < ActiveSupport::TestCase
         20.times{ Transaction.make(:type => "Income", :category_id => @category.id, :account => @account, :cents => 1)}
         5.times{ Transaction.make(:type => "Expense", :category_id  => @category.id, :account => @account, :cents => 1)}
       end
-      context "calculate_balance" do
+      context "balance" do
         setup do
           @bal = @category.balance
           @category.reload
         end
         should "return 15" do
           assert_equal 15, @bal.cents
-        end
-        should "cache balance" do
-          assert_equal 15, @category.cents
         end
       end
     end
@@ -90,16 +83,13 @@ class CategoryTest < ActiveSupport::TestCase
           Transaction.make(:type => "Expense", :account => @ars_account, :cents => 100, :category => @category)
         end
       end
-      context "calculate_balance" do
+      context "balance" do
         setup do
           @bal = @category.balance
           @category.reload
         end
         should "return 4000" do
           assert_equal 4000, @bal.cents
-        end
-        should "cache balance" do
-          assert_equal 4000, @category.cents
         end
       end
     end
@@ -125,7 +115,7 @@ class CategoryTest < ActiveSupport::TestCase
     end
 
     should "consider all descendants for balance" do
-      assert_equal 1200, @root.calculate_balance.cents
+      assert_equal 1200, @root.balance.cents
     end
 
     should "validate that a loop is not being created (ancestor descendant of descendant)" do
