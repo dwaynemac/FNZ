@@ -4,7 +4,7 @@ class Transaction < ActiveRecord::Base
   after_destroy :recalculate_account_balance
 
   named_scope :made_on_month, lambda{|month_date|{:conditions => { :made_on => (month_date.beginning_of_month...month_date.end_of_month)}}}
-  named_scope :made_on_year, lambda{|year_date|{:conditions => { :made_on => (year_date.beginning_of_year...year_date.end_of_year)}}}
+  named_scope :made_on_year, lambda{|year_date|{:conditions => ["YEAR(made_on)=:year",{:year => year_date.year}]}}
 
   validates_presence_of :made_on
 
