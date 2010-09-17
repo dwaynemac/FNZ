@@ -3,6 +3,8 @@ class Category < ActiveRecord::Base
 
   before_save :capitalize_name
 
+  validate :parent_is_not_descendant
+
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :institution_id
 
@@ -51,6 +53,13 @@ class Category < ActiveRecord::Base
   def capitalize_name
     return if self.name.nil?
     self.name.capitalize!
+  end
+
+  def parent_is_not_descendant
+    return if self.parent.nil?
+    if self.self_and_descendants.include?(self.parent)
+      self.errors.add(:parent_id, I18n.t('category.parent_cant_be_descendant'))
+    end
   end
 
 end

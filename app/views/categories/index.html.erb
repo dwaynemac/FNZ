@@ -1,9 +1,15 @@
 <h1>Listing categories</h1>
 
-<%- @roots.each do |root| -%>
-  <%= render :partial => 'tree', :locals => {:category => root} %>
+<%= will_paginate @roots %>
+<%- form_tag edit_multiple_categories_path do -%>
+<ul>
+  <%- @roots.each do |root| -%>
+    <%= render :partial => 'tree', :locals => {:category => root} %>
 <%- end -%>
-
+</ul>
+  <%= submit_tag t('edit_checked') %>
+<%- end -%>
+<%= will_paginate @roots %>
 <br />
 
 <%= link_to 'New category', new_category_path %>

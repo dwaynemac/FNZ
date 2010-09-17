@@ -1,3 +1,4 @@
+<%= check_box_tag "category_ids[]", category.id %>
 <%= link_to h(category.name), category %> - <%= category.balance %>
 <%= link_to t('categories.add_sub_category'), subcategory_category_path(category)%>
 <%= link_to 'Show', category %>

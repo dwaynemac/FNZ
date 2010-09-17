@@ -1,0 +1,12 @@
+<%- semantic_form_for :category, :url => update_multiple_categories_path, :html => {:method => :put} do |f| -%>
+  <ul>
+    <%- @categories.each do |c| -%>
+      <li>
+        <%= h c.name %>
+        <%= hidden_field_tag :'category_ids[]', c.id %>
+      </li>
+    <%- end -%>
+  </ul>
+  <%= f.input :parent_id, :collection => @all_categories %>
+  <%= f.commit_button %>
+<%- end -%>

@@ -2,6 +2,19 @@ require 'test_helper'
 
 class CategoriesControllerTest < ActionController::TestCase
 
+  context "" do
+    setup do
+      @institution = User.find_or_create_by_drc_user("homer").institution
+      @category = Category.make(:institution => @institution)
+    end
+    context "get :edit" do
+      setup { get :edit, :id => @category.id }
+      should_respond_with(:success)
+      should_assign_to(:categories)
+      should_assign_to(:category)
+    end
+  end
+
   def setup
     @institution = User.find_or_create_by_drc_user("homer").institution
     @category = Category.make(:institution => @institution)
@@ -28,11 +41,6 @@ class CategoriesControllerTest < ActionController::TestCase
 
   test "should show category" do
     get :show, :id => @category.id
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, :id => @category.id
     assert_response :success
   end
 

@@ -1,6 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+
   map.resources :categories, :has_many => :transactions,
-                             :member => { :subcategory => :get }
+                             :member => { :subcategory => :get },
+                             :collection => { :edit_multiple => :post, :update_multiple => :put }
 
 
   map.resources :imports, :member => { :load_data => :get }

@@ -49,6 +49,7 @@ class CategoriesController < ApplicationController
   # GET /categories/1/edit
   def edit
     @category = @scope.find(params[:id])
+    @categories = @scope.all
   end
 
   # POST /categories
@@ -94,6 +95,21 @@ class CategoriesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def edit_multiple
+    @categories = @scope.find(params[:category_ids])
+    @all_categories = @scope.all(:conditions => ["id not in (?)",params[:category_ids]])
+  end
+
+  def update_multiple
+    @categories = @scope.find(params[:category_ids])
+    @categories.each do |c|
+      c.update_attributes(params[:category])
+      # TODO consider validations may fail
+    end
+    redirect_to categories_path, :notice => "Updated categories!"
+  end
+
 
   private
   def set_scope

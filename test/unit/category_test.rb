@@ -7,7 +7,7 @@ class CategoryTest < ActiveSupport::TestCase
   should_belong_to(:institution)
   should_have_many(:transactions)
 
-  context "a category" do
+  context "Category from different institutions" do
     setup do
       @ia = Institution.make
       @a = Category.make(:institution => @ia)
@@ -18,6 +18,19 @@ class CategoryTest < ActiveSupport::TestCase
     should "validate parent is from same institution" do
       @a.parent_id = @b
       assert(!@a.save)
+    end
+  end
+
+  context "category name" do
+    setup do
+      @asdf = Category.make(:name => "ASDF")
+      @qwer = Category.make(:name => "qwer")
+    end
+    should "always be capitalized" do
+      assert_equal "Asdf", @asdf.name
+      assert_equal "Qwer", @qwer.name
+      assert_not_equal "ASDF", @asdf.name
+      assert_not_equal("qwer", @qwer.name)
     end
   end
 
@@ -110,9 +123,16 @@ class CategoryTest < ActiveSupport::TestCase
       Transaction.make(:type => "Income", :account => @account, :category => @grand_son, :cents => 100)
 
     end
+
     should "consider all descendants for balance" do
       assert_equal 1200, @root.calculate_balance.cents
     end
+
+    should "validate that a loop is not being created (ancestor descendant of descendant)" do
+      @root.parent_id = @grand_son.id
+      assert(!@root.save)
+    end
+
   end
 
 end
