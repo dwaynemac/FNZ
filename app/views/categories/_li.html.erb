@@ -1,0 +1,5 @@
+<%= link_to h(category.name), category %> - <%= category.balance %>
+<%= link_to t('categories.add_sub_category'), subcategory_category_path(category)%>
+<%= link_to 'Show', category %>
+<%= link_to 'Edit', edit_category_path(category) %>
+<%= link_to 'Destroy', category, :confirm => 'Are you sure?', :method => :delete %>

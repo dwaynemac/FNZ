@@ -2,6 +2,7 @@ class Category < ActiveRecord::Base
   acts_as_tree
 
   validates_presence_of :name
+  validates_uniqueness_of :name, :scope => :institution_id
 
   belongs_to :institution
   validates_presence_of :institution
@@ -23,6 +24,9 @@ class Category < ActiveRecord::Base
   # returns balance at a given moment
   # if no moment specified defaults to total balance and caches it on self.balance
   def calculate_balance(at=nil)
+
+    # TODO go through child categories for better performance
+
     bal = Money.new(0,self.institution.default_currency)
     if at.nil?
       # consider self and descendants

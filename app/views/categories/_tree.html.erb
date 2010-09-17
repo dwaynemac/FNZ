@@ -1,0 +1,12 @@
+<%- if category.children.empty? -%>
+  <li><%= render :partial => 'li', :locals => { :category => category } %></li>
+<%- else -%>
+<ul>
+  <li><%= render :partial => 'li', :locals => { :category => category } %></li>
+  <ul>
+    <%- category.children.each do |child| -%>
+      <%= render :partial => 'tree', :locals => {:category => child} %>
+    <%- end -%>
+  </ul>
+</ul>
+<%- end -%>

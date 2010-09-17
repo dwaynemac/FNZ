@@ -5,11 +5,14 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.xml
   def index
-    @categories = @scope.all
 
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @categories }
+      format.html do
+        @roots = @scope.roots.paginate(:page => params[:page])
+      end
+      format.xml do
+        @categories = @scope.all
+      end
     end
   end
 
@@ -35,6 +38,14 @@ class CategoriesController < ApplicationController
     end
   end
 
+  def subcategory
+    @parent = @scope.find(params[:id])
+    @category = Category.new(:parent_id => params[:id])
+    respond_to do |format|
+      format.html { render :action => :new }
+    end
+  end
+
   # GET /categories/1/edit
   def edit
     @category = @scope.find(params[:id])
@@ -47,7 +58,7 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       if @category.save
-        format.html { redirect_to(@category, :notice => 'Category was successfully created.') }
+        format.html { redirect_to(categories_url, :notice => 'Category was successfully created.') }
         format.xml  { render :xml => @category, :status => :created, :location => @category }
       else
         format.html { render :action => "new" }

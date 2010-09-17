@@ -12,7 +12,7 @@ class TransactionsControllerTest < ActionController::TestCase
       @account = Account.make(:institution => @institution)
       @transaction = Transaction.make(:account => @account)
     end
-    context "create" do
+    context "post :create" do
       setup do
         post :create , :transaction => Transaction.plan(:account => @account, :currency => nil).merge({:concept_list => "tag_one, tag_two"})
       end
@@ -23,6 +23,33 @@ class TransactionsControllerTest < ActionController::TestCase
         assert_equal ["tag_one", "tag_two"], Transaction.last.concepts_from(@institution)
       end
     end
+
+    context "get :new" do
+      setup do
+        get :new
+      end
+
+      should_respond_with(:success)
+      should_render_a_form
+      should_render_template(:new)
+
+      # _form needs these
+      should_assign_to(:accounts)
+      should_assign_to(:categories)
+    end
+
+    context "get :edit" do
+      setup do
+        get :edit, :id => @transaction.id
+      end
+      should_respond_with(:success)
+      should_render_a_form
+      should_render_template(:edit)
+
+      # _form needs these
+      should_assign_to(:accounts)
+      should_assign_to(:categories)
+    end
   end
 
   test "should get index" do
@@ -31,18 +58,8 @@ class TransactionsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:transactions)
   end
 
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
   test "should show transaction" do
     get :show, :id => @transaction.id
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, :id => @transaction.id
     assert_response :success
   end
 

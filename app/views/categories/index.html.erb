@@ -1,29 +1,8 @@
 <h1>Listing categories</h1>
 
-<table>
-  <tr>
-    <th>Parent</th>
-    <th>Name</th>
-    <th>Institution</th>
-    <th>Cents</th>
-    <th>Currency</th>
-    <th>Saved balance on</th>
-  </tr>
-
-<% @categories.each do |category| %>
-  <tr>
-    <td><%=h category.parent_id %></td>
-    <td><%=h category.name %></td>
-    <td><%=h category.institution_id %></td>
-    <td><%=h category.cents %></td>
-    <td><%=h category.currency %></td>
-    <td><%=h category.saved_balance_on %></td>
-    <td><%= link_to 'Show', category %></td>
-    <td><%= link_to 'Edit', edit_category_path(category) %></td>
-    <td><%= link_to 'Destroy', category, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+<%- @roots.each do |root| -%>
+  <%= render :partial => 'tree', :locals => {:category => root} %>
+<%- end -%>
 
 <br />
 

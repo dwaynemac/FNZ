@@ -14,7 +14,7 @@ class Transaction < ActiveRecord::Base
   belongs_to :account
   validates_presence_of :account
 
-  belongs_to :category
+  belongs_to :category, :touch => true
   acts_as_taggable_on :concepts
 
   named_scope :in_category_tree, lambda{|root_category| {:conditions => { :category_id => root_category.self_and_descendants }} }

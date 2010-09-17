@@ -3,6 +3,7 @@ require 'test_helper'
 class CategoryTest < ActiveSupport::TestCase
 
   should_validate_presence_of(:name, :institution)
+  should_validate_uniqueness_of(:name, :scoped_to => :institution)
   should_belong_to(:institution)
   should_have_many(:transactions)
 

@@ -23,7 +23,7 @@ class CategoriesControllerTest < ActionController::TestCase
       post :create, :category => Category.plan
     end
 
-    assert_redirected_to category_path(assigns(:category))
+    assert_redirected_to categories_url
   end
 
   test "should show category" do

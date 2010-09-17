@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(:version => 20100916225510) do
   create_table "tags", :force => true do |t|
     t.string  "name"
     t.integer "parent_id"
+    t.integer "institution_id"
   end
 
   create_table "transactions", :force => true do |t|

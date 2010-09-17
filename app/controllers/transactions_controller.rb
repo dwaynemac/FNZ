@@ -28,6 +28,8 @@ class TransactionsController < ApplicationController
   # GET /transactions/new.xml
   def new
     @transaction = @scope.build(:made_on => Time.zone.now)
+    @accounts = current_institution.accounts.all
+    @categories = current_institution.categories.all
 
     respond_to do |format|
       format.html # new.html.erb
@@ -38,6 +40,8 @@ class TransactionsController < ApplicationController
   # GET /transactions/1/edit
   def edit
     @transaction = @scope.find(params[:id])
+    @accounts = current_institution.accounts.all
+    @categories = current_institution.categories.all
   end
 
   # POST /transactions

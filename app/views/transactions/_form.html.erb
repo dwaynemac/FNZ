@@ -1,10 +1,11 @@
 <%= f.error_messages %>
 <%- f.inputs do -%>
-  <%= f.input( :account_id, :collection => current_institution.accounts) unless params[:account_id] %>
+  <%= f.input( :account_id, :collection => @accounts) unless params[:account_id] %>
   <%= f.input :type, :collection => %W( Income Expense ) %>
   <%= f.input :amount %>
   <%= f.input :description %>
   <%= f.input :made_on %>
+  <%= f.input :category_id, :collection => @categories %>
   <%= f.input :concept_list %>
   <%= f.input :user_id, :as => :hidden, :value => current_user.id %>
 <%- end -%>

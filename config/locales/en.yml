@@ -13,6 +13,7 @@ en:
     import: "Import from file"
     home: "Home"
     concepts: "Concepts"
+    categories: "Categories"
   accounts:
     add_transaction: "New transaction"
   api:
@@ -34,3 +35,7 @@ en:
     check_transaction_date: "Please check if the transaction date was correctly imported"
   category:
     parent_cat_must_be_from_this_institution: "Parent category must be from same institution."
+  categories:
+    new: "New category"
+    under: "under"
+    add_sub_category: "Add subcategory"

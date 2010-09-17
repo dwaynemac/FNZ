@@ -17,15 +17,8 @@ class OauthConsumersController < ApplicationController
   def go_back
     # set user's institution if connected
     if current_user.connected_to_padma?
-      institution_hash = current_user.padma.simple_client.get("/api/schools/my")
-      institution = Institution.find_or_initialize_by_padma_id(institution_hash["id"])
-      if institution.name.blank?
-        institution.name = institution_hash["name"]
-        if institution.save
-          flash[:success] = "institution created"
-        end
-      end
-      current_user.update_attribute(:institution_id, institution.id)
+      current_user.institution = current_user.padma.current_institution
+      current_user.save
     end
     redirect_to welcome_url
   end

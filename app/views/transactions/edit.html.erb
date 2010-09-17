@@ -1,5 +1,7 @@
 <h1>Editing transaction</h1>
 
+<%- semantic_form_for @transaction do |f| -%>
+  <%= render :partial => 'form', :locals => {:f => f} %>
+<%- end -%>
 
-<%= link_to 'Show', transaction_path(:id => @transaction.id) %> |
 <%= link_to 'Back', transactions_path %>

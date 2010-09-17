@@ -1,7 +1,7 @@
 class Institution < ActiveRecord::Base
 
   acts_as_tagger
-
+  
   #validates_uniqueness_of(:padma_id)
 
   has_many :users
