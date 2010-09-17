@@ -2,6 +2,15 @@ require 'benchmark'
 
 namespace :bench do
 
+  task :categ_balance => :environment do
+    puts "Testing with #{Transaction.count} transactions"
+    Benchmark.bmbm(7) do |x|
+      x.report("with memoize") { Category.roots.first.mem_alt_balance }
+      x.report("without memoize through categs") { Category.roots.first.alt_balance }
+      x.report("without memoize through trans") { Category.roots.first.balance }
+    end
+  end
+
   task :for_month => :environment do
     ini = Time.zone.now.beginning_of_month
     fin = Time.zone.now.end_of_month

@@ -18,6 +18,12 @@ class CategoriesControllerTest < ActionController::TestCase
       should_respond_with(:success)
       should_assign_to(:transactions)
     end
+    context "get :index" do
+      setup { get :index }
+      should_respond_with(:success)
+      should_assign_to(:roots)
+    end
+
   end
 
   def setup
@@ -28,7 +34,6 @@ class CategoriesControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:categories)
   end
 
   test "should get new" do
