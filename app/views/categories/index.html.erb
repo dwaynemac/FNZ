@@ -7,7 +7,7 @@
     <%= render :partial => 'tree', :locals => {:category => root} %>
 <%- end -%>
 </ul>
-  <%= submit_tag t('edit_checked') %>
+  <%= submit_tag t('categories.index.set_parent_for_checked') %>
 <%- end -%>
 <%= will_paginate @roots %>
 <br />

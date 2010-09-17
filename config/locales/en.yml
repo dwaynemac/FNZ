@@ -42,6 +42,8 @@ en:
     new: "New category"
     under: "under"
     add_sub_category: "Add subcategory"
+    index:
+      set_parent_for_checked: "Change parent for checked categories"
   imports:
     new:
       valid_headers: "In your CSV headers you may use any of the following fields"
