@@ -25,9 +25,6 @@ ActiveRecord::Schema.define(:version => 20100916225510) do
     t.integer  "parent_id"
     t.string   "name"
     t.integer  "institution_id"
-    t.integer  "cents"
-    t.string   "currency"
-    t.datetime "saved_balance_on"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -83,15 +80,6 @@ ActiveRecord::Schema.define(:version => 20100916225510) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
-
-  create_table "tag_balances", :force => true do |t|
-    t.integer  "institution_id"
-    t.integer  "tag_id"
-    t.string   "currency"
-    t.integer  "cents"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"

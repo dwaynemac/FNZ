@@ -21,7 +21,7 @@
     <!-- <%- unless skip_field[:type] -%><td><%=h transaction.type %></td><%- end -%> -->
     <%- unless skip_field[:category] -%><td><%= h transaction.category.try(:name) %></td><%- end -%>
     <%- unless skip_field[:concept_list] -%><td><%= h transaction.concept_list %></td><%- end -%>
-    <%- unless skip_field[:amount] -%><td><%= "-" if transaction.type=="Expense" %><%= transaction.amount.currency.symbol %><%=h transaction.amount %></td><%- end -%>
+    <%- unless skip_field[:amount] -%><td><%=h transaction.prt_amount %></td><%- end -%>
     <td><%= link_to 'Edit', edit_transaction_path(transaction) %></td>
     <td><%= link_to 'Destroy', transaction_path(transaction), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

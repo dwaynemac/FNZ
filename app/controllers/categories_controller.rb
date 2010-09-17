@@ -9,6 +9,7 @@ class CategoriesController < ApplicationController
     respond_to do |format|
       format.html do
         @roots = @scope.roots.paginate(:page => params[:page])
+        @roots.sort!{|a,b| b.balance <=> a.balance }
       end
       format.xml do
         @categories = @scope.all

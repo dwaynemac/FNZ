@@ -44,7 +44,7 @@ module ActiveRecord
           configuration.update(options) if options.is_a?(Hash)
 
           belongs_to :parent, :class_name => name, :foreign_key => configuration[:foreign_key], :counter_cache => configuration[:counter_cache]
-          has_many :children, :class_name => name, :foreign_key => configuration[:foreign_key], :order => configuration[:order], :dependent => :destroy
+          has_many :children, :class_name => name, :foreign_key => configuration[:foreign_key], :order => configuration[:order], :dependent => :nullify
 
           class_eval <<-EOV
             include ActiveRecord::Acts::Tree::InstanceMethods
