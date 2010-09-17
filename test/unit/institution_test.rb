@@ -7,5 +7,6 @@ class InstitutionTest < ActiveSupport::TestCase
   should_have_many(:accounts)
   should_have_many(:transactions)
   should_have_many(:imports)
+  should_have_many(:categories)
 
 end

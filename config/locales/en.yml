@@ -32,3 +32,5 @@ en:
       concept_list: "concept list"
   import:
     check_transaction_date: "Please check if the transaction date was correctly imported"
+  category:
+    parent_cat_must_be_from_this_institution: "Parent category must be from same institution."

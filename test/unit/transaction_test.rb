@@ -2,6 +2,7 @@ require 'test_helper'
 
 class TransactionTest < ActiveSupport::TestCase
 
+  should_belong_to(:category)
   should_belong_to(:account)
   should_belong_to(:user)
 

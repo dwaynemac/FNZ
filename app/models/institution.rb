@@ -11,6 +11,8 @@ class Institution < ActiveRecord::Base
   has_many :incomes, :through => :accounts
   has_many :expenses, :through => :accounts
 
+  has_many :categories
+
   has_many :imports
 
   belongs_to :default_account, :class_name => "Account"

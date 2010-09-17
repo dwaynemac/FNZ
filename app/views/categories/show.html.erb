@@ -1,0 +1,33 @@
+<p>
+  <b>Parent:</b>
+  <%=h @category.parent_id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%=h @category.name %>
+</p>
+
+<p>
+  <b>Institution:</b>
+  <%=h @category.institution_id %>
+</p>
+
+<p>
+  <b>Cents:</b>
+  <%=h @category.cents %>
+</p>
+
+<p>
+  <b>Currency:</b>
+  <%=h @category.currency %>
+</p>
+
+<p>
+  <b>Saved balance on:</b>
+  <%=h @category.saved_balance_on %>
+</p>
+
+
+<%= link_to 'Edit', edit_category_path(@category) %> |
+<%= link_to 'Back', categories_path %>

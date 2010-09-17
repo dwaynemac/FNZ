@@ -1,10 +1,12 @@
-class TagBalance < ActiveRecord::Base
+class Category < ActiveRecord::Base
+  acts_as_tree
 
-  validates_presence_of :institution
+  validates_presence_of :name
+
   belongs_to :institution
+  validates_presence_of :institution
 
-  validates_presence_of :tag
-  belongs_to :tag
+  has_many :transactions
 
   composed_of :saved_balance, :class_name => "Money", :mapping => [%w(cents cents), %w(currency currency)],
             :constructor => Proc.new { |cents, currency| Money.new(cents || 0, currency || Money.default_currency) }
@@ -23,15 +25,16 @@ class TagBalance < ActiveRecord::Base
   def calculate_balance(at=nil)
     bal = Money.new(0,self.institution.default_currency)
     if at.nil?
-      incomes_by_cur = self.institution.incomes.tagged_with(self.tag).calculate(:sum,:cents, :group => "#{Transaction.table_name}.currency")
-      expenses_by_cur = self.institution.expenses.tagged_with(self.tag).calculate(:sum,:cents, :group => "#{Transaction.table_name}.currency")
+      # consider self and descendants
+      incomes_by_cur = Income.in_category_tree(self).calculate(:sum,:cents, :group => "#{Transaction.table_name}.currency")
+      expenses_by_cur = Expense.expenses.in_category_tree(self).calculate(:sum,:cents, :group => "#{Transaction.table_name}.currency")
       incomes_by_cur.each{|ic| bal += Money.new(ic[1],ic[0])}
       expenses_by_cur.each{|ec| bal -= Money.new(ec[1],ec[0])}
       self.update_attributes(:cents => bal.cents, :currency => bal.currency.iso_code)
     else
       before_balance_date = {:conditions => ["made_on < ?",at], :group => "#{Transaction.table_name}.currency"}
-      incomes_by_cur = self.institution.incomes.tagged_with(self.tag).calculate(:sum,:cents,before_balance_date)
-      expenses_by_cur = self.institution.expenses.tagged_with(self.tag).calculate(:sum,:cents,before_balance_date)
+      incomes_by_cur = Income.in_category_tree(self).calculate(:sum,:cents,before_balance_date)
+      expenses_by_cur = Expense.in_category_tree(self).calculate(:sum,:cents,before_balance_date)
       incomes_by_cur.each{|ic| bal += Money.new(ic[1],ic[0])}
       expenses_by_cur.each{|ec| bal -= Money.new(ec[1],ec[0])}
     end

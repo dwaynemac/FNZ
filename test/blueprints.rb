@@ -70,3 +70,8 @@ end
 Tag.blueprint do
   name { Sham.name }
 end
+
+Category.blueprint do
+  name
+  institution
+end

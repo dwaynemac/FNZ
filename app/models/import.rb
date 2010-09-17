@@ -51,7 +51,7 @@ class Import < ActiveRecord::Base
             cents = (row[VH[:income]]||"").to_money.cents - (row[VH[:expense]]||"").to_money.cents + (row[VH[:amount]]||"").to_money.cents
 
             data = {:made_on => row[VH[:date]], :description => row[VH[:description]],
-                    :user_id => u.id}
+                    :user_id => u.id, :category => row[VH[:category]]}
 
             account_field = row[VH[:account]]
             if account_field
@@ -103,6 +103,7 @@ class Import < ActiveRecord::Base
             :expense => I18n.t('import.headers.expense', :default => 'expense'),
             :amount => I18n.t('import.headers.amount', :default => 'amount'),
             :concept_list => I18n.t('import.headers.concept_list', :default => 'concept list'),
+            :category => I18n.t('import.headers.category', :default => 'category'),
             :account => I18n.t('import.headers.account', :default => 'account'),
             }
   VH = VALID_HEADERS

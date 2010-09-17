@@ -14,6 +14,10 @@ class Transaction < ActiveRecord::Base
   belongs_to :account
   validates_presence_of :account
 
+  belongs_to :category
+  acts_as_taggable_on :concepts
+
+  named_scope :in_category_tree, lambda{|root_category| {:conditions => { :category_id => root_category.self_and_descendants }} }
 
   named_scope :credits, :conditions => { :type => ["Income","CreditTransfer"]}
   named_scope :credit_transfer, :conditions => { :type => "CreditTransfer" }
@@ -52,8 +56,6 @@ class Transaction < ActiveRecord::Base
     string += self.amount.to_s
     return string
   end
-
-  acts_as_taggable_on :concepts
 
   def set_concept_list(string)
     logger.error "Transaction#set_concept_list shouldnt be called on unsaved models" if self.account.nil?

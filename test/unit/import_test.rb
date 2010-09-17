@@ -45,6 +45,9 @@ class ImportTest < ActiveSupport::TestCase
       should "tag transactions with institution as owner" do
         assert_equal @institution.transactions.last.concepts_from(@institution), ["mantenimiento"]
       end
+      should "create category if it doesnt exist" do
+        assert(false, "implement")
+      end
     end
     context "if institution doesnt have default account" do
       setup do
