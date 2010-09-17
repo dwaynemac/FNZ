@@ -25,6 +25,7 @@ class Import < ActiveRecord::Base
   
   def load_data!
     # TODO performance: use pure SQL?
+    # TODO set users locale if done in background
     import_errors = []
     if !self.csv_file.nil?
       begin
@@ -48,29 +49,38 @@ class Import < ActiveRecord::Base
               warnings << I18n.t('import.warnings.row_user_not_found')
             end
 
-            cents = (row[VH[:income]]||"").to_money.cents - (row[VH[:expense]]||"").to_money.cents + (row[VH[:amount]]||"").to_money.cents
-
-            data = {:made_on => row[VH[:date]], :description => row[VH[:description]],
-                    :user_id => u.id, :category => row[VH[:category]]}
-
-            account_field = row[VH[:account]]
-            if account_field
-              account = self.institution.accounts.find_by_name(account) || self.institution.accounts.find(account)
-            end
-            account = account.nil?? self.institution.default_account : account
-
-            if cents < 0
-              t = account.expenses.build(data.merge!({:cents => cents.abs}))
+            # don't import transaction if no income, expense or amount were given
+            if row[VH[:income]].blank? && row[VH[:expense]].blank? && row[VH[:amount]].blank?
+              self.imported_rows.create(:row => i, :success => false, :message => I18n.t('import.no_amount_in_row'))
             else
-              t = account.incomes.build(data.merge!({:cents => cents.abs}))
+              cents = (row[VH[:income]]||"").to_money.cents - (row[VH[:expense]]||"").to_money.cents + (row[VH[:amount]]||"").to_money.cents
+
+              category = self.institution.categories.find_or_create_by_name(row[VH[:category]].capitalize) unless row[VH[:category]].blank?
+
+              data = {:made_on => row[VH[:date]], :description => row[VH[:description]],
+                      :user_id => u.id, :category_id => category.try(:id)}
+
+              account_field = row[VH[:account]]
+              if account_field
+                account = self.institution.accounts.find_by_name(account) || self.institution.accounts.find(account)
+              end
+              account = account.nil?? self.institution.default_account : account
+
+              if cents < 0
+                t = account.expenses.build(data.merge!({:cents => cents.abs}))
+              else
+                t = account.incomes.build(data.merge!({:cents => cents.abs}))
+              end
+              account.institution.tag(t,:on => :concepts, :with => row[VH[:concept_list]])
+              # save without callbacks to avoid constant recalculation of accounts, categories, etc balances.
+              if t.save(:create_without_callbacks)
+                (warnings << I18n.t('import.check_transaction_date')) if t.made_on.year != this_year
+                self.imported_rows.create(:row => i, :transaction => t, :success => true, :message => warnings.join(" #{I18n.t('and', :default => ' and ')} "))
+              else
+                self.imported_rows.create(:row => i, :success => false, :message => t.errors.full_messages.join(" #{I18n.t('and', :default => ' and ')} "))
+              end
             end
-            account.institution.tag(t,:on => :concepts, :with => row[VH[:concept_list]])
-            if t.save
-              (warnings << I18n.t('import.check_transaction_date')) if t.made_on.year != this_year
-              self.imported_rows.create(:row => i, :transaction => t, :success => true, :message => warnings.join(" #{I18n.t('and', :default => ' and ')} "))
-            else
-              self.imported_rows.create(:row => i, :success => false, :message => t.errors.full_messages.join(" #{I18n.t('and', :default => ' and ')} "))
-            end
+
           end
           i += 1
         end

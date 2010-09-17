@@ -1,6 +1,8 @@
 class Category < ActiveRecord::Base
   acts_as_tree
 
+  before_save :capitalize_name
+
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :institution_id
 
@@ -43,6 +45,12 @@ class Category < ActiveRecord::Base
       expenses_by_cur.each{|ec| bal -= Money.new(ec[1],ec[0])}
     end
     return bal
+  end
+
+  private
+  def capitalize_name
+    return if self.name.nil?
+    self.name.capitalize!
   end
 
 end

@@ -40,13 +40,16 @@ class ImportTest < ActiveSupport::TestCase
       should "set state to :imported once it finished" do
         assert_equal "imported", @import.aasm_state
       end
-      should_change("qt of tranasctions"){@institution.transactions.all.count}
-      should_change("qt of imported rows"){@import.imported_rows.all.count}
+      should_change("qt of tranasctions", :by => 2){@institution.transactions.all.count}
+      should_change("qt of imported rows", :by => 3){@import.imported_rows.all.count}
       should "tag transactions with institution as owner" do
         assert_equal @institution.transactions.last.concepts_from(@institution), ["mantenimiento"]
       end
+      should "assign category" do
+        assert_equal @institution.categories.last.name, "Mantenimiento"
+      end
       should "create category if it doesnt exist" do
-        assert(false, "implement")
+        assert_equal @institution.categories.last.name, "Mantenimiento"
       end
     end
     context "if institution doesnt have default account" do

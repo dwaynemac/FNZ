@@ -12,6 +12,8 @@ class ImportedRow < ActiveRecord::Base
   named_scope :successfull, :conditions => "success"
   named_scope :failed, :conditions => "not success"
 
+  named_scope(:filter, lambda{ |filter| (filter == "successfull")? {:conditions => "success" } : ((filter=="failed")? {:conditions => "not success"} : {} )} ) 
+
   def successfull?
     return self.success
   end

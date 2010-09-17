@@ -1,3 +1,4 @@
-"date","user","description","amount","concept list"
-"10/09/2010","dwayne","mensualidad de jorge","340","mensualidades,ingresos_std"
-"11/09/2010","dwayne.macgowan","lamparitas","-50","mantenimiento"
+"date","user","description","amount","concept list","category"
+"10/09/2010","dwayne","mensualidad de jorge","340","mensualidades,ingresos_std","mensualidad"
+"11/09/2010","dwayne.macgowan","lamparitas","-50","mantenimiento","mantenimiento"
+"23/09/2010","dwayne.macgowan","asdf","","mantenimiento","mantenimiento"

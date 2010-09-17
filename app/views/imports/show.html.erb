@@ -7,6 +7,14 @@
     <%= link_to t('import.load_data'), load_data_import_path(@import) %>
   </div>
 <%- else -%>
+  <%- semantic_form_for @search, :url => import_url(@import) do |f| -%>
+    <%- f.inputs do -%>
+      <%= f.input "filter", :collection => [[t('imported_row.all'),"all"],[t('imported_row.successfull'),"successfull"],[t('imported_row.failed'),"failed"]] %>
+    <%- end -%>
+    <%- f.buttons do -%>
+      <%= f.commit_button %>
+    <%- end -%>
+  <%- end -%>
   <div id="imported_rows">
     <h3><%= t('import.imported_rows') %></h3>
     <%= will_paginate @imported_rows %>
@@ -18,6 +26,8 @@
         <th>user</th>
         <th>desc</th>
         <th>amount</th>
+        <th>category</th>
+        <th>concepts</th>
       </tr>
       <%- @imported_rows.each do |ir| -%>
         <%- if ir.success -%>
@@ -29,6 +39,8 @@
             <td><%= h t.user.drc_user %></td>
             <td><%= h t.description %></td>
             <td><%= "-" if t.type=="Expense" %><%= t.amount %></td>
+            <td><%= h t.category.try(:name) %></td>
+            <td><%= h t.concept_list %></td> 
             <%- if !ir.message.blank? -%>
               <td><%= h ir.message %></td>
             <%- end -%>

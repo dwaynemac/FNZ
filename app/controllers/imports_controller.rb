@@ -16,8 +16,10 @@ class ImportsController < ApplicationController
   # GET /imports/1
   # GET /imports/1.xml
   def show
+    
     @import = @scope.find(params[:id])
-    @imported_rows = @import.imported_rows.ordered('row asc').paginate(:page => params[:page], :include => {:transaction => [:account, :user]})
+    @search = @import.imported_rows.ordered('row asc').search(params[:search])
+    @imported_rows = @search.paginate(:page => params[:page], :include => {:transaction => [:account, :user]})
 
     respond_to do |format|
       format.html # show.html.erb
