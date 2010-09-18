@@ -4,3 +4,4 @@ tmp/**/*
 .idea/*
 public/system/*
 test/tmp/
+*.swp
