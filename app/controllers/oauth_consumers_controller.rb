@@ -17,7 +17,15 @@ class OauthConsumersController < ApplicationController
   def go_back
     # set user's institution if connected
     if current_user.connected_to_padma?
-      current_user.institution = current_user.padma.current_institution
+      school = current_user.padma.current_school
+      institution = Institution.find_or_initialize_by_padma_id(school["id"])
+      if institution.name.blank?
+        institution.name = school["name"]
+        unless institution.save
+          institution = nil
+        end
+      end
+      current_user.institution = institution
       current_user.save
     end
     redirect_to welcome_url
