@@ -1,5 +1,18 @@
 <h1>Listing categories</h1>
 
+<div id="choose-period">
+  <%- semantic_form_for :search, :url => categories_path, :html => { :method => :get } do |f| -%>
+    Balance considering this period
+    <%- f.inputs do -%>
+      <%= f.input :since, :as => :select, :collection => @days, :label => false, :selected => l(@since) %>
+      <%= f.input :until, :as => :select, :collection => @days, :label => false, :selected => l(@until) %>
+    <%- end -%>
+    <%- f.buttons do -%>
+      <%= f.commit_button %>
+    <%- end -%>
+<%- end -%>
+</div>
+
 <%= will_paginate @roots %>
 <%- form_tag edit_multiple_categories_path do -%>
 <ul>
@@ -13,3 +26,8 @@
 <br />
 
 <%= link_to 'New category', new_category_path %>
+<script>
+  $(function(){
+    $('select').selectToUISlider({labels: 4, labelSrc: "text"}).hide();
+    });
+</script>

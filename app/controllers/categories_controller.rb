@@ -5,11 +5,18 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.xml
   def index
+    @days = (1.month.ago.to_date...1.month.from_now.to_date).map{|d| [l(d,:format => :short ),l(d)]}
+
+    params[:search] = params[:search] || {}
+    @since = params[:search].delete(:since).try(:to_date)
+    @until = params[:search].delete(:until).try(:to_date)
+    @since = Time.zone.now.beginning_of_month.to_date if @since.nil?
+    @until = Time.zone.now.end_of_month.to_date if @until.nil?
 
     respond_to do |format|
       format.html do
         @roots = @scope.roots.paginate(:page => params[:page])
-        @roots.sort!{|a,b| b.balance <=> a.balance }
+        @roots.sort!{|a,b| b.balance(@since,@until) <=> a.balance(@since,@until) }
       end
       format.xml do
         @categories = @scope.all

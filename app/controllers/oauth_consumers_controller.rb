@@ -3,7 +3,6 @@ class OauthConsumersController < ApplicationController
   include Oauth::Controllers::ConsumerController
   skip_filter :authorization_required
 
-  
   def index
     @consumer_tokens=ConsumerToken.all :conditions=>{:user_id=>current_user.id}
     @services=OAUTH_CREDENTIALS.keys-@consumer_tokens.collect{|c| c.class.service_name}
@@ -21,6 +20,7 @@ class OauthConsumersController < ApplicationController
       institution = Institution.find_or_initialize_by_padma_id(school["id"])
       if institution.name.blank?
         institution.name = school["name"]
+        institution.default_currency = school["currency_code"]
         unless institution.save
           institution = nil
         end
