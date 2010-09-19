@@ -4,8 +4,7 @@
   <%- semantic_form_for :search, :url => categories_path, :html => { :method => :get } do |f| -%>
     Balance considering this period
     <%- f.inputs do -%>
-      <%= f.input :since, :as => :select, :collection => @days, :label => false, :selected => l(@since) %>
-      <%= f.input :until, :as => :select, :collection => @days, :label => false, :selected => l(@until) %>
+      <%= slider_formtastic_inputs(f,@days,@since,@until) %>
     <%- end -%>
     <%- f.buttons do -%>
       <%= f.commit_button %>
@@ -26,8 +25,4 @@
 <br />
 
 <%= link_to 'New category', new_category_path %>
-<script>
-  $(function(){
-    $('select').selectToUISlider({labels: 4, labelSrc: "text"}).hide();
-    });
-</script>
+<%= slider_script %>

@@ -21,6 +21,11 @@ en:
   time:
     formats:
       short: "%d.%b.%Y"
+      month: "%b.%Y"
+  date:
+    formats:
+      short: "%d.%b.%Y"
+      month: "%b.%Y"
   back: "back"
   transaction:
     labels:

@@ -1,17 +1,15 @@
 class CategoriesController < ApplicationController
 
+  include Slider
+
   before_filter :set_scope
 
   # GET /categories
   # GET /categories.xml
   def index
-    @days = (1.month.ago.to_date...1.month.from_now.to_date).map{|d| [l(d,:format => :short ),l(d)]}
-
-    params[:search] = params[:search] || {}
-    @since = params[:search].delete(:since).try(:to_date)
-    @until = params[:search].delete(:until).try(:to_date)
-    @since = Time.zone.now.beginning_of_month.to_date if @since.nil?
-    @until = Time.zone.now.end_of_month.to_date if @until.nil?
+    @days = months_for_select(1.year.ago.to_date,3.month.from_now.to_date)
+    start = Time.zone.now.beginning_of_month
+    @since, @until = get_range(:default_since => start,:default_until => start+1.month)
 
     respond_to do |format|
       format.html do
