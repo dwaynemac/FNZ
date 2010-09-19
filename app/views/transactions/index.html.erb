@@ -1,7 +1,20 @@
 <h1>Listing transactions</h1>
 
+<div id="choose-period">
+  <%- semantic_form_for :search, :url => transactions_path, :html => { :method => :get } do |f| -%>
+    Filter to this period
+    <%- f.inputs do -%>
+      <%= slider_formtastic_inputs(f,@months,@since,@until) %>
+    <%- end -%>
+    <%- f.buttons do -%>
+      <%= f.commit_button %>
+    <%- end -%>
+<%- end -%>
+</div>
+
 <%= render :partial => 'transactions/table' %>
 
 <br />
 
 <%= link_to 'New transaction', new_transaction_path %>
+<%= slider_script %>

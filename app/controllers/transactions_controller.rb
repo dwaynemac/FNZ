@@ -1,11 +1,17 @@
 class TransactionsController < ApplicationController
 
+  include Slider
+
   before_filter :set_scope
 
   # GET /transactions
   # GET /transactions.xml
   def index
-    @transactions = @scope.paginate(:page => params[:page])
+    @months = months_for_select(1.year.ago.to_date,3.month.from_now.to_date)
+    start = Time.zone.now.beginning_of_month
+    @since, @until = get_range(:default_since => start,:default_until => start+1.month)
+
+    @transactions = @scope.made_after(@since).made_before(@until).paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
