@@ -22,6 +22,9 @@ class CategoriesControllerTest < ActionController::TestCase
       setup { get :index }
       should_respond_with(:success)
       should_assign_to(:roots)
+      should "consider period for balance calculation" do
+        assert(false, "write test")
+      end
     end
 
   end

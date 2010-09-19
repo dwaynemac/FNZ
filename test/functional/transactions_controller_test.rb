@@ -50,6 +50,12 @@ class TransactionsControllerTest < ActionController::TestCase
       should_assign_to(:accounts)
       should_assign_to(:categories)
     end
+
+    context "get :index" do
+      should "consider period for balance calculation" do
+        assert(false, "write test")
+      end
+    end
   end
 
   test "should get index" do
