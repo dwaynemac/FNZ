@@ -20,12 +20,12 @@ en:
     problem_with_connetion: "Ups, some problem with your PADMA connection."
   time:
     formats:
-      short: "%d.%b.%Y"
       month: "%b.%Y"
+      short: "%d.%b.%Y"
   date:
     formats:
-      short: "%d.%b.%Y"
       month: "%b.%Y"
+      short: "%d.%b.%Y"
   back: "back"
   transaction:
     labels:

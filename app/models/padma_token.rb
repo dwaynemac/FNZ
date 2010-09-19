@@ -5,6 +5,11 @@ class PadmaToken < ConsumerToken
     self.simple_client.get("/api/schools/my")
   end
 
+  # retuns OAuth user.
+  def current_user
+    self.simple_client.get("/api/users/me")
+  end
+
   # returns all students of OAuth user's school
   def school_students(options={})
     unless (page = options.delete(:page)).nil?

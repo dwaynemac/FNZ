@@ -20,6 +20,7 @@ Rails::Initializer.run do |config|
   config.gem 'will_paginate'
   config.gem 'paperclip'
   config.gem "fastercsv"
+  config.gem "http_accept_language"
 
   config.gem 'money'
 
