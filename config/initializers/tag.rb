@@ -1,6 +1,8 @@
 # Modifications to acts-as-taggable-on Tag model
 class Tag < ActiveRecord::Base
 
+  extend ActiveSupport::Memoizable
+
   def balance_for(institution,from=nil,to=nil)
     institution = Institution.find(institution) if institution.is_a?(Integer)
     bal = Money.new(0,institution.default_currency)
@@ -10,5 +12,11 @@ class Tag < ActiveRecord::Base
     expenses_by_cur.each{|ec| bal -= Money.new(ec[1],ec[0])}
     return bal
   end
+  memoize :balance_for
 
+  def self.for_institution(institution)
+    self.all(:joins => :taggings,
+             :conditions => { :taggings => { :tagger_id => institution.id, :tagger_type => 'Institution'}},
+             :group => 'tags.name')
+  end
 end

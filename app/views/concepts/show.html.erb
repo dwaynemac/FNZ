@@ -1,4 +1,5 @@
 <h1><%= @concept %></h1>
+<h2><%= @concept.balance_for(current_institution) %></h2>
 
 <div id="transactions">
   <%= render :partial => 'transactions/table' %>

@@ -1,0 +1,7 @@
+<h1><%= h @user.drc_user %></h1>
+
+<h2><%= h t('user.transactions') %></h2>
+<div id="transactions">
+  <%= render :partial => 'transactions/table', :locals => { :skip_field => { :user => true }} %>
+</div>
+

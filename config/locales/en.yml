@@ -78,3 +78,5 @@ en:
       status: "Status"
   Edit: "edit"
   Destroy: "destroy"
+  user:
+    transactions: "Transactions"
