@@ -1,0 +1,23 @@
+<h1><%= t('people.index.title') %></h1>
+
+<%- will_paginate @people -%>
+<table>
+  <tr>
+    <th><%= t('person.labels.full_name') %></th>
+  </tr>
+
+<% @people.each do |person| %>
+  <tr>
+    <td><%= link_to h(person.full_name), person %></td>
+    <td><%= link_to t('people.register_payment'), new_person_transaction_url(:person_id => person.id) %></td>
+    <td><%= link_to(t('people.see_in_padma'), person.padma_url, :popup => true ) %></td>
+    <td><%= link_to t('Edit'), edit_person_path(person) %></td>
+    <td><%= link_to t('Destroy'), person, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+<%- will_paginate @people -%>
+
+<br />
+
+<%= link_to 'Get from PADMA', in_padma_people_path %> | <%= link_to t('back'), root_path %>

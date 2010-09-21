@@ -45,6 +45,7 @@ class ActiveSupport::TestCase
       @user.padma = PadmaToken.make(:user => @user)
       @user.save
     end
+    @institution = @user.institution
     DRCClient.mock_login("homer")
   end
 end

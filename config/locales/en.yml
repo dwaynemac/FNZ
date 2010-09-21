@@ -14,6 +14,7 @@ en:
     home: "Home"
     concepts: "Concepts"
     categories: "Categories"
+    people: "People"
   accounts:
     add_transaction: "New transaction"
   api:
@@ -37,6 +38,7 @@ en:
       type: "Type"
       concept_list: "concept list"
       category: "Category"
+      person: "Person"
   import:
     check_transaction_date: "Please check if the transaction date was correctly imported"
     warnings:
@@ -60,3 +62,19 @@ en:
     failed: "Failed"
     successfull: "Successfull"
     all: "All"
+  transactions:
+    transfer:
+      transfered: "Transfered!"
+  people:
+    show:
+      not_synced: "Data not in sync with PADMA."
+    padma_people:
+      title: "People in your PADMA account."
+    see_in_padma: "see in padma"
+    register_payment: "Register payment"
+  person:
+    labels:
+      full_name: "Full name"
+      status: "Status"
+  Edit: "edit"
+  Destroy: "destroy"

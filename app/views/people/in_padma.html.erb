@@ -1,0 +1,33 @@
+<h1><%= t('people.padma_people.title') %></h1>
+
+<%- semantic_form_for :search, :url => in_padma_people_url do |f| -%>
+  <%- f.inputs do -%>
+    <%= f.input :full_name_like %>
+  <%- end -%>
+  <%- f.buttons do -%>
+    <%= f.commit_button %>
+  <%- end -%>
+<%- end -%>
+
+<div>
+  <%= will_paginate @people %>
+  <table>
+    <tr>
+      <th><%= t('person.labels.full_name') %></th>
+      <th><%= t('person.labels.status') %></th>
+    </tr>
+  <%- @people.each do |p| -%>
+      <tr>
+        <td><%= h p["name"] %> <%= h p["surname"] %></td>
+        <td><%= h p["status"] %></td>
+        <td><%= link_to("copy", people_path(:padma_id => p["id"]), :method => :post) %></td>
+        <td><%= link_to(t('people.see_in_padma'), Person.padma_url(p["id"]), :popup => true ) %></td>
+      </tr>
+  <%- end -%>
+  </table>
+  <%= will_paginate @people %>
+</div>
+
+<br />
+
+<%= link_to 'New person', new_person_path %>

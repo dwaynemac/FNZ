@@ -1,5 +1,6 @@
 class Account < ActiveRecord::Base
 
+  validates_presence_of :currency
   validates_uniqueness_of :name, :scope => :institution_id
 
   after_save :set_as_default

@@ -13,6 +13,9 @@ class Transaction < ActiveRecord::Base
   belongs_to :user
   validates_presence_of :user
 
+  # optional, if payer needs to be identified.
+  belongs_to :person
+
   belongs_to :account
   validates_presence_of :account
 

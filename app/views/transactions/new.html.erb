@@ -1,13 +1,17 @@
 <h1>New transaction</h1>
 
-<%- if params[:account_id] -%>
-  <%- semantic_form_for [:account, @transaction] do |f| -%>
-    <%= render :partial => 'form', :locals => {:f => f} %>
-  <%- end -%>
-<%- else -%>
-  <%- semantic_form_for @transaction do |f| -%>
-    <%= render :partial => 'form', :locals => {:f => f} %>
-  <%- end -%>
+<%-
+  if params[:account_id]
+    scope = [:account, @transaction]
+  elsif params[:person_id]
+    scope = [:person, @transaction]
+  else
+    scope = @transaction
+  end
+-%>
+
+<%- semantic_form_for scope do |f| -%>
+  <%= render :partial => 'form', :locals => {:f => f} %>
 <%- end -%>
 
 

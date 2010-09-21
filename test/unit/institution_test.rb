@@ -8,5 +8,6 @@ class InstitutionTest < ActiveSupport::TestCase
   should_have_many(:transactions)
   should_have_many(:imports)
   should_have_many(:categories)
+  should_have_many(:people)
 
 end

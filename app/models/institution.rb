@@ -7,6 +7,8 @@ class Institution < ActiveRecord::Base
   has_many :users
   has_many :accounts
 
+  has_many :people
+
   has_many :transactions, :through => :accounts
   has_many :incomes, :through => :accounts
   has_many :expenses, :through => :accounts

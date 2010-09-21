@@ -13,6 +13,7 @@
     home: "Inicio"
     concepts: "Conceptos"
     categories: "Categorias"
+    people: "Personas"
   accounts:
     add_transaction: "Nueva transacción"
   api:

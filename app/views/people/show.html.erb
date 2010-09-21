@@ -1,0 +1,5 @@
+<h1><%= @person.full_name %></h1>
+
+<%= render :partial => 'transactions/table', :locals => { :skip_field => { :person => true }} %>
+
+<%= link_to t('people.register_payment'), new_person_transaction_path(@person) %> | <%= link_to t('Back'), people_path %>

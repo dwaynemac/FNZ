@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :people, :collection => { :in_padma => :get },
+                         :has_many => :transactions
+
+
 
   map.resources :categories, :has_many => :transactions,
                              :member => { :subcategory => :get },

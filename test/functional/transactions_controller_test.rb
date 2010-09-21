@@ -2,28 +2,30 @@ require 'test_helper'
 
 class TransactionsControllerTest < ActionController::TestCase
 
-  def setup
-    @transaction = Transaction.make
-  end
-
   context "" do
     setup do
-      @institution = Institution.first
-      @account = Account.make(:institution => @institution)
+      @current_user = User.first
+      @current_user.padma.stubs(:people).returns([{"id"=>1,"nombres"=>"name","apellidos"=>"surname"}])
+      @institution = Institution.first || Institution.make
+      @account = @institution.accounts.first || Account.make(:institution => @institution)
       @transaction = Transaction.make(:account => @account)
     end
     context "post :create" do
       setup do
-        post :create , :transaction => Transaction.plan(:account => @account, :currency => nil).merge({:concept_list => "tag_one, tag_two"})
+        @person = Person.make
+        post :create , :transaction => Transaction.plan(:account => @account, :currency => nil).merge({:concept_list => "tag_one, tag_two", :person => { :padma_id => @person.padma_id}})
       end
 
       should_change("Tranasction.count",:by => 1){Transaction.count}
+      should_change("@person.transactions.count", :by => 1){@person.transactions.count}
+      should "assign payment to @person" do
+        assert_equal @person, Transaction.last.person
+      end
       should_redirect_to("transactions#show"){transaction_path(assigns(:transaction))}
       should "add tags with ownership" do
         assert_equal ["tag_one", "tag_two"], Transaction.last.concepts_from(@institution)
       end
     end
-
     context "get :new" do
       setup do
         get :new
@@ -37,7 +39,6 @@ class TransactionsControllerTest < ActionController::TestCase
       should_assign_to(:accounts)
       should_assign_to(:categories)
     end
-
     context "get :edit" do
       setup do
         get :edit, :id => @transaction.id
@@ -50,35 +51,26 @@ class TransactionsControllerTest < ActionController::TestCase
       should_assign_to(:accounts)
       should_assign_to(:categories)
     end
-
     context "get :index" do
+      setup { get :index }
       should "consider period for balance calculation" do
         assert(false, "write test")
       end
+      should_respond_with(:success)
+      should_assign_to(:transactions)
     end
-  end
-
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:transactions)
-  end
-
-  test "should show transaction" do
-    get :show, :id => @transaction.id
-    assert_response :success
-  end
-
-  test "should update transaction" do
-    put :update, :id => @transaction.id, :transaction => Transaction.plan
-    assert_redirected_to transaction_path(assigns(:transaction))
-  end
-
-  test "should destroy transaction" do
-    assert_difference('Transaction.count', -1) do
-      delete :destroy, :id => @transaction.id
+    context "get :show" do
+      setup { get :show, :id => @transaction.id }
+      should_respond_with(:success)
     end
-
-    assert_redirected_to transactions_path
+    context "put :update" do
+      setup { put :update, :id => @transaction.id, :transaction => Transaction.plan }
+      should_redirect_to("transaction"){transaction_path(assigns(:transaction))}
+    end
+    context "delete :destroy" do
+      setup { delete :destroy, :id => @transaction.id }
+      should_change("Transaction.count", :by => -1){Transaction.count}
+      should_redirect_to("transactions"){transactions_url}
+    end
   end
 end

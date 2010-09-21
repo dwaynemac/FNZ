@@ -1,5 +1,6 @@
 require 'machinist/active_record'
 require 'sham'
+require 'mocha'
 
 Sham.define do
   description { |index| Faker::Lorem.paragraph+index.to_s }
@@ -22,7 +23,7 @@ Institution.blueprint do
   name
   padma_id { Sham.padma_id }
 end
-Sham.institution { Institution.make }
+Sham.institution { Institution.first || Institution.make }
 
 User.blueprint do
   drc_user { Sham.name }
@@ -35,7 +36,7 @@ Account.blueprint do
   currency  { "ARS" }
   institution    { Institution.first || Institution.make }
 end
-Sham.account { Account.make }
+Sham.account { Account.first || Account.make }
 
 Transaction.blueprint do
   account
@@ -73,5 +74,12 @@ end
 
 Category.blueprint do
   name
+  institution
+end
+
+Person.blueprint do
+  name        { Sham.name }
+  surname     { Sham.name }
+  padma_id    { Sham.padma_id }
   institution
 end

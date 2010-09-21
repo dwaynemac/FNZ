@@ -8,6 +8,8 @@ class AccountTest < ActiveSupport::TestCase
   should_have_many :incomes
   should_have_many :expenses
 
+  should_validate_presence_of(:currency)
+
   should_validate_uniqueness_of :name, :scoped_to => :institution_id
 
   context "if institution doesnt have default account" do

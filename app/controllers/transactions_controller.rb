@@ -62,7 +62,6 @@ class TransactionsController < ApplicationController
     if concepts = params[:transaction].delete(:concept_list)
       current_institution.tag(@transaction,:on => :concepts, :with => concepts)
     end
-
     respond_to do |format|
       if @transaction.save
         format.html { redirect_to(@transaction, :notice => 'Transaction was successfully created.') }
@@ -104,6 +103,7 @@ class TransactionsController < ApplicationController
 
   def transfer
     @transfer_form = TransferForm.new(params[:transfer_form])
+    # (POST?)
     if params[:transfer_form]
       unless @transfer_form.valid?
         @accounts = current_institution.accounts.all
@@ -117,7 +117,7 @@ class TransactionsController < ApplicationController
         if from_account.transfer(current_user,to_account,cents,nil,@transfer_form.description)
           respond_to do |format|
             format.html do
-              flash[:notice] = "transfered!"
+              flash[:notice] = I18n.t('transactions.transfer.transfered')
               redirect_to transactions_url
             end
           end
@@ -129,7 +129,7 @@ class TransactionsController < ApplicationController
         end
       end
     else
-      #form
+      #form (GET?)
       @accounts = current_institution.accounts.all
       respond_to do |format|
         format.html { render :action => 'transfer' }
@@ -141,6 +141,8 @@ class TransactionsController < ApplicationController
   def set_scope
     if params[:account_id]
       @scope = current_institution.accounts.find(params[:account_id]).transactions
+    elsif params[:person_id]
+      @scope = current_institution.people.find(params[:person_id]).transactions
     else
       @scope = current_user.transactions
     end

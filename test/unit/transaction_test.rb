@@ -5,6 +5,7 @@ class TransactionTest < ActiveSupport::TestCase
   should_belong_to(:category)
   should_belong_to(:account)
   should_belong_to(:user)
+  should_belong_to(:person)
 
   should_validate_presence_of(:made_on)
   should_validate_presence_of(:account)
