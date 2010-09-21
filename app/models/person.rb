@@ -6,6 +6,16 @@ class Person < ActiveRecord::Base
   validates_uniqueness_of :email, :case_sensitive => false, :allow_nil => true, :scope => :institution_id
   validates_uniqueness_of :padma_id
 
+  named_scope :full_name_like, lambda{|string|
+    str = ""
+    pms = []
+    string.split(' ').each do |token|
+      str << " or " unless  str==""
+      str << "name like ? or surname like ?"
+      pms << ["%#{token}%","%#{token}%"]
+    end
+    {:conditions => [str,pms].flatten}}
+
   # If data not synced in last 5 hours or force=true, gets data from PADMA and syncs it to local DB.
   # Parameters:
   # <tt>PADMA AccessToken</tt>
