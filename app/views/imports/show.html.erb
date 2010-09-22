@@ -9,7 +9,7 @@
 <%- else -%>
   <%- semantic_form_for @search, :url => import_url(@import) do |f| -%>
     <%- f.inputs do -%>
-      <%= f.input "filter", :collection => [[t('imported_row.all'),"all"],[t('imported_row.successfull'),"successfull"],[t('imported_row.failed'),"failed"]] %>
+      <%= f.input "filter", :collection => [[t('imported_row.all'),"all"],[t('imported_row.successfull'),"successfull"],[t('imported_row.with_warning'),"with_message"],[t('imported_row.failed'),"failed"]] %>
     <%- end -%>
     <%- f.buttons do -%>
       <%= f.commit_button %>
@@ -20,14 +20,15 @@
     <%= will_paginate @imported_rows %>
     <table>
       <tr>
-        <th>row</th>
-        <th>account</th>
-        <th>date</th>
-        <th>user</th>
-        <th>desc</th>
-        <th>amount</th>
-        <th>category</th>
-        <th>concepts</th>
+        <th><%= t('imported_row.labels.row') %></th>
+        <th><%= t('imported_row.labels.account') %></th>
+        <th><%= t('imported_row.labels.date') %></th>
+        <th><%= t('imported_row.labels.person') %></th>
+        <th><%= t('imported_row.labels.user') %></th>
+        <th><%= t('imported_row.labels.desc') %></th>
+        <th><%= t('imported_row.labels.amount') %></th>
+        <th><%= t('imported_row.labels.category') %></th>
+        <th><%= t('imported_row.labels.concepts') %></th>
       </tr>
       <%- @imported_rows.each do |ir| -%>
         <%- if ir.success -%>
@@ -36,14 +37,13 @@
             <td><%= ir.row %></td>
             <td><%= h t.account.name %></td>
             <td><%= l(t.made_on, :format => :short) %></td>
+            <td><%= h t.person.try(:full_name) %></td>
             <td><%= h t.user.drc_user %></td>
             <td><%= h t.description %></td>
             <td><%= "-" if t.type=="Expense" %><%= t.amount %></td>
             <td><%= h t.category.try(:name) %></td>
-            <td><%= h t.concept_list %></td> 
-            <%- if !ir.message.blank? -%>
-              <td><%= h ir.message %></td>
-            <%- end -%>
+            <td><%= h t.concept_list %></td>
+            <td><%= h(ir.message) if !ir.message.blank? %></td>
             <td><%= link_to t('edit'), edit_transaction_url(t) %></td>
             <td><%= link_to t('destroy'), transaction_url(t), :method => :delete, :confirm => t('confirm_destroy') %></td>
           </tr>

@@ -64,7 +64,7 @@ class TransactionsController < ApplicationController
     end
     respond_to do |format|
       if @transaction.save
-        format.html { redirect_to(@transaction, :notice => 'Transaction was successfully created.') }
+        format.html { redirect_to(@return_to, :notice => 'Transaction was successfully created.') }
         format.xml  { render :xml => @transaction, :status => :created, :location => @transaction }
       else
         format.html { render :action => "new" }
@@ -80,7 +80,7 @@ class TransactionsController < ApplicationController
 
     respond_to do |format|
       if @transaction.update_attributes(params[:transaction])
-        format.html { redirect_to(@transaction, :notice => 'Transaction was successfully updated.') }
+        format.html { redirect_to(@return_to, :notice => 'Transaction was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -96,7 +96,7 @@ class TransactionsController < ApplicationController
     @transaction.destroy
 
     respond_to do |format|
-      format.html { redirect_to(transactions_url) }
+      format.html { redirect_to(@return_to) }
       format.xml  { head :ok }
     end
   end
@@ -118,7 +118,7 @@ class TransactionsController < ApplicationController
           respond_to do |format|
             format.html do
               flash[:notice] = I18n.t('transactions.transfer.transfered')
-              redirect_to transactions_url
+              redirect_to accounts_url
             end
           end
         else
@@ -140,11 +140,16 @@ class TransactionsController < ApplicationController
   private
   def set_scope
     if params[:account_id]
-      @scope = current_institution.accounts.find(params[:account_id]).transactions
+      account = current_institution.accounts.find(params[:account_id])
+      @scope = account.transactions
+      @return_to = account_url(account)
     elsif params[:person_id]
-      @scope = current_institution.people.find(params[:person_id]).transactions
+      person = current_institution.people.find(params[:person_id])
+      @scope = person.transactions
+      @return_to = person_url(person)
     else
       @scope = current_user.transactions
+      @return_to = transactions_url
     end
   end
 end

@@ -39,13 +39,17 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
 
   setup do
-    Sham.reset
+
     @user = User.find_by_drc_user("homer") || User.make(:drc_user => "homer")
+    @current_user = @user
     if @user.padma.nil?
       @user.padma = PadmaToken.make(:user => @user)
       @user.save
     end
     @institution = @user.institution
+    @current_institution = @institution
     DRCClient.mock_login("homer")
+
+    Sham.reset
   end
 end

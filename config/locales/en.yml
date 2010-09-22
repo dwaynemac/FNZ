@@ -39,10 +39,13 @@ en:
       concept_list: "concept list"
       category: "Category"
       person: "Person"
+    new: "New transaction"
+    new_transfer: "New transfer"
   import:
     check_transaction_date: "Please check if the transaction date was correctly imported"
     warnings:
       row_user_not_found: "We didn't find the user you indicated."
+      person_not_found_locally: "We didn't find this person on local DB. Get it from padma and retry"
     no_amount_in_row: "This row has no amount, it wasn't imported"
   category:
     parent_cat_must_be_from_this_institution: "Parent category must be from same institution."
@@ -62,6 +65,17 @@ en:
     failed: "Failed"
     successfull: "Successfull"
     all: "All"
+    with_warning: "With warning"
+    labels:
+      row: "row"
+      account: "account"
+      date: "date"
+      person: "person"
+      user: "user"
+      desc: "description"
+      amount: "amount"
+      category: "category"
+      concepts: "concepts"
   transactions:
     transfer:
       transfered: "Transfered!"
@@ -72,6 +86,8 @@ en:
       title: "People in your PADMA account."
     see_in_padma: "see in padma"
     register_payment: "Register payment"
+    index:
+      title: "People"
   person:
     labels:
       full_name: "Full name"
@@ -80,3 +96,12 @@ en:
   Destroy: "destroy"
   user:
     transactions: "Transactions"
+  users:
+    profile: "User profile"
+  and: "and"
+  edit: "edit"
+  destroy: "delete"
+  confirm_destroy: "Are you sure?"
+  Back: "Back"
+  account:
+    new: "New account"

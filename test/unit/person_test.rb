@@ -11,6 +11,7 @@ class PersonTest < ActiveSupport::TestCase
     should_validate_uniqueness_of(:padma_id)
 
     should_belong_to(:institution)
+
     should_validate_uniqueness_of(:email, :scoped_to => :institution, :case_sensitive => false)
 
     should_validate_presence_of(:name)

@@ -43,10 +43,17 @@ class Import < ActiveRecord::Base
             break
           else
             warnings = []
-            u = User.find_by_drc_user(row[VH[:user]])
+            u = self.institution.users.find_by_drc_user(row[VH[:user]])
             if u.nil?
               u = self.user
               warnings << I18n.t('import.warnings.row_user_not_found')
+            end
+
+            unless row[VH[:person]].blank?
+              person_id = self.institution.people.full_name_like(row[VH[:person]]).first.try(:id)
+              if person_id.nil? && !row[VH[:person]].blank?
+                warnings << I18n.t('import.warnings.person_not_found_locally')
+              end
             end
 
             # don't import transaction if no income, expense or amount were given
@@ -58,11 +65,11 @@ class Import < ActiveRecord::Base
               category = self.institution.categories.find_or_create_by_name(row[VH[:category]].capitalize) unless row[VH[:category]].blank?
 
               data = {:made_on => row[VH[:date]], :description => row[VH[:description]],
-                      :user_id => u.id, :category_id => category.try(:id)}
+                      :user_id => u.id, :category_id => category.try(:id), :person_id => person_id}
 
               account_field = row[VH[:account]]
               if account_field
-                account = self.institution.accounts.find_by_name(account) || self.institution.accounts.find(account)
+                account = self.institution.accounts.find_by_name(account_field) || self.institution.accounts.find(account_field)
               end
               account = account.nil?? self.institution.default_account : account
 
@@ -108,6 +115,7 @@ class Import < ActiveRecord::Base
   VALID_HEADERS = {
             :date => I18n.t('import.headers.date', :default => 'date'),
             :user => I18n.t('import.headers.user', :default => 'user'),
+            :person => I18n.t('import.headers.person', :default => 'person'),
             :description => I18n.t('import.headers.description', :default => 'description'),
             :income => I18n.t('import.headers.income', :default => 'income'),
             :expense => I18n.t('import.headers.expense', :default => 'expense'),

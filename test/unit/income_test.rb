@@ -2,8 +2,6 @@ require 'test_helper'
 
 class IncomeTest < ActiveSupport::TestCase
 
-  should_have_one(:person)
-
   context "for income" do
     setup do
       @income = Transaction.make(:type => "Income", :cents => 100, :currency => "ars" )

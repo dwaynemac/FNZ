@@ -11,8 +11,18 @@ class ImportedRow < ActiveRecord::Base
 
   named_scope :successfull, :conditions => "success"
   named_scope :failed, :conditions => "not success"
+  named_scope :with_message, :conditions => "success and (message is not null and message <> '')"
 
-  named_scope(:filter, lambda{ |filter| (filter == "successfull")? {:conditions => "success" } : ((filter=="failed")? {:conditions => "not success"} : {} )} ) 
+  named_scope(:filter, lambda{ |filter|
+    case filter
+      when "successfull"
+        {:conditions => "success"}
+      when "failed"
+        {:conditions => "not success"}
+      when "with_message"
+        {:conditions => "success and (message is not null and message <> '')"}
+    end
+  }) 
 
   def successfull?
     return self.success

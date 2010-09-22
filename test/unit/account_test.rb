@@ -78,7 +78,6 @@ class AccountTest < ActiveSupport::TestCase
       @positive.reload
       assert_equal Money.new(50,@positive.currency), @positive.balance
     end
-
   end
 
 end

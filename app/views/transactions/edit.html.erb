@@ -1,6 +1,6 @@
 <h1>Editing transaction</h1>
 
-<%- semantic_form_for @transaction do |f| -%>
+<%- semantic_form_for :transaction, :object => @transaction, :url => @transaction, :html => { :method => :put } do |f| -%>
   <%= render :partial => 'form', :locals => {:f => f} %>
 <%- end -%>
 

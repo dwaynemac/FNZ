@@ -2,6 +2,10 @@ require 'test_helper'
 
 class CategoryTest < ActiveSupport::TestCase
 
+  def setup
+    Category.make
+  end
+
   should_validate_presence_of(:name, :institution)
   should_validate_uniqueness_of(:name, :scoped_to => :institution)
   should_belong_to(:institution)
@@ -16,8 +20,7 @@ class CategoryTest < ActiveSupport::TestCase
     end
 
     should "validate parent is from same institution" do
-      @a.parent_id = @b
-      assert(!@a.save)
+      assert(!@a.update_attributes(:parent_id => @b.id))
     end
   end
 

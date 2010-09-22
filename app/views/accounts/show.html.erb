@@ -5,6 +5,7 @@
   <%= render :partial => 'transactions/table', :locals => {:skip_field => {:account => true}} %>
 </div>
 
-
-<%= link_to 'Edit', edit_account_path(@account) %> |
-<%= link_to 'Back', accounts_path %>
+<%= link_to t('transaction.new'), new_account_transaction_path(@account) %> |
+<%= link_to t('transaction.new_transfer'), transfer_new_transaction_url %> |
+<%= link_to t('Edit'), edit_account_path(@account) %> |
+<%= link_to t('Back'), accounts_path %>
