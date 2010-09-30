@@ -5,8 +5,8 @@ en:
         person:
           attributes:
             date_of_birth:
-              after: 'i18n_after {{value}}'
-              before: 'i18n_before {{value}}'
+              after: 'i18n_after %{value}'
+              before: 'i18n_before %{value}'
             date_of_death:
-              after: 'i18n_after {{value}}'
-              before: 'i18n_before {{value}}'
+              after: 'i18n_after %{value}'
+              before: 'i18n_before %{value}'

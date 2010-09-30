@@ -6,6 +6,22 @@ require 'test_help'
 require 'mocha'
 
 class ActiveSupport::TestCase
+
+  setup do
+
+    @user = User.find_by_drc_user("homer") || User.make(:drc_user => "homer")
+    @current_user = @user
+    if @user.padma.nil?
+      @user.padma = PadmaToken.make(:user => @user)
+      @user.save
+    end
+    @institution = @user.institution
+    @current_institution = @institution
+    DRCClient.mock_login("homer")
+
+    Sham.reset
+  end
+
   # Transactional fixtures accelerate your tests by wrapping each test method
   # in a transaction that's rolled back on completion.  This ensures that the
   # test database remains unchanged so your fixtures don't have to be reloaded
@@ -37,19 +53,4 @@ class ActiveSupport::TestCase
   # -- they do not yet inherit this setting
 
   # Add more helper methods to be used by all tests here...
-
-  setup do
-
-    @user = User.find_by_drc_user("homer") || User.make(:drc_user => "homer")
-    @current_user = @user
-    if @user.padma.nil?
-      @user.padma = PadmaToken.make(:user => @user)
-      @user.save
-    end
-    @institution = @user.institution
-    @current_institution = @institution
-    DRCClient.mock_login("homer")
-
-    Sham.reset
-  end
 end

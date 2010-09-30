@@ -24,7 +24,7 @@ class PeopleController < ApplicationController
   # GET /people/1
   # GET /people/1.xml
   def show
-    @person = @scope.find(params[:id])
+    @person = get_person
     if !@person.sync_from_padma(current_user.padma)
       flash[:notice] = I18n.t('people.show.not_synced')
     end
@@ -105,5 +105,24 @@ class PeopleController < ApplicationController
   private
   def set_scope
     @scope = current_institution.people
+  end
+
+  # gets person by params[:id] or params[:padma_id]
+  # if no person with :padma_id is found it's created.
+  def get_person
+    if params[:id]
+      p = @scope.find(params[:id])
+    elsif params[:padma_id]
+      p = @scope.find_by_padma_id(params[:padma_id])
+      if p.nil?
+        current_user.padma.person(params[:padma_id])
+        p = @scope.build(:name => pp["name"], :surname => pp["surname"], :padma_id => pp["id"], :synced_at => Time.now)
+        if !p.save
+          p = nil
+        end
+      end
+    end
+    # TODO if p.nil? raise 404 ?
+    return p
   end
 end
