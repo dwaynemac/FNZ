@@ -3,6 +3,7 @@
 <table>
   <tr>
     <%- unless skip_field[:made_on] -%><th><%= t('transaction.labels.made_on').capitalize %></th><%- end -%>
+    <%- unless skip_field[:account_on] -%><th><%= t('transaction.labels.account_on').capitalize %></th><%- end -%>
     <%- unless skip_field[:account] -%><th><%= t('transaction.labels.account').capitalize %></th><%- end -%>
     <%- unless skip_field[:user] -%><th><%= t('transaction.labels.user').capitalize %></th><%- end -%>
     <%- unless skip_field[:person] -%><th><%= t('transaction.labels.person').capitalize %></th><%- end -%>
@@ -16,10 +17,11 @@
 <% @transactions.each do |transaction| %>
   <tr class="<%= cycle 'row0', 'row1' %>">
     <%- unless skip_field[:made_on] -%><td><%= l(transaction.made_on, :format => :short) %></td><%- end -%>
+    <%- unless skip_field[:account_on] -%><td><%= l(transaction.account_on, :format => :short) %></td><%- end -%>
     <%- unless skip_field[:account] -%><td><%= link_to h(transaction.account.name), transaction.account %></td><%- end -%>
     <%- unless skip_field[:user] -%><td><%= link_to h(transaction.user.drc_user), transaction.user %></td><%- end -%>
     <%- unless skip_field[:person] -%><td><%= link_to( h(transaction.person.full_name), transaction.person ) if transaction.person %></td><%- end -%>
-    <%- unless skip_field[:description] -%><td><%= jeditable_field(:transaction,:description,:object => transaction)%></td><%- end -%>
+    <%- unless skip_field[:description] -%><td><%= jeditable_field(:transaction,:description,:object => transaction, :url => transaction_url(transaction))%></td><%- end -%>
     <!-- <%- unless skip_field[:type] -%><td><%=h transaction.type %></td><%- end -%> -->
     <%- unless skip_field[:category] -%><td><%= link_to(h(transaction.category.name),transaction.category) if transaction.category %></td><%- end -%>
     <%- unless skip_field[:concept_list] -%><td><%= transaction.concepts_from(current_institution).map{|c| link_to(h(c),concept_url(c))}.join(',') %></td><%- end -%>

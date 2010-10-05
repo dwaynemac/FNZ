@@ -1,6 +1,9 @@
 <h1><%= h @account.name %></h1>
 <h3>Balance: <%= @account.balance.currency.symbol %><%= @account.balance %></h3>
 
+<%= link_to t('transaction.new'), new_account_transaction_path(@account) %> |
+<%= link_to t('transaction.new_transfer'), transfer_new_transaction_url %>
+
 <div>
   <%= render :partial => 'transactions/table', :locals => {:skip_field => {:account => true}} %>
 </div>

@@ -17,6 +17,8 @@ en:
     people: "People"
   accounts:
     add_transaction: "New transaction"
+    index:
+      title: "Accounts"
   api:
     problem_with_connetion: "Ups, some problem with your PADMA connection."
   time:

@@ -22,6 +22,12 @@ class Account < ActiveRecord::Base
   composed_of :saved_balance, :class_name => "Money", :mapping => [%w(cents cents), %w(currency currency)],
               :constructor => Proc.new { |cents, currency| Money.new(cents || 0, currency || Money.default_currency) }
 
+  # printable string of balance
+  def prt_balance
+    b = self.balance
+    return "#{'-' if b.cents<0}#{b.currency.symbol}#{b.abs.to_s}"
+  end
+
   # returns balance
   def balance
     if self.saved_balance_on.nil?

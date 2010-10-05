@@ -11,6 +11,7 @@ module ApplicationHelper
   # - select_collection: json array of options for select dropdown.
   # - rows: defaults to 1
   # - print: this will be called on object and printed. defaults to field_name. Example: category.name will call object.category.name
+  # - url: URL for request
   #
   # Will submit to url_for(object)
   # While data transfer is in progress CSS class 'editing' is assigned.
@@ -40,7 +41,7 @@ module ApplicationHelper
             var result;
             $.ajax({
               type: 'PUT',
-              url: '#{url_for(object)}' ,
+              url: '#{options[:url].nil?? url_for(object) : options[:url]}' ,
               async: false,
               data: {
                 authenticity_token: #{form_authenticity_token.to_json },

@@ -1,4 +1,4 @@
-<h1>Listing accounts</h1>
+<h1><%= t('accounts.index.title') %></h1>
 
 <table>
   <tr>
@@ -9,7 +9,7 @@
 <% @accounts.each do |account| %>
   <tr>
     <td><%= link_to h(account.name), account %></td>
-    <td><%=h account.balance %></td>
+    <td><%=h account.prt_balance %></td>
     <td><%= link_to t('accounts.add_transaction'), new_account_transaction_path(account) %></td>
     <td><%= link_to t('Edit'), edit_account_path(account) %></td>
     <td><%= link_to t('Destroy'), account, :confirm => t('confirm_destroy'), :method => :delete %></td>
