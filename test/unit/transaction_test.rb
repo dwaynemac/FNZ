@@ -67,5 +67,26 @@ class TransactionTest < ActiveSupport::TestCase
     end
   end
 
-
+  context "for a Transaction amount=" do
+    context "-10" do
+      setup do
+        @t = Transaction.make_unsaved(:type => "Income")
+        @t.amount = "-10"
+        @t.save
+      end
+      should "set 1000 cents" do
+        assert_equal 1000, @t.cents
+      end
+    end
+    context "10" do
+      setup do
+        @t = Transaction.make_unsaved(:type => "Income")
+        @t.amount = "10"
+        @t.save
+      end
+      should "set 10 cents" do
+        assert_equal 1000, @t.cents
+      end
+    end
+  end
 end

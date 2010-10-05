@@ -52,7 +52,7 @@ class Transaction < ActiveRecord::Base
   before_save :get_currency_from_account
 
   def amount=(arg)
-    self.cents = arg.to_money.cents
+    self.cents = arg.to_money.cents.abs
   end
   
   def prt_amount
@@ -63,7 +63,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def set_concept_list(string)
-    logger.error "Transaction#set_concept_list shouldnt be called on unsaved models" if self.account.nil?
+    logger.error "Transaction#set_concept_list shouldn't be called on unsaved models" if self.account.nil?
     self.account.institution.tag(self,:with => string, :on => :concepts)
   end
 
