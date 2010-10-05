@@ -38,7 +38,7 @@ class TransactionsController < ApplicationController
   # GET /transactions/new
   # GET /transactions/new.xml
   def new
-    @transaction = @scope.build(:made_on => Time.zone.now)
+    @transaction = @scope.build(:made_on => Time.zone.now,:account_on => Time.zone.today)
     @accounts = current_institution.accounts.all
     @categories = current_institution.categories.all
 
@@ -155,7 +155,7 @@ class TransactionsController < ApplicationController
       @scope = person.transactions
       @return_to = person_url(person)
     else
-      @scope = current_user.transactions
+      @scope = current_institution.transactions
       @return_to = transactions_url
     end
   end
