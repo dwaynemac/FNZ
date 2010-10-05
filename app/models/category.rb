@@ -20,14 +20,19 @@ class Category < ActiveRecord::Base
     Transaction.in_category_tree(self)
   end
 
+  # returns balance of transactions with <tt>consider</tt> between <tt>from</tt> and <tt>to</tt>.
+  # Arguments:
+  # - <tt>from</tt>
+  # - <tt>to</tt>
+  # - <tt>consider</tt>: defaults to :made_on
   def balance(from=nil,to=nil,consider=:made_on)
     bal = Money.new(0,self.institution.default_currency)
 
     # first consider transactions directly under this category
 
     # sum in DB transactions for each currency
-    incomes_by_cur = self.transactions.incomes.field_before(consider,to).field_after(consider, from).calculate(:sum,:cents, :group => "#{Transaction.table_name}.currency")
-    expenses_by_cur = self.transactions.expenses.field_before(consider,to).field_after(consider, from).calculate(:sum,:cents, :group => "#{Transaction.table_name}.currency")
+    incomes_by_cur = self.transactions.incomes.field_before(consider.to_sym, to).field_after(consider.to_sym, from).calculate(:sum,:cents, :group => "#{Transaction.table_name}.currency")
+    expenses_by_cur = self.transactions.expenses.field_before(consider.to_sym, to).field_after(consider.to_sym, from).calculate(:sum,:cents, :group => "#{Transaction.table_name}.currency")
 
     # sum here subtotals of each currency for conversion
     incomes_by_cur.each{|ic| bal += Money.new(ic[1],ic[0])}

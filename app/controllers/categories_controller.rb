@@ -14,7 +14,7 @@ class CategoriesController < ApplicationController
     respond_to do |format|
       format.html do
         @roots = @scope.roots.paginate(:page => params[:page])
-        @roots.sort!{|a,b| b.balance(@since,@until) <=> a.balance(@since,@until) }
+        @roots.sort!{|a,b| b.balance(@since,@until,:account_on) <=> a.balance(@since,@until,:account_on) } # order by balance
       end
       format.xml do
         @categories = @scope.all
