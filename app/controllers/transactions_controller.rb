@@ -82,9 +82,11 @@ class TransactionsController < ApplicationController
       if @transaction.update_attributes(params[:transaction])
         format.html { redirect_to(@return_to, :notice => 'Transaction was successfully updated.') }
         format.xml  { head :ok }
+        format.json { render :json => {:result => @transaction.send(params[:wants])}}
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @transaction.errors, :status => :unprocessable_entity }
+        format.json { render :json => {:result => @transaction.send(params[:wants]+'_was')}} # return original value
       end
     end
   end
