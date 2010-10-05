@@ -3,12 +3,26 @@ class Transaction < ActiveRecord::Base
   after_save :recalculate_account_balance
   after_destroy :recalculate_account_balance
 
+  named_scope :field_on_month, lambda{|field, month_date|{:conditions => { field.to_sym => (month_date.beginning_of_month...month_date.end_of_month)}}}
+  named_scope :field_on_year, lambda{|field, year_date|{:conditions => ["YEAR(#{field})=:year",{:year => year_date.year}]}}
+  named_scope :field_after, lambda{|field, time| time.nil?? {} : {:conditions => ["#{field} > ?",time]}}
+  named_scope :field_before, lambda{|field, time| time.nil?? {} : {:conditions => ["#{field} < ?",time]}}
+
   named_scope :made_on_month, lambda{|month_date|{:conditions => { :made_on => (month_date.beginning_of_month...month_date.end_of_month)}}}
   named_scope :made_on_year, lambda{|year_date|{:conditions => ["YEAR(made_on)=:year",{:year => year_date.year}]}}
   named_scope :made_after, lambda{|time| time.nil?? {} : {:conditions => ["made_on > ?",time]}}
   named_scope :made_before, lambda{|time| time.nil?? {} : {:conditions => ["made_on < ?",time]}}
 
+  named_scope :accounted_on_month, lambda{|month_date|{:conditions => { :account_on => (month_date.beginning_of_month...month_date.end_of_month)}}}
+  named_scope :accounted_on_year, lambda{|year_date|{:conditions => ["YEAR(account_on)=:year",{:year => year_date.year}]}}
+  named_scope :accounted_after, lambda{|day| time.nil?? {} : {:conditions => ["account_on > ?",day]}}
+  named_scope :accounted_before, lambda{|day| time.nil?? {} : {:conditions => ["account_on < ?",day]}}
+
   validates_presence_of :made_on
+
+  validates_presence_of :account_on
+  before_validation :default_account_on
+
 
   belongs_to :user
   validates_presence_of :user
@@ -65,6 +79,11 @@ class Transaction < ActiveRecord::Base
   def set_concept_list(string)
     logger.error "Transaction#set_concept_list shouldn't be called on unsaved models" if self.account.nil?
     self.account.institution.tag(self,:with => string, :on => :concepts)
+  end
+
+  private
+  def default_account_on
+    self.account_on = self.made_on if self.account_on.nil?
   end
 
   private

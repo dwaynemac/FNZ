@@ -10,10 +10,10 @@ class Person < ActiveRecord::Base
     unless string.blank?
       string = string.strip
       tokens = string.split(' ', 2)
-      { :conditions => ["nombres like :full or
-      apellidos like :full or
-      (nombres like :first and apellidos like :sec) or
-      (apellidos like :first and nombres like :sec)",
+      { :conditions => ["name like :full or
+      surname like :full or
+      (name like :first and surname like :sec) or
+      (surname like :first and name like :sec)",
       {:full => "%#{string}%", :first => "%#{tokens[0]}%",:sec => "%#{tokens[1]}%"}] }
     end
   }

@@ -8,14 +8,13 @@ class TransactionTest < ActiveSupport::TestCase
   should_belong_to(:person)
 
   should_validate_presence_of(:made_on)
+  should_validate_presence_of(:account_on)
   should_validate_presence_of(:account)
   should_validate_presence_of(:user)
   should_validate_presence_of(:cents)
 
   should_allow_values_for(:cents, 10, 14482554,0)
   should_not_allow_values_for(:cents, -5, 124256365,-9658745236,2125.23,"asd")
-
-  
 
   context "on creation" do
     setup do
@@ -26,6 +25,9 @@ class TransactionTest < ActiveSupport::TestCase
     end
     should "get currency from account" do
       assert_equal(@account.currency,@transaction.currency)
+    end
+    should "default account_on to made_on.to_date" do
+      assert(@transaction.made_on.to_date, @transaction.account_on)
     end
   end
   context "on save" do

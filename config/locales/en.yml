@@ -30,7 +30,7 @@ en:
   back: "back"
   transaction:
     labels:
-      made_on: "Date"
+      made_on: "Made on"
       amount: "amount"
       description: "description"
       user: "user"
@@ -39,6 +39,7 @@ en:
       concept_list: "concept list"
       category: "Category"
       person: "Person"
+      account_on: "Accounted on"
     new: "New transaction"
     new_transfer: "New transfer"
   import:
@@ -79,6 +80,8 @@ en:
   transactions:
     transfer:
       transfered: "Transfered!"
+    index:
+      filter_period: "Consider this period"
   people:
     show:
       not_synced: "Data not in sync with PADMA."

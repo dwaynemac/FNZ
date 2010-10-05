@@ -10,8 +10,13 @@ class TransactionsController < ApplicationController
     @months = months_for_select(1.year.ago.to_date,3.month.from_now.to_date)
     start = Time.zone.now.beginning_of_month
     @since, @until = get_range(:default_since => start,:default_until => start+1.month)
+    if params[:search].nil?
+      @considered_field = :made_on
+    else
+      @considered_field = params[:search].delete(:period_field).to_sym
+    end
 
-    @transactions = @scope.made_after(@since).made_before(@until).paginate(:page => params[:page])
+    @transactions = @scope.field_after(@considered_field,@since).field_before(@considered_field,@until).paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

@@ -43,7 +43,7 @@ class CategoryTest < ActiveSupport::TestCase
       @category = Category.make(:institution => @institution)
     end
     context "without transactions" do
-      context "calculate_balance" do
+      context "balance" do
         setup do
           @bal = @category.balance
           @category.reload

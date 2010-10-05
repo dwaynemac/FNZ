@@ -39,6 +39,10 @@ class PersonTest < ActiveSupport::TestCase
       assert_equal 1, Person.full_name_like("Dw Macg").count
     end
 
+    should "return all results that match query" do
+      assert_equal 2, Person.full_name_like("D Macgowan").count
+    end
+
     should "consider middle names" do
       assert_equal 1, Person.full_name_like("Julia").count
     end

@@ -21,7 +21,7 @@
   back: "volver"
   transaction:
     labels:
-      made_on: "Fecha"
+      made_on: "Realizada el"
       amount: "monto"
       description: "descripción"
       user: "usuario"

@@ -20,17 +20,20 @@ class Category < ActiveRecord::Base
     Transaction.in_category_tree(self)
   end
 
-  def balance(from=nil,to=nil)
+  def balance(from=nil,to=nil,consider=:made_on)
     bal = Money.new(0,self.institution.default_currency)
 
-    # check direct transactions
-    incomes_by_cur = self.transactions.incomes.made_before(to).made_after(from).calculate(:sum,:cents, :group => "#{Transaction.table_name}.currency")
-    expenses_by_cur = self.transactions.expenses.made_before(to).made_after(from).calculate(:sum,:cents, :group => "#{Transaction.table_name}.currency")
+    # first consider transactions directly under this category
 
+    # sum in DB transactions for each currency
+    incomes_by_cur = self.transactions.incomes.field_before(consider,to).field_after(consider, from).calculate(:sum,:cents, :group => "#{Transaction.table_name}.currency")
+    expenses_by_cur = self.transactions.expenses.field_before(consider,to).field_after(consider, from).calculate(:sum,:cents, :group => "#{Transaction.table_name}.currency")
+
+    # sum here subtotals of each currency for conversion
     incomes_by_cur.each{|ic| bal += Money.new(ic[1],ic[0])}
     expenses_by_cur.each{|ec| bal -= Money.new(ec[1],ec[0])}
 
-    # check child categories
+    # then consider transactions under child categories
     self.children.each{|c| bal += c.balance(from,to) }
 
     return bal

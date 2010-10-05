@@ -5,6 +5,7 @@
   <%= f.input :amount %>
   <%= f.input :description %>
   <%= f.input :made_on %>
+  <%= f.input :account_on %>
   <%= f.input :category_id, :collection => @categories, :include_blank => true %>
   <%= f.input :concept_list %>
   <%= f.input :user_id, :as => :hidden, :value => current_user.id %>

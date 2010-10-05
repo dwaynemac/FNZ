@@ -72,7 +72,7 @@ module Slider
       return <<-STRING
 <script>
   $(function(){
-    $('select').selectToUISlider({labels: 12, labelSrc: "text"}).hide();
+    $('.slider_select').selectToUISlider({labels: 12, labelSrc: "text"}).hide();
     });
 </script>
       STRING
@@ -80,8 +80,8 @@ module Slider
 
     def slider_formtastic_inputs(formtastic,options_for_select,from,to)
       str = ""
-      str << formtastic.input(:since, :as => :select, :collection => options_for_select, :label => false, :selected => l(from))
-      str << formtastic.input(:until, :as => :select, :collection => options_for_select, :label => false, :selected => l(to))
+      str << formtastic.input(:since, :as => :select, :collection => options_for_select, :label => false, :selected => l(from), :input_html => { :class => 'slider_select'} )
+      str << formtastic.input(:until, :as => :select, :collection => options_for_select, :label => false, :selected => l(to), :input_html => { :class => 'slider_select'} )
       return str
     end
   end
