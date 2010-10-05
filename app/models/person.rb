@@ -8,14 +8,13 @@ class Person < ActiveRecord::Base
 
   named_scope :full_name_like, lambda{|string|
     unless string.blank?
-      str = ""
-      pms = []
-      string.split(' ').each do |token|
-        str << " or " unless  str==""
-        str << "name like ? or surname like ?"
-        pms << ["%#{token}%","%#{token}%"]
-      end
-      {:conditions => [str,pms].flatten}
+      string = string.strip
+      tokens = string.split(' ', 2)
+      { :conditions => ["nombres like :full or
+      apellidos like :full or
+      (nombres like :first and apellidos like :sec) or
+      (apellidos like :first and nombres like :sec)",
+      {:full => "%#{string}%", :first => "%#{tokens[0]}%",:sec => "%#{tokens[1]}%"}] }
     end
   }
 

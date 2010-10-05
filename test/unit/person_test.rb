@@ -24,4 +24,25 @@ class PersonTest < ActiveSupport::TestCase
     end
   end
 
+  context "full_name_like scope" do
+    setup do
+      [
+        ["Dwayne","Macgowan"],
+        ["Alejandro Diego", "Macgowan"],
+        ["Maria Julia","Gomez de Lopez Cinq"]
+      ].each do |data|
+        Person.make(:name => data[0], :surname => data[1])
+      end
+    end
+
+    should "return 1 result if exact match found" do
+      assert_equal 1, Person.full_name_like("Dw Macg").count
+    end
+
+    should "consider middle names" do
+      assert_equal 1, Person.full_name_like("Julia").count
+    end
+
+  end
+
 end

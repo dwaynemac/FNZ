@@ -4,7 +4,7 @@ module Slider
     base.send(:include, Slider::ViewHelpers)
   end
 
-  # Gets param[:search][:since] and params[:serach][:until]
+  # Gets params_hash[:since] and params_hash[:until]
   # and returns [since,until] both dates.
   # Parameters:
   #  <tt>:default_since</tt> default to 1 month ago
@@ -17,7 +17,6 @@ module Slider
     default_until = options.delete(:default_until)
     default_until = 1.month.from_now.to_date if default_until.nil?
 
-
     # get range from params
     pm = options.delete(:params_hash)
     pm = params[:search] if pm.nil?
@@ -25,9 +24,17 @@ module Slider
     period_ini = pm.delete(:since).try(:to_date)
     period_end = pm.delete(:until).try(:to_date)
 
-    # initialize with defaults if no data was recieved through params
+    # if no range set in params, check session
+    period_ini = session[:period_ini].try(:to_date) if period_ini.nil?
+    period_end = session[:period_end].try(:to_date) if period_end.nil?
+
+    # initialize with defaults if no data was recieved through params and no data was stored in session.
     period_ini = default_since.to_date if period_ini.nil?
     period_end = default_until.to_date if period_end.nil?
+
+    # store new period on session
+    session[:period_ini] = period_ini
+    session[:period_end] = period_end
 
     return period_ini, period_end
   end
