@@ -74,10 +74,11 @@ class Transaction < ActiveRecord::Base
   def amount=(arg)
     self.cents = arg.to_money.cents.abs
   end
-  
+
+  # prints amount
   def prt_amount
     string = (self.debit?)? "-" : ""
-    string += self.amount.currency.symbol
+    string += "<span title='#{self.amount.currency}'>#{self.amount.currency.symbol}</span>"
     string += self.amount.to_s
     return string
   end

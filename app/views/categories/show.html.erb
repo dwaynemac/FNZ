@@ -1,7 +1,19 @@
 <h1><%= h @category.name %></h1>
 <h2><%= @category.balance %></h2>
 
-<%= render :partial => 'transactions/table', :locals => { :skip_field => { :category => true }} %>
+<div id="choose-period">
+  <%- semantic_form_for :search, :url => category_path(@category), :html => { :method => :get } do |f| -%>
+    <%= t('categories.index.filter_period') %>
+    <%- f.inputs do -%>
+      <%= slider_formtastic_inputs(f,@months,@since,@until) %>
+    <%- end -%>
+    <%- f.buttons do -%>
+      <%= f.commit_button t('filter') %>
+    <%- end -%>
+<%- end -%>
+</div>
+
+<%= render :partial => 'transactions/table', :locals => { :skip_field => { :concept_list => true, :category => true }} %>
 
 <table>
   <tr>
@@ -18,3 +30,4 @@
 
 <%= link_to 'Edit', edit_category_path(@category) %> |
 <%= link_to 'Back', categories_path %>
+<%= slider_script %>

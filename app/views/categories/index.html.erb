@@ -4,7 +4,7 @@
   <%- semantic_form_for :search, :url => categories_path, :html => { :method => :get } do |f| -%>
     <%= t('categories.index.filter_period') %>
     <%- f.inputs do -%>
-      <%= slider_formtastic_inputs(f,@days,@since,@until) %>
+      <%= slider_formtastic_inputs(f,@months,@since,@until) %>
     <%- end -%>
     <%- f.buttons do -%>
       <%= f.commit_button t('filter') %>

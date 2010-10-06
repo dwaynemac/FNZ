@@ -7,7 +7,7 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.xml
   def index
-    @days = months_for_select(1.year.ago.to_date,3.month.from_now.to_date)
+    @months = months_for_select(1.year.ago.to_date,3.month.from_now.to_date)
     start = Time.zone.now.beginning_of_month
     @since, @until = get_range(:default_since => start,:default_until => start+1.month)
 
@@ -25,9 +25,13 @@ class CategoriesController < ApplicationController
   # GET /categories/1
   # GET /categories/1.xml
   def show
+    @months = months_for_select(1.year.ago.to_date,3.month.from_now.to_date)
+    start = Time.zone.now.beginning_of_month
+    @since, @until = get_range(:default_since => start,:default_until => start+1.month)
+
     @category = @scope.find(params[:id])
-    @transactions = @category.all_transactions.paginate(:page => params[:page])
-    subtotals = @category.balance(:group_by => :user_id)
+    @transactions = @category.all_transactions.field_after(:account_on,@since).field_before(:account_on,@until).paginate(:page => params[:page])
+    subtotals = @category.balance(:group_by => :user_id,:from => @since, :to => @until, :consider => :account_on)
     subtotals = subtotals.sort{|a,b| b[1]<=>a[1]}
     @users_subtotals = subtotals.map{|g| [current_institution.users.find(g[0]).try(:drc_user),g[1]]}
 
