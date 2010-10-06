@@ -15,6 +15,7 @@ en:
     concepts: "Concepts"
     categories: "Categories"
     people: "People"
+    users: "Users"
   accounts:
     add_transaction: "New transaction"
     index:
@@ -58,6 +59,7 @@ en:
     add_sub_category: "Add subcategory"
     index:
       set_parent_for_checked: "Change parent for checked categories"
+      filter_period: "Consider transactions accounted in this period"
   imports:
     new:
       valid_headers: "In your CSV headers you may use any of the following fields"
@@ -105,8 +107,12 @@ en:
   Destroy: "destroy"
   user:
     transactions: "Transactions"
+    labels:
+      username: "User name"
   users:
     profile: "User profile"
+    index:
+      title: "Users"
   and: "and"
   edit: "edit"
   destroy: "delete"
@@ -119,3 +125,5 @@ en:
     tooltip: "Click to edit"
     cancel: "Cancel"
     submit: "Ok"
+  filter: "filter"
+  subtotal: "Subtotal"

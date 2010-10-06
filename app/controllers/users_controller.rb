@@ -2,6 +2,13 @@ class UsersController < ApplicationController
 
   before_filter :set_scope
 
+  def index
+    @users = @scope.all
+    respond_to do |format|
+      format.html
+    end
+  end
+
   def show
     if params[:id] == "me"
       @user = current_user

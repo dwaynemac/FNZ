@@ -14,7 +14,7 @@ class CategoriesController < ApplicationController
     respond_to do |format|
       format.html do
         @roots = @scope.roots.paginate(:page => params[:page])
-        @roots.sort!{|a,b| b.balance(@since,@until,:account_on) <=> a.balance(@since,@until,:account_on) } # order by balance
+        @roots.sort!{|a,b| b.balance(:from => @since,:to => @until,:consider => :account_on) <=> a.balance(:from => @since,:to => @until,:consider => :account_on) } # order by balance
       end
       format.xml do
         @categories = @scope.all
@@ -27,6 +27,9 @@ class CategoriesController < ApplicationController
   def show
     @category = @scope.find(params[:id])
     @transactions = @category.all_transactions.paginate(:page => params[:page])
+    subtotals = @category.balance(:group_by => :user_id)
+    subtotals = subtotals.sort{|a,b| b[1]<=>a[1]}
+    @users_subtotals = subtotals.map{|g| [current_institution.users.find(g[0]).try(:drc_user),g[1]]}
 
     respond_to do |format|
       format.html # show.html.erb

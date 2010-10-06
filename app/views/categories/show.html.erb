@@ -3,5 +3,18 @@
 
 <%= render :partial => 'transactions/table', :locals => { :skip_field => { :category => true }} %>
 
+<table>
+  <tr>
+    <th><%= t('user.labels.username') %></th>
+    <th><%= t('subtotal') %></th>
+  </tr>
+  <%- @users_subtotals.each do |ust| -%>
+    <tr>
+      <td><%= h ust[0] %></td>
+      <td><%= ust[1].currency %> <%= ust[1].to_s %></td>
+    </tr>
+  <%- end -%>
+</table>
+
 <%= link_to 'Edit', edit_category_path(@category) %> |
 <%= link_to 'Back', categories_path %>

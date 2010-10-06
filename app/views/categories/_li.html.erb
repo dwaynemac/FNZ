@@ -1,5 +1,5 @@
 <%= check_box_tag "category_ids[]", category.id %>
-<%= link_to h(category.name), category %> - <%= category.balance(@since,@until,:account_on) %>
+<%= link_to h(category.name), category %> - <%= category.balance(:from => @since,:to => @until,:consider => :account_on) %>
 <%= link_to t('categories.add_sub_category'), subcategory_category_path(category)%>
 <%= link_to 'Edit', edit_category_path(category) %>
 <%= link_to 'Destroy', category, :confirm => 'Are you sure?', :method => :delete %>

@@ -2,15 +2,17 @@
 
 <div id="choose-period">
   <%- semantic_form_for :search, :url => categories_path, :html => { :method => :get } do |f| -%>
-    Balance considering this period
+    <%= t('categories.index.filter_period') %>
     <%- f.inputs do -%>
       <%= slider_formtastic_inputs(f,@days,@since,@until) %>
     <%- end -%>
     <%- f.buttons do -%>
-      <%= f.commit_button %>
+      <%= f.commit_button t('filter') %>
     <%- end -%>
 <%- end -%>
 </div>
+
+<%= link_to t('categories.new'), new_category_path %>
 
 <%= will_paginate @roots %>
 <%- form_tag edit_multiple_categories_path do -%>
