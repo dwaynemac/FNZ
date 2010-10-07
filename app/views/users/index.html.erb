@@ -6,7 +6,7 @@
   </tr>
   <%- @users.each do |user| -%>
     <tr>
-      <td><%= h(user.drc_user) %></td>
+      <td><%= link_to h(user.drc_user), user %></td>
     </tr>
   <%- end -%>
 </table>

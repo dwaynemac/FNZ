@@ -124,7 +124,6 @@ class CategoriesController < ApplicationController
     redirect_to categories_path, :notice => "Updated categories!"
   end
 
-
   private
   def set_scope
     @scope = current_institution.categories

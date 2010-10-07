@@ -1,5 +1,16 @@
 <h1><%= t('people.index.title') %></h1>
 
+<div>
+  <%- semantic_form_for :search, :url => people_url, :html => {:method => :get } do |f| -%>
+    <%- f.inputs do -%>
+      <%= f.input :full_name_like %>
+    <%- end -%>
+    <%- f.buttons do -%>
+      <%= f.commit_button t('search') %>
+    <%- end -%>
+  <%- end -%>
+</div>
+
 <%- will_paginate @people -%>
 <table>
   <tr>
@@ -10,7 +21,7 @@
   <tr>
     <td><%= link_to h(person.full_name), person %></td>
     <td><%= link_to t('people.register_payment'), new_person_transaction_url(:person_id => person.id) %></td>
-    <td><%= link_to(t('people.see_in_padma'), person.padma_url, :popup => true ) %></td>
+    <td><%= link_to(t('people.see_in_padma'), person.padma_url, :popup => true ) unless person.padma_id.nil? %></td>
     <td><%= link_to t('Edit'), edit_person_path(person) %></td>
     <td><%= link_to t('Destroy'), person, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
@@ -20,4 +31,4 @@
 
 <br />
 
-<%= link_to 'Get from PADMA', in_padma_people_path %> | <%= link_to t('back'), root_path %>
+<%= link_to 'Get from PADMA', in_padma_people_path %> | <%= link_to t('people.index.new'), new_person_path %> | <%= link_to t('back'), root_path %>

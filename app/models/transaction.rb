@@ -72,6 +72,7 @@ class Transaction < ActiveRecord::Base
   before_save :get_currency_from_account
 
   def amount=(arg)
+    return if arg.nil?
     self.cents = arg.to_money.cents.abs
   end
 

@@ -1,34 +1,49 @@
 <%- skip_field ||= {} -%>
 <%= will_paginate @transactions %>
-<table>
-  <tr>
-    <%- unless skip_field[:made_on] -%><th><%= t('transaction.labels.made_on').capitalize %></th><%- end -%>
-    <%- unless skip_field[:account_on] -%><th><%= t('transaction.labels.account_on').capitalize %></th><%- end -%>
-    <%- unless skip_field[:account] -%><th><%= t('transaction.labels.account').capitalize %></th><%- end -%>
-    <%- unless skip_field[:user] -%><th><%= t('transaction.labels.user').capitalize %></th><%- end -%>
-    <%- unless skip_field[:person] -%><th><%= t('transaction.labels.person').capitalize %></th><%- end -%>
-    <%- unless skip_field[:description] -%><th><%= t('transaction.labels.description').capitalize %></th><%- end -%>
-    <!-- <%- unless skip_field[:type] -%><th><%= t('transaction.labels.type').capitalize %></th><%- end -%> -->
-    <%- unless skip_field[:category] -%><th><%= t('transaction.labels.category').capitalize %></th><%- end -%>
-    <%- unless skip_field[:concept_list] -%><th><%= t('transaction.labels.concept_list').capitalize %></th><%- end -%>
-    <%- unless skip_field[:amount] -%><th><%= t('transaction.labels.amount').capitalize %></th><%- end -%>
-  </tr>
+<%- form_tag nil, :id => 'multiple_select' do -%>
+  <table>
+    <tr>
+      <th>
+        <%= select_all_checkbox(:select_class => 'selector_checkbox') %>
+      </th>
+      <%- unless skip_field[:made_on] -%><th><%= t('transaction.labels.made_on').capitalize %></th><%- end -%>
+      <%- unless skip_field[:account_on] -%><th><%= t('transaction.labels.account_on').capitalize %></th><%- end -%>
+      <%- unless skip_field[:account] -%><th><%= t('transaction.labels.account').capitalize %></th><%- end -%>
+      <%- unless skip_field[:user] -%><th><%= t('transaction.labels.user').capitalize %></th><%- end -%>
+      <%- unless skip_field[:person] -%><th><%= t('transaction.labels.person').capitalize %></th><%- end -%>
+      <%- unless skip_field[:description] -%><th><%= t('transaction.labels.description').capitalize %></th><%- end -%>
+      <!-- <%- unless skip_field[:type] -%><th><%= t('transaction.labels.type').capitalize %></th><%- end -%> -->
+      <%- unless skip_field[:category] -%><th><%= t('transaction.labels.category').capitalize %></th><%- end -%>
+      <%- unless skip_field[:concept_list] -%><th><%= t('transaction.labels.concept_list').capitalize %></th><%- end -%>
+      <%- unless skip_field[:amount] -%><th><%= t('transaction.labels.amount').capitalize %></th><%- end -%>
+    </tr>
 
-<% @transactions.each do |transaction| %>
-  <tr class="<%= cycle 'row0', 'row1' %>">
-    <%- unless skip_field[:made_on] -%><td><%= l(transaction.made_on, :format => :short) %></td><%- end -%>
-    <%- unless skip_field[:account_on] -%><td><%= l(transaction.account_on, :format => :short) %></td><%- end -%>
-    <%- unless skip_field[:account] -%><td><%= link_to h(transaction.account.name), transaction.account %></td><%- end -%>
-    <%- unless skip_field[:user] -%><td><%= link_to h(transaction.user.drc_user), transaction.user %></td><%- end -%>
-    <%- unless skip_field[:person] -%><td><%= link_to( h(transaction.person.full_name), transaction.person ) if transaction.person %></td><%- end -%>
-    <%- unless skip_field[:description] -%><td><%= jeditable_field(:transaction,:description,:object => transaction, :url => transaction_url(transaction))%></td><%- end -%>
-    <!-- <%- unless skip_field[:type] -%><td><%=h transaction.type %></td><%- end -%> -->
-    <%- unless skip_field[:category] -%><td><%= link_to(h(transaction.category.name),transaction.category) if transaction.category %></td><%- end -%>
-    <%- unless skip_field[:concept_list] -%><td><%= transaction.concepts_from(current_institution).map{|c| link_to(h(c),concept_url(c))}.join(',') %></td><%- end -%>
-    <%- unless skip_field[:amount] -%><td><%= transaction.prt_amount %></td><%- end -%>
-    <td><%= link_to 'Edit', edit_transaction_path(transaction) %></td>
-    <td><%= link_to 'Destroy', transaction_path(transaction), :confirm => t('confirm_destroy'), :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+  <% @transactions.each do |transaction| %>
+    <tr class="<%= cycle 'row0', 'row1' %>">
+      <td><%= check_box_tag('transaction_ids[]', transaction.id, false, :class => 'selector_checkbox') %></td>
+      <%- unless skip_field[:made_on] -%><td><%= l(transaction.made_on, :format => :short) %></td><%- end -%>
+      <%- unless skip_field[:account_on] -%><td><%= l(transaction.account_on, :format => :short) %></td><%- end -%>
+      <%- unless skip_field[:account] -%><td><%= link_to h(transaction.account.name), transaction.account %></td><%- end -%>
+      <%- unless skip_field[:user] -%><td><%= link_to h(transaction.user.drc_user), transaction.user %></td><%- end -%>
+      <%- unless skip_field[:person] -%><td><%= link_to( h(transaction.person.full_name), transaction.person ) if transaction.person %></td><%- end -%>
+      <%- unless skip_field[:description] -%><td><%= jeditable_field(:transaction,:description,:object => transaction, :url => transaction_url(transaction))%></td><%- end -%>
+      <!-- <%- unless skip_field[:type] -%><td><%=h transaction.type %></td><%- end -%> -->
+      <%- unless skip_field[:category] -%><td><%= link_to(h(transaction.category.name),transaction.category) if transaction.category %></td><%- end -%>
+      <%- unless skip_field[:concept_list] -%><td><%= transaction.concepts_from(current_institution).map{|c| link_to(h(c),concept_url(c))}.join(',') %></td><%- end -%>
+      <%- unless skip_field[:amount] -%><td><%= transaction.prt_amount %></td><%- end -%>
+      <td><%= link_to t('Edit'), edit_transaction_path(transaction) %></td>
+      <td><%= link_to t('Destroy'), transaction_path(transaction), :confirm => t('confirm_destroy'), :method => :delete %></td>
+    </tr>
+  <% end %>
+  </table>
+  <%= submit_tag t('destroy_selected'), :confirm => t('confirm_destroy'), :id => 'destroy_multiple' %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#destroy_multiple').click(function(){
+        $('form#multiple_select').attr({action: '<%= destroy_multiple_transactions_url %>', method: 'delete'});
+        $('form#multiple_select').submit();
+      })
+    })
+  </script>
+<%- end -%>
 <%= will_paginate @transactions %>

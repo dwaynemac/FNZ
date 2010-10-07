@@ -53,11 +53,13 @@ class TransactionsController < ApplicationController
     @transaction = @scope.find(params[:id])
     @accounts = current_institution.accounts.all
     @categories = current_institution.categories.all
+    @people = current_institution.people.all
   end
 
   # POST /transactions
   # POST /transactions.xml
   def create
+    @scope = Transaction if @scope_cant_build
     case params[:transaction].delete(:type)
       when "Income"
         @transaction = @scope.incomes.build(params[:transaction])
@@ -69,7 +71,7 @@ class TransactionsController < ApplicationController
     end
     respond_to do |format|
       if @transaction.save
-        format.html { redirect_to(@return_to, :notice => 'Transaction was successfully created.') }
+        format.html { redirect_to(@return_to, :notice => t('transactions.create.success')) }
         format.xml  { render :xml => @transaction, :status => :created, :location => @transaction }
       else
         format.html { render :action => "new" }
@@ -85,11 +87,16 @@ class TransactionsController < ApplicationController
 
     respond_to do |format|
       if @transaction.update_attributes(params[:transaction])
-        format.html { redirect_to(@return_to, :notice => 'Transaction was successfully updated.') }
+        format.html { redirect_to(@return_to, :notice => t('transactions.update.success')) }
         format.xml  { head :ok }
         format.json { render :json => {:result => @transaction.send(params[:wants])}}
       else
-        format.html { render :action => "edit" }
+        format.html do
+          @accounts = current_institution.accounts.all
+          @categories = current_institution.categories.all
+          @people = current_institution.people.all
+          render :action => "edit"
+        end
         format.xml  { render :xml => @transaction.errors, :status => :unprocessable_entity }
         format.json { render :json => {:result => @transaction.send(params[:wants]+'_was')}} # return original value
       end
@@ -102,6 +109,15 @@ class TransactionsController < ApplicationController
     @transaction = @scope.find(params[:id])
     @transaction.destroy
 
+    respond_to do |format|
+      format.html { redirect_to(@return_to) }
+      format.xml  { head :ok }
+    end
+  end
+
+  def destroy_multiple
+    @transactions = @scope.find(params[:transaction_ids])
+    @transactions.each{|t| t.destroy }
     respond_to do |format|
       format.html { redirect_to(@return_to) }
       format.xml  { head :ok }
@@ -155,6 +171,7 @@ class TransactionsController < ApplicationController
       @scope = person.transactions
       @return_to = person_url(person)
     else
+      @scope_cant_build = true
       @scope = current_institution.transactions
       @return_to = transactions_url
     end

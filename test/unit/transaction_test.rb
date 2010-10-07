@@ -90,5 +90,15 @@ class TransactionTest < ActiveSupport::TestCase
         assert_equal 1000, @t.cents
       end
     end
+    context "nil" do
+      setup do
+        @t = Transaction.make_unsaved(:type => "Income", :cents => 59)
+        @t.amount = nil
+        @t.save
+      end
+      should "not change cents" do
+        assert_equal 59, @t.cents
+      end
+    end
   end
 end

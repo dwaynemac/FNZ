@@ -11,7 +11,13 @@ class ApplicationController < ActionController::Base
   before_filter :reconnect_to_padma_if_no_institution
   before_filter :set_locale
 
+  # for application layout
+  before_filter :get_accounts_for_account_bar
+
   private
+  def get_accounts_for_account_bar
+    @accounts = current_institution.accounts.all
+  end
 
   def set_locale
     new_locale = params[:locale]

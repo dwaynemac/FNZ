@@ -12,7 +12,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :imports, :member => { :load_data => :get }
 
   map.resources :accounts, :has_many => :transactions
-  map.resources :transactions, :new => { :transfer => :any }
+  map.resources :transactions, :new => { :transfer => :any },
+                               :collection => { :destroy_multiple => :delete }
   map.resources :incomes, :controller => :transactions # condition type is Income
   map.resources :expenses, :controller => :transactions # condition type is Expense
   map.resources :users, :has_many => [:transactions, :institutions]

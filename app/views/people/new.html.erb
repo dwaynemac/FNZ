@@ -1,12 +1,9 @@
-<h1>New person</h1>
+<h1><%= t('people.new.title') %></h1>
+<div id="warn"><%= t('people.new.warn_creating_local') %></div>
 
 <% form_for(@person) do |f| %>
   <%= f.error_messages %>
 
-  <p>
-    <%= f.label :padma_id %><br />
-    <%= f.text_field :padma_id %>
-  </p>
   <p>
     <%= f.label :name %><br />
     <%= f.text_field :name %>
@@ -16,8 +13,8 @@
     <%= f.text_field :surname %>
   </p>
   <p>
-    <%= f.submit 'Create' %>
+    <%= f.submit t('Create') %>
   </p>
 <% end %>
 
-<%= link_to 'Back', people_path %>
+<%= link_to t('Back'), people_path %>

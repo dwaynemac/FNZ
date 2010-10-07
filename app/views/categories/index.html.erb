@@ -1,4 +1,4 @@
-<h1>Listing categories</h1>
+<h1><%= t('categories.index.title') %></h1>
 
 <div id="choose-period">
   <%- semantic_form_for :search, :url => categories_path, :html => { :method => :get } do |f| -%>

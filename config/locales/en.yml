@@ -7,6 +7,8 @@ en:
     logged_in_as: "DRC session: <strong>%{drc_user}</strong>"
     no_local_user: "You dont have a user on this application."
     not_you_logout: "If this DeRose Connection is not yours <a href=%{logout_url}>logout</a>."
+  accounts-bar:
+    your_accounts: "Your accounts"
   navbar:
     accounts: "Accounts"
     transactions: "Transactions"
@@ -20,6 +22,8 @@ en:
     add_transaction: "New transaction"
     index:
       title: "Accounts"
+    new:
+      title: "New account"
   api:
     problem_with_connetion: "Ups, some problem with your PADMA connection."
   time:
@@ -60,6 +64,7 @@ en:
     index:
       set_parent_for_checked: "Change parent for checked categories"
       filter_period: "Consider transactions accounted in this period"
+      title: "Categories"
   imports:
     new:
       valid_headers: "In your CSV headers you may use any of the following fields"
@@ -86,6 +91,12 @@ en:
       transfered: "Transfered!"
     index:
       filter_period: "Consider this period"
+    edit:
+      title: "Editing transaction"
+    update:
+      success: "Transaction was successfully updated."
+    create:
+      success: "Transaction was successfully created."
   people:
     show:
       not_synced: "Data not in sync with PADMA."
@@ -95,10 +106,14 @@ en:
     register_payment: "Register payment"
     index:
       title: "People"
+      new: "New person"
     update:
       success: "Person was successfully updated."
     create:
       success: "Person was successfully created."
+    new:
+      warn_creating_local: "You are creating a person locally on FNZ, this person will not be linked to your PADMA DB."
+      title: "New person"
   person:
     labels:
       full_name: "Full name"
@@ -127,3 +142,6 @@ en:
     submit: "Ok"
   filter: "filter"
   subtotal: "Subtotal"
+  search: "Search"
+  Create: "Create"
+  destroy_selected: "Delete selected"

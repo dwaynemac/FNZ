@@ -5,7 +5,8 @@ class PeopleController < ApplicationController
   # GET /people
   # GET /people.xml
   def index
-    @people = @scope.paginate(:page => params[:page])
+    @search = @scope.search(params[:search])
+    @people = @search.paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,6 +14,7 @@ class PeopleController < ApplicationController
     end
   end
 
+  # GET /in_padma
   def in_padma
     search = {"order" => "ascend_by_nombres"}.merge(params[:search]||{})
     @people = current_user.padma.people({:search => search, :page => params[:page]||1})

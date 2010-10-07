@@ -1,7 +1,13 @@
-<h1>Editing transaction</h1>
+<h1><%= t('transactions.edit.title') %></h1>
 
 <%- semantic_form_for :transaction, :object => @transaction, :url => @transaction, :html => { :method => :put } do |f| -%>
   <%= render :partial => 'form', :locals => {:f => f} %>
+  <%- f.inputs do -%>
+    <%= f.input :person_id, :collection => @people, :include_blank => true %>
+  <%- end -%>
+  <%- f.buttons do -%>
+    <%= f.commit_button %>
+  <%- end -%>
 <%- end -%>
 
-<%= link_to 'Back', transactions_path %>
+<%= link_to t('Back'), transactions_path %>

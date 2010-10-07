@@ -5,7 +5,7 @@
     <%= f.input :full_name_like %>
   <%- end -%>
   <%- f.buttons do -%>
-    <%= f.commit_button %>
+    <%= f.commit_button t('search') %>
   <%- end -%>
 <%- end -%>
 
@@ -27,7 +27,3 @@
   </table>
   <%= will_paginate @people %>
 </div>
-
-<br />
-
-<%= link_to 'New person', new_person_path %>
