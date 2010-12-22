@@ -23,12 +23,14 @@
       <%= link_to(t('navbar.transactions'), transactions_url) %> |
       <%= link_to(t('navbar.import'), imports_url) %>
     </div>
+    <%- if logged_in? && current_user.allowed? -%>
     <div id="accounts-bar">
       <%= t('accounts-bar.your_accounts') %>:
       <%- @accounts.each do |a| -%>
         <%= link_to h(a.name), account_path(a) %> |
       <%- end -%>
     </div>
+    <%- end -%>
     <div id="notices">
       <%= notice %>
     </div>

@@ -52,6 +52,7 @@ class Category < ActiveRecord::Base
 
       return bal
     else
+      # TODO working?
       incomes_groups = period_scope.incomes.all(
                                 :select => "#{Transaction.table_name}.currency, #{Transaction.table_name}.#{group_by}, sum(cents) as sum_cents",
                                 :group => "#{Transaction.table_name}.currency, #{Transaction.table_name}.#{group_by}")
@@ -92,3 +93,4 @@ class Category < ActiveRecord::Base
   end
 
 end
+

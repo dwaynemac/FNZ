@@ -2,9 +2,9 @@ class TransferForm
   include Validatable
   attr_accessor :from_account_id, :to_account_id, :amount, :description, :made_on
 
-  validates_presence_of :from_account_id
-  validates_presence_of :to_account_id
-  validates_presence_of :amount
+  #validates_presence_of :from_account_id
+  #validates_presence_of :to_account_id
+  #validates_presence_of :amount
 
   validates_true_for :different_accounts, :logic => lambda { self.from_account_id != self.to_account_id }
 
@@ -48,3 +48,4 @@ class TransferForm
   end
 
 end
+

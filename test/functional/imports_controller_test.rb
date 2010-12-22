@@ -16,7 +16,7 @@ class ImportsControllerTest < ActionController::TestCase
       @import.reload
       assert_equal 'imported', @import.aasm_current_state
     end
-    should_change("import tranasactions"){@import.transactions.count}
+    should_change("import transactions"){@import.transactions.count}
   end
 
   test "should get index" do
@@ -61,3 +61,4 @@ class ImportsControllerTest < ActionController::TestCase
     assert_redirected_to imports_path
   end
 end
+

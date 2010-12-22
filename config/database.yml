@@ -1,8 +1,8 @@
 development:
   adapter: mysql
   database: fnz_development
-  user: root
-  pass: 
+  username: root
+  password: 4ganml8y 
   pool: 5
   timeout: 5000
   encoding: utf8
@@ -10,8 +10,8 @@ development:
 test:
   adapter: mysql
   database: fnz_test
-  user: root
-  pass:
+  username: root
+  password: 4ganml8y
   pool: 5
   timeout: 5000
   encoding: utf8

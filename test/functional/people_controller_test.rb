@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'mocha'
 
 class PeopleControllerTest < ActionController::TestCase
 
@@ -16,7 +17,7 @@ class PeopleControllerTest < ActionController::TestCase
     context "get :index" do
       setup do
         @current_user = @user
-        @current_user.padma = mock('padma').stubs('people').returns([{"nombres" => "pepe", "apellidos" => "london", "id" => 1},{"nombres" => "maria", "apellidos" => "josefa", "id" => 2}])
+        @current_user.stubs(:padma).stubs(:people).returns([{"nombres" => "pepe", "apellidos" => "london", "id" => 1},{"nombres" => "maria", "apellidos" => "josefa", "id" => 2}])
         get :index
       end
       should_respond_with(:success)
@@ -50,3 +51,4 @@ class PeopleControllerTest < ActionController::TestCase
     end
   end
 end
+

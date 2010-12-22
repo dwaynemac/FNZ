@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
 
   private
   def get_accounts_for_account_bar
+    return unless logged_in? && current_user.allowed?
     @accounts = current_institution.accounts.all
   end
 

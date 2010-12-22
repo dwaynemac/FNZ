@@ -1,3 +1,4 @@
+# Money accounts, where transactions occure
 class Account < ActiveRecord::Base
 
   validates_presence_of :currency
@@ -75,14 +76,17 @@ class Account < ActiveRecord::Base
 
   private
   def set_as_default
+    #if institution has no default account, set this one.
     if self.institution.default_account.nil?
       self.institution.update_attribute(:default_account_id,self.id)
     end
   end
 
   def remove_from_institution_default
+    # if this was the default account, unset it.
     if self.institution.default_account==self
       self.institution.update_attribute(:default_account_id,nil)
     end
   end
 end
+

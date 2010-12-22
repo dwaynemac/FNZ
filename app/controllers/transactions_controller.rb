@@ -127,7 +127,7 @@ class TransactionsController < ApplicationController
   def transfer
     @transfer_form = TransferForm.new(params[:transfer_form])
     # (POST?)
-    if params[:transfer_form]
+    if params[:transfer_form] #create transfer
       unless @transfer_form.valid?
         @accounts = current_institution.accounts.all
         respond_to do |format|
@@ -177,3 +177,4 @@ class TransactionsController < ApplicationController
     end
   end
 end
+

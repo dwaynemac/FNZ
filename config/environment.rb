@@ -14,7 +14,7 @@ Rails::Initializer.run do |config|
   config.gem 'authlogic'
   config.gem 'drc_client'
   config.gem 'acts-as-taggable-on', :source => 'http://gemcutter.org', :version => '2.0.0.rc1'
-  config.gem 'nokogiri'
+#  config.gem 'nokogiri'
   config.gem 'searchlogic'
   config.gem 'formtastic'
   config.gem 'will_paginate'
@@ -24,8 +24,9 @@ Rails::Initializer.run do |config|
 
   config.gem 'money'
 
-  config.gem 'jnunemaker-validatable', :lib => 'validatable'
-  
+#  config.gem 'jnunemaker-validatable', :lib => 'validatable'
+  config.gem 'validatable' # gem not mantained since 2008. TODO try in patch jnunemaker-validatable with this fix.
+
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
@@ -55,10 +56,11 @@ Rails::Initializer.run do |config|
 end
 
 #Use Nokogiri
-ActiveSupport::XmlMini.backend = 'Nokogiri'
+#ActiveSupport::XmlMini.backend = 'Nokogiri'
 DRCClient.configure(:base_url => DRC_URL, :enable_single_sign_out => true, :require_local_user => true,
                     :user_model => User)
 
 require 'money/bank/google_currency'
 # Use Google for currency exchanges
 Money.default_bank = Money::Bank::GoogleCurrency.new
+
