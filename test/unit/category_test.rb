@@ -134,7 +134,7 @@ class CategoryTest < ActiveSupport::TestCase
     end
   end
 
-  context "grouping by some value" do
+  context "Category#balance" do
     setup do
       @institution = Institution.make(:default_currency => "ars")
       @account = Account.make(:institution => @institution, :currency =>"ars")
@@ -153,12 +153,27 @@ class CategoryTest < ActiveSupport::TestCase
         Transaction.make(:type => "Expense", :account => @account, :person_id => @aperson.id, :cents => 100, :category_id => @category.id)
       end
 
-      @bal = @category.balance(:group_by => 'person_id')
     end
 
-    should "group by person" do
-      assert_equal 300, @bal[@aperson.id].cents
-      assert_equal 500, @bal[@bperson.id].cents
+    context "called with :group_by => 'person_id" do
+      setup do
+        @bal = @category.balance(:group_by => 'person_id')
+      end
+
+      should "group by person" do
+        assert_equal 300, @bal[@aperson.id].cents
+        assert_equal 500, @bal[@bperson.id].cents
+      end
+    end
+
+    context "called with :group_by => 'account_id" do
+      setup do
+        @bal = @category.balance(:group_by => 'account_id')
+      end
+
+      should "group by account" do
+        assert_equal 800, @bal[@account.id].cents
+      end
     end
 
   end
