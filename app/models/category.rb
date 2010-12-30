@@ -7,6 +7,7 @@ class Category < ActiveRecord::Base
   before_save :capitalize_name
 
   validate :parent_is_not_descendant
+  validate :parent_from_same_institution
 
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => :institution_id
@@ -89,6 +90,13 @@ class Category < ActiveRecord::Base
     return if self.parent.nil?
     if self.self_and_descendants.include?(self.parent)
       self.errors.add(:parent_id, I18n.t('category.parent_cant_be_descendant'))
+    end
+  end
+
+  def parent_from_same_institution
+    return if self.parent.nil?
+    if self.institution != self.parent.institution
+      self.errors.add(:parent_id, I18n.t('category.parent_cant_be_from_another_institution'))
     end
   end
 

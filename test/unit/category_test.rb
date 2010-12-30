@@ -7,7 +7,7 @@ class CategoryTest < ActiveSupport::TestCase
   end
 
   should_validate_presence_of(:name, :institution)
-  should_validate_uniqueness_of(:name, :scoped_to => :institution)
+  should_validate_uniqueness_of(:name, :scoped_to => :institution_id)
   should_belong_to(:institution)
   should_have_many(:transactions)
 
@@ -20,7 +20,8 @@ class CategoryTest < ActiveSupport::TestCase
     end
 
     should "validate parent is from same institution" do
-      assert(!@a.update_attributes(:parent_id => @b.id))
+      @a.parent_id = @b.id
+      assert(!@a.save)
     end
   end
 
@@ -128,9 +129,38 @@ class CategoryTest < ActiveSupport::TestCase
 
     context "@root.all_transactions" do
       should "consider root and root-descendants transactions" do
-        assert_equal( 12,@root.all_transactions.count ) 
+        assert_equal( 12,@root.all_transactions.count )
       end
     end
   end
 
+  context "grouping by some value" do
+    setup do
+      @institution = Institution.make(:default_currency => "ars")
+      @account = Account.make(:institution => @institution, :currency =>"ars")
+
+      @aperson = Person.make(:institution => @institution)
+      @bperson = Person.make(:institution => @institution)
+
+      @category = Category.make(:institution => @institution)
+
+      5.times do
+        Transaction.make(:type => "Income", :account => @account, :person_id => @aperson, :cents => 100, :category_id => @category)
+        Transaction.make(:type => "Income", :account => @account, :person_id => @bperson, :cents => 100, :category_id => @category)
+      end
+
+      2.times do
+        Transaction.make(:type => "Expense", :account => @account, :person_id => @aperson, :cents => 100, :category_id => @category)
+      end
+
+      @bal = @category.balance(:group_by => 'person_id')
+    end
+
+    should "group by person" do
+      assert_equal 300, @bal[@aperson.id].cents
+    end
+
+  end
+
 end
+

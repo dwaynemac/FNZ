@@ -7,12 +7,12 @@ class PersonTest < ActiveSupport::TestCase
       @person = Person.make
     end
     subject { @person }
-    
+
     should_validate_uniqueness_of(:padma_id)
 
     should_belong_to(:institution)
 
-    should_validate_uniqueness_of(:email, :scoped_to => :institution, :case_sensitive => false)
+    should_validate_uniqueness_of(:email, :scoped_to => :institution_id, :case_sensitive => false)
 
     should_validate_presence_of(:name)
 
@@ -50,3 +50,4 @@ class PersonTest < ActiveSupport::TestCase
   end
 
 end
+
