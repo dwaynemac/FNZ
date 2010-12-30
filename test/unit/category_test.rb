@@ -145,12 +145,12 @@ class CategoryTest < ActiveSupport::TestCase
       @category = Category.make(:institution => @institution)
 
       5.times do
-        Transaction.make(:type => "Income", :account => @account, :person_id => @aperson, :cents => 100, :category_id => @category)
-        Transaction.make(:type => "Income", :account => @account, :person_id => @bperson, :cents => 100, :category_id => @category)
+        Transaction.make(:type => "Income", :account => @account, :person_id => @aperson.id, :cents => 100, :category_id => @category.id)
+        Transaction.make(:type => "Income", :account => @account, :person_id => @bperson.id, :cents => 100, :category_id => @category.id)
       end
 
       2.times do
-        Transaction.make(:type => "Expense", :account => @account, :person_id => @aperson, :cents => 100, :category_id => @category)
+        Transaction.make(:type => "Expense", :account => @account, :person_id => @aperson.id, :cents => 100, :category_id => @category.id)
       end
 
       @bal = @category.balance(:group_by => 'person_id')
@@ -158,6 +158,7 @@ class CategoryTest < ActiveSupport::TestCase
 
     should "group by person" do
       assert_equal 300, @bal[@aperson.id].cents
+      assert_equal 500, @bal[@bperson.id].cents
     end
 
   end
