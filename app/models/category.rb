@@ -72,7 +72,7 @@ class Category < ActiveRecord::Base
         if return_groups[eg.send(group_by)].nil?
           return_groups[eg.send(group_by)] = Money.new(0, self.institution.default_currency)
         end
-        return_groups[eg.send(group_by)] -= Money.new(eg.sum_cents,eg.currency)
+        return_groups[eg.send(group_by)] -= Money.new(eg.sum_cents.to_i,eg.currency)
       end
 
       return return_groups
