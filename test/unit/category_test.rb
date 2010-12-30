@@ -11,7 +11,7 @@ class CategoryTest < ActiveSupport::TestCase
   should_belong_to(:institution)
   should_have_many(:transactions)
 
-  context "Category from different institutions" do
+  context "Categories from different institutions" do
     setup do
       @ia = Institution.make
       @a = Category.make(:institution => @ia)
@@ -25,7 +25,7 @@ class CategoryTest < ActiveSupport::TestCase
     end
   end
 
-  context "category name" do
+  context "Category's name" do
     setup do
       @asdf = Category.make(:name => "ASDF")
       @qwer = Category.make(:name => "qwer")
@@ -44,7 +44,7 @@ class CategoryTest < ActiveSupport::TestCase
       @category = Category.make(:institution => @institution)
     end
     context "without transactions" do
-      context "balance()" do
+      context "category.balance" do
         setup do
           @bal = @category.balance
           @category.reload
@@ -52,13 +52,13 @@ class CategoryTest < ActiveSupport::TestCase
         should "return 0" do
           assert_equal 0, @bal.cents
         end
-      end
-      context "balance(:group_by => 'person_id')" do
-        setup do
-          @bal = @category.balance(:group_by => 'person_id')
-        end
-        should "return {}" do
-          assert_equal({}, @bal)
+        context "(:group_by => 'person_id')" do
+          setup do
+            @bal = @category.balance(:group_by => 'person_id')
+          end
+          should "return {}" do
+            assert_equal({}, @bal)
+          end
         end
       end
     end
@@ -103,14 +103,17 @@ class CategoryTest < ActiveSupport::TestCase
         @usd_account = Account.make(:institution => @institution, :currency => "usd")
         @ars_account = Account.make(:institution => @institution, :currency => "ars")
 
+        @aperson = Person.make(:institution => @institution)
+        @bperson = Person.make(:institution => @institution)
+
         10.times do
-          Transaction.make(:type => "Income", :account => @ars_account, :cents => 100, :category => @category)
+          Transaction.make(:type => "Income", :account => @ars_account, :cents => 100, :category => @category, :person => @aperson)
         end
         10.times  do
-          Transaction.make(:type => "Income", :account => @usd_account, :cents => 100, :category => @category)
+          Transaction.make(:type => "Income", :account => @usd_account, :cents => 100, :category => @category, :person => @bperson)
         end
         10.times do
-          Transaction.make(:type => "Expense", :account => @ars_account, :cents => 100, :category => @category)
+          Transaction.make(:type => "Expense", :account => @ars_account, :cents => 100, :category => @category, :person => @bperson)
         end
       end
       context "balance" do
@@ -120,6 +123,15 @@ class CategoryTest < ActiveSupport::TestCase
         end
         should "return 4000" do
           assert_equal 4000, @bal.cents
+        end
+        context "(:group_by => 'person_id')" do
+          setup do
+            @bal = @category.balance(:group_by => 'person_id')
+          end
+          should "return balances grouped by person and transform currencies" do
+            assert_equal Money.new(1000,'ars'), @bal[@aperson.id]
+            assert_equal Money.new(3000, 'ars'), @bal[@bperson.id]
+          end
         end
       end
     end
