@@ -13,7 +13,11 @@ class IncomeTest < ActiveSupport::TestCase
       assert(!@income.debit?)
     end
     should "return .prt_amount '$1.00'" do
+      answer = "-"
+      answer += "<span title='#{@income.amount.currency}'>#{@income.amount.currency.symbol}</span>"
+      answer += @income.amount.to_s
       assert_equal("$1.00",@income.prt_amount)
     end
   end
 end
+

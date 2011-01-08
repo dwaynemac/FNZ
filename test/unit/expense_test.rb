@@ -12,7 +12,11 @@ class ExpenseTest < ActiveSupport::TestCase
       assert(@expense.debit?)
     end
     should "return .prt_amount '-$1.00'" do
-      assert_equal("-$1.00",@expense.prt_amount)
+      answer = "-"
+      answer += "<span title='#{@expense.amount.currency}'>#{@expense.amount.currency.symbol}</span>"
+      answer += @expense.amount.to_s
+      assert_equal(answer,@expense.prt_amount)
     end
   end
 end
+
