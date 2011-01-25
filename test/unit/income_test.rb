@@ -16,7 +16,7 @@ class IncomeTest < ActiveSupport::TestCase
       answer = "-"
       answer += "<span title='#{@income.amount.currency}'>#{@income.amount.currency.symbol}</span>"
       answer += @income.amount.to_s
-      assert_equal("$1.00",@income.prt_amount)
+      assert_equal(answer,@income.prt_amount)
     end
   end
 end

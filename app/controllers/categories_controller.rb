@@ -31,6 +31,7 @@ class CategoriesController < ApplicationController
 
     @category = @scope.find(params[:id])
     @transactions = @category.all_transactions.field_after(:account_on,@since).field_before(:account_on,@until).paginate(:page => params[:page])
+
     subtotals = @category.balance(:group_by => :user_id,:from => @since, :to => @until, :consider => :account_on)
     subtotals = subtotals.sort{|a,b| b[1]<=>a[1]}
     @users_subtotals = subtotals.map{|g| [current_institution.users.find(g[0]).try(:drc_user),g[1]]}
