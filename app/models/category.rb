@@ -75,6 +75,21 @@ class Category < ActiveRecord::Base
         return_groups[eg.send(group_by)] -= Money.new(eg.sum_cents.to_i,eg.currency)
       end
 
+      # then consider transactions under child categories
+      #for every child balance, add this balance in parents overall balance
+      self.children.each do |child_category|
+        child_balances = child_category.balance(:from => from, :to => to, :group_by => group_by)
+        #navigate hash to add/update balance
+        child_balances.each do |group_by_name, group_by_balance|
+          if return_groups[group_by_name].nil?
+            return_groups[group_by_name] = Money.new(0, self.institution.default_currency)
+          end
+          return_groups[group_by_name] += group_by_balance
+        end
+      end
+
+      #{|c| bal += c.balance(:from => from,:to => to, :group_by => group_by) }
+
       return return_groups
     end
   end

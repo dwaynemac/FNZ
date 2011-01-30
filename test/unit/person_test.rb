@@ -4,7 +4,7 @@ class PersonTest < ActiveSupport::TestCase
 
   context "person" do
     setup do
-      @person = Person.make
+      @person = Person.make(:name => "Pepe", :surname => "Biondi", :email => "pepe@gmail.com")
     end
     subject { @person }
 
@@ -17,7 +17,10 @@ class PersonTest < ActiveSupport::TestCase
     should_validate_presence_of(:name)
 
     should_have_many(:transactions)
+
     context "sync_from_padma" do
+      #      @padma_access_token = stubs(:padma).stubs(:person).returns({"name" => "alex", "surname" => "falke", "id" => 1})
+ #     Person.make(:name => "alex", :surname => "falke").sync_from_padma(@padma_access_token, true)
       should "" do
         assert(false, "write test")
       end
